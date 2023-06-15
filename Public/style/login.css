@@ -1,0 +1,92 @@
+body{
+    background-color: #000000;
+    color: #acacac;
+	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}  
+
+.main{
+	padding:20px;
+	font-family: 'Helvetica', serif;
+	width: 509px;
+	margin: 0 auto;
+	background: #1F2937;
+	border-radius: 16px;
+}
+
+.heading{
+	font-size: 30px;
+	text-align:center;
+	font-family: 'Helvetica', serif;
+}
+
+input{
+	font-family: 'Helvetica', serif;
+	width: 100%;
+	font-size: 20px;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border: none;
+	background-color: #000000;
+	border-bottom: 5px solid #286cd9;
+	border-radius: 10px;
+}
+
+input[type=submit] {
+	font-family: 'Helvetica', serif;
+	width: 100%;
+	background-color: #286cd9;
+	border: none;
+	color: white;
+	padding: 16px 32px;
+	margin: 4px 2px;
+	border-radius: 10px;
+}
+
+.main button{
+    font-family: 'Helvetica', serif;
+	width: 100%;
+    background-color: #1F2937;
+	border: none;
+	color: #286cd9;
+	padding: 16px 32px;
+	margin: 4px 2px;
+	border-radius: 10px;
+	font-size: large;
+    transition: none;
+}
+.main button:hover {
+    background-color: #1F2937;
+}
+
+img{
+	width: 125px;
+	height: 100px;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+.logo{
+	font-weight: bolder;
+	font-size: 45px;
+	color: #fff;
+	margin-top: -75px;
+	margin-left: 75px;
+	text-align: center;
+}
+
+span{
+	color: #286cd9;
+}
+
+.audun_warn {
+	display: flex;
+	color: #ffffff;
+	background-color: #ec0b0bc1;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: large;
+	border-radius:.5em;
+	border: 1px solid;
+	margin: 10px 0px;
+	padding: 12px;
+	width: 400px;
+}
