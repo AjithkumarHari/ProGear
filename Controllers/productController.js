@@ -8,10 +8,8 @@ const multer = require("multer")
 //GET
 module.exports.productManagement = async (req ,res) => {
     try {
-        const find = await productData.findOne({}).populate('category')
-        console.log(find);
-        console.log(find.category.name);
-
+        const find = await productData.find({}).populate('category')
+  
         res.render('productManagement', { find: find })
         console.log("product Management loaded")
     } catch (error) {
@@ -53,23 +51,23 @@ module.exports.newProduct = async (req, res) => {
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
         console.error('Error uploading image:', err);
-        return res.status(500).send('Error uploading image');
+        return res.status(500).send('Error uploading image'); 
         } 
         else if (err) {
         console.error('Error uploading image:', err);
         return res.status(500).send('Error uploading image');
         }
   
-        const { name, description, category, brand } = req.body;
+        const { name, description, category, brand, price } = req.body;
         const image = req.file.filename;
   
         const newProduct = new productData({
-            name,
+            name,     
             brand,
             description,
             image,
             category,
-            // price
+            price
         });
         newProduct
         .save()
@@ -89,10 +87,10 @@ module.exports.newProduct = async (req, res) => {
 //GET
 module.exports.updateProduct = async (req ,res) => {
     try {
-        req.query._id
+        id = req.query.userid
         console.log('updateproduct');
-        const category = await categoryData.find({})
-        res.render('updateProduct',{ category: category })
+        const product = await productData.findOne({_id : id })
+        res.render('updateProduct',{ product: product })
         }
     catch (error) {
         res.send("error")

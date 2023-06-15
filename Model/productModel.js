@@ -27,10 +27,10 @@ const details = new mongoose.Schema({
         type : Boolean,
         default : true
     },
-    // price:{
-    //     type:Number,
-    //     required:true
-    //   }
+    price:{
+        type: Number,
+        required:true
+      }
     
 })
 

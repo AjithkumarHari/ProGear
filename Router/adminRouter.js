@@ -42,21 +42,27 @@ router.get('/user', adminController.userManagement)
 router.get('/block',adminController.changeStatus)
 
 
+//                                                   PRODUCT
+
 router.get('/product',productController.productManagement)
+
 router.get('/addProduct',productController.addProduct)
 router.post('/addProduct',productController.newProduct)
 
 router.get('/updateProduct',productController.updateProduct)
 
 
+//                                                   CATEGORY
 router.get('/category',categoryController.categoryManagement)
+
 router.get('/addCategory',categoryController.addCategory)
 router.post('/addCategory',categoryController.newCategory)
+
 router.get('/updateCategory',categoryController.updateCategory)
 router.post('/updateCategory',categoryController.editCategory)
+
 router.get('/changeStatus', categoryController.changeStatus)
-// router.get('/login',adminController.loginPage)
-// router.post('/login',adminController.loginVerify)
+
 
 router.get('/logout',adminController.logout)
 
