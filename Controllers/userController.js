@@ -27,7 +27,9 @@ module.exports.homePage = async ( req, res ) => {
 
 module.exports.productPage = async ( req, res ) => {
     try{
-        const product = await productData.find({ })
+        const id = req.query.productId
+        console.log('id', id);
+        const product = await productData.findOne({ _id : id }).populate('category')
         res.render('product',{product : product})
     }
     catch(error){

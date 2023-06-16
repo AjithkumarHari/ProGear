@@ -192,8 +192,8 @@
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-8 col-md-12">
-					<div class="row">deal-title
-						<div class="col-lg-8 col-md-8">
+					{{!-- <div class="row">deal-title
+						{{!-- <div class="col-lg-8 col-md-8">
 							<div class="single-deal">
 								<div class="overlay"></div>
 								<img class="img-fluid w-100" src="img/category/c1.jpg" alt="">
@@ -203,8 +203,8 @@
 									</div>
 								</a>
 							</div>
-						</div>
-						<div class="col-lg-4 col-md-4">
+						</div> --}}
+						{{!-- <div class="col-lg-4 col-md-4">
 							<div class="single-deal">
 								<div class="overlay"></div>
 								<img class="img-fluid w-100" src="img/category/c2.jpg" alt="">
@@ -214,8 +214,8 @@
 									</div>
 								</a>
 							</div>
-						</div>
-						<div class="col-lg-4 col-md-4">
+						</div> --}}
+						{{!-- <div class="col-lg-4 col-md-4">
 							<div class="single-deal">
 								<div class="overlay"></div>
 								<img class="img-fluid w-100" src="img/category/c3.jpg" alt="">
@@ -225,8 +225,8 @@
 									</div>
 								</a>
 							</div>
-						</div>
-						<div class="col-lg-8 col-md-8">
+						</div> --}}
+						{{!-- <div class="col-lg-8 col-md-8">
 							<div class="single-deal">
 								<div class="overlay"></div>
 								<img class="img-fluid w-100" src="img/category/c4.jpg" alt="">
@@ -236,10 +236,10 @@
 									</div>
 								</a>
 							</div>
-						</div>
-					</div>
+						</div> --}}
+					</div> --}}
 				</div>
-				<div class="col-lg-4 col-md-6">
+				{{!-- <div class="col-lg-4 col-md-6">
 					<div class="single-deal">
 						<div class="overlay"></div>
 						<img class="img-fluid w-100" src="img/category/c5.jpg" alt="">
@@ -249,7 +249,7 @@
 							</div>
 						</a>
 					</div>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 	</section>
@@ -510,7 +510,7 @@
 							<div class="product-details">
 								<h6>{{name}}</h6>
 								<div class="price">
-									<h6>$150.00</h6>
+									<h6>{{price}}</h6>
 								</div>
 								<div class="prd-bottom">
 
@@ -522,7 +522,7 @@
 										<span class="lnr lnr-heart"></span>
 										<p class="hover-text">Wishlist</p>
 									</a>
-									<a href="/product" class="social-info">
+									<a href="/product?productId={{_id}}" class="social-info">
 										<span class="lnr lnr-move"></span>
 										<p class="hover-text">view more</p>
 									</a>

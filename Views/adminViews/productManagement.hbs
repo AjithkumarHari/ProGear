@@ -183,7 +183,7 @@
                           <tr>
                             <td style="height: 200px; width:200px">
                                 <i class="fab fa-angular fa-lg text-danger me-3">
-                                  <img src="/product-images/{{image}}" alt="Product Image" style="width: 200px; height: 200px;">
+                                  <img src="/product-images/{{image.[0]}}" alt="Product Image" style="width: 200px; height: 200px;">
                                 </i>
                                 <strong></strong>
                             </td>
@@ -192,7 +192,7 @@
                             <td>{{category.name}}</td>
                             <td> {{price}} </td>
                             <td><a href="/admin/updateProduct?userid={{_id}}"><i class="mdi mdi-border-color"></i></a></td>
-							              <td><a href="/admin/delete?userid={{_id}}"><i class="mdi mdi-delete"></i></a></td>
+							              <td><a href="/admin/deleteProduct?userid={{_id}}"><i class="mdi mdi-delete"></i></a></td>
                           </tr>
                           {{/each}}
                         </tbody>
