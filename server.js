@@ -10,13 +10,13 @@ const app = require('./app')
 //     .then(() => console.log("Connected to MongoDB"))
 //     .catch((err) => console.log("MongoDB connection Failed"))
 
-mongoose.connect("mongodb://0.0.0.0:27017/signup-otp")
-    .then(() => {
-        console.log("connected")
-    })
-    .catch(() =>{
-        console.log("connection Failed")
-    })
+// mongoose.connect("mongodb://0.0.0.0:27017/signup-otp")
+//     .then(() => {
+//         console.log("connected")
+//     })
+//     .catch(() =>{
+//         console.log("connection Failed")
+//     })
 
     
 const port = process.env.PORT || 3001

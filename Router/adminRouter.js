@@ -43,7 +43,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-const multipleUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name:"image" ,maxCount:2 }])
+const multipleUpload = upload.fields([{ name: 'image1', maxCount: 1 }, { name:"image2" ,maxCount:2 }])
 
 
 router.get('/', adminController.adminLogin)

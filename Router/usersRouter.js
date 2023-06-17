@@ -8,6 +8,7 @@ const session = require('express-session')
 const userController = require("../Controllers/userController")
 const validate = require('../authentication/userAutentication')
 
+const cartController = require('../Controllers/cartController')
 
 router.set('view engine', 'hbs')
 router.set('views',  './Views/userViews')
@@ -51,8 +52,11 @@ router.get('/logout',userController.logout)
 router.get('/product',userController.productPage)
 
 //Get Cart Page 
-router.get('/cart',validate.authenticate,userController.cartPage)
+router.get('/cart',validate.authenticate,cartController.cartPage)
+router.get('/addToCart',cartController.addToCart)
 
+
+router.get('/profile',userController.profilePage)
 //Get Checkout Page 
 router.get('/checkout',userController.checkoutPage)
 

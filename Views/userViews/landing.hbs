@@ -15,7 +15,7 @@
 	<!-- meta character set -->
 	<meta charset="UTF-8">
 	<!-- Site Title -->
-	<title>Karma Shop</title>
+	<title>ProGear</title>
 	<!--
 		CSS
 		============================================= -->
@@ -50,7 +50,7 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item active"><a class="nav-link" href="/landing">Home</a></li>
+							<li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Category</a>
@@ -63,7 +63,11 @@
 								</ul>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+							{{#if token}}			
 							<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+							{{else}}
+							<li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+							{{/if}}
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item"><a href="/cart" class="cart"><span class="ti-bag"></span></a></li>
@@ -97,7 +101,7 @@
 						<div class="row single-slide align-items-center d-flex">
 							<div class="col-lg-5 col-md-6">
 								<div class="banner-content">
-									<h1>Nike New <br>Collection!</h1>
+									<h1>SCUF New <br>Collection!</h1>
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
 										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
 									<div class="add-bag d-flex align-items-center">
@@ -105,7 +109,7 @@
 										<span class="add-text text-uppercase">Add to Bag</span>
 									</div>
 								</div>
-							</div>
+							</div> 
 							<div class="col-lg-7">
 								<div class="banner-img">
 									<img class="img-fluid" src="img/banner/product banner.png" alt="">
@@ -193,7 +197,7 @@
 			<div class="row justify-content-center">
 				<div class="col-lg-8 col-md-12">
 					{{!-- <div class="row">deal-title
-						{{!-- <div class="col-lg-8 col-md-8">
+						 <div class="col-lg-8 col-md-8">
 							<div class="single-deal">
 								<div class="overlay"></div>
 								<img class="img-fluid w-100" src="img/category/c1.jpg" alt="">
@@ -237,7 +241,7 @@
 								</a>
 							</div>
 						</div> --}}
-					</div> --}}
+					</div>
 				</div>
 				{{!-- <div class="col-lg-4 col-md-6">
 					<div class="single-deal">
@@ -505,28 +509,30 @@
 					{{#each product}}
 					<div class="col-lg-3 col-md-6">
 						<div class="single-product">
-							<img class="img-fluid" src="../product-images/{{image}}" alt="">
+							<img class="img-fluid" src="../product-images/{{image.[0]}}" alt="">
 							<center>
 							<div class="product-details">
 								<h6>{{name}}</h6>
 								<div class="price">
-									<h6>{{price}}</h6>
+									<h6><i class="fa fa-inr" aria-hidden="true"></i>{{price}}</h6>
 								</div>
 								<div class="prd-bottom">
 
-									<a href="" class="social-info">
-										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
-									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-heart"></span>
-										<p class="hover-text">Wishlist</p>
-									</a>
-									<a href="/product?productId={{_id}}" class="social-info">
-										<span class="lnr lnr-move"></span>
-										<p class="hover-text">view more</p>
-									</a>
-								</div>
+											<a href="/product?productId={{_id}}" class="social-info">
+												<span class="lnr lnr-move"></span>
+												<p class="hover-text">view more</p>
+											</a>
+	
+											<a href="/addToCart?productId={{_id}}" class="social-info">
+												<span class="ti-bag"></span>
+												<p class="hover-text">add cart</p>
+											</a>
+											{{!-- <a href="" class="social-info">
+												<span class="lnr lnr-heart"></span>
+												<p class="hover-text">Wishlist</p>
+											</a> --}}
+											
+										</div>
 							</div>
 							</center>
 						</div>

@@ -12,7 +12,7 @@ const authenticate = (req,res,next)=>{
                 res.redirect('/login')
             }
             else{
-                console.log(decodedToken);
+                // console.log(decodedToken);
                 next()
             }
         })
@@ -26,6 +26,7 @@ const authenticate = (req,res,next)=>{
 
 const checkUser =  (req,res,next) =>{
     const token = req.cookies.jwt
+    // console.log("token :",token )
 
     if(token){
         jwt.verify(token, 'secret_key', async (err, decodedToken)=>{
@@ -37,6 +38,7 @@ const checkUser =  (req,res,next) =>{
             else{
                 // console.log(decodedToken);
                 let user = await userData.findById(decodedToken.id)
+                // console.log(user);
                 res.locals.user = user
                 next()
             }

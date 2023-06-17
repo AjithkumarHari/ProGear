@@ -38,25 +38,12 @@ module.exports.addProduct = async (req ,res) => {
     }
 }
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, './public/product-images/');
-//     },
-//     filename: function (req, file, cb) {
-//       const fileName = Date.now() + path.extname(file.originalname);
-//       cb(null, fileName);
-//     }
-// });
-  
-// const upload = multer({ storage: storage }).array('image');
-  
-
 //POST   
 module.exports.newProduct = async (req, res) => {
 
     const { name, description, category, price , brand} = req.body;
 
-    console.log(req.files);
+    // console.log(req.files);
     const filesArray = Object.values(req.files).flat();
     const image = filesArray.map((file) => file.filename);
   

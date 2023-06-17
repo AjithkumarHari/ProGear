@@ -11,7 +11,10 @@ const productData = require("../Model/productModel")
 module.exports.homePage = async ( req, res ) => {
     try{
         const product = await productData.find({ })
-        res.render('landing',{product : product})
+        const token = res.locals.user
+        // console.log(res.locals.user);
+        // console.log("User :",token);
+        res.render('landing',{product : product, token : token})
     }
     catch(error){
         console.log(error);
@@ -43,18 +46,7 @@ module.exports.productPage = async ( req, res ) => {
 
 //***************************************************************  CART PAGE  *******************************************************//
 
-module.exports.cartPage = async ( req, res ) => {
-    try{
-        const product = await productData.find({ })
-        res.render('cart',{product : product})
-    }
-    catch(error){
-        console.log(error);
-        res.send({ success: false, error: error.message });
-    }
-    
-    
-}
+
 
 //***************************************************************  CHECKOUT PAGE  *******************************************************//
 
@@ -105,7 +97,8 @@ module.exports.loginVerify = async (req,res) =>{
                     }
                     else{
                         const product = await productData.find({ })
-                        res.render('landing',{product : product})
+                        const user = res.locals.user
+                        res.render('landing',{product : product ,token : user})
                         console.log('show landing page');
                     
                         //Create Token and Sending it as cookie
@@ -293,7 +286,7 @@ module.exports.verifySignupOtp = async (req,res) =>{
                 //creating sending token as a cookie
                 const token = createToken(userData._id)
                 res.cookie('jwt',token, {httpOnly: true, maxAge : maxAge*1000 })
-                res.render('landing')
+                res.render('landing',{token})
             }
             else{
                 return console.log("Your OTP was Wrong")
@@ -333,8 +326,18 @@ module.exports.resendSignupOtp = async (req, res) => {
 
 //*********************************************************  LOG_OUT  ************************************************************//
 
-module.exports.logout = (req,res) =>{
+module.exports.logout = async (req,res) =>{
     res.cookie('jwt', '' ,{maxAge : 1})
     console.log("token destroyed");
-    res.redirect('/')
+
+    const product = await productData.find({ })
+        const token = req.session.token
+        res.render('landing',{product : product, token})
+}
+
+
+
+
+module.exports.profilePage = async (req,res) => {
+    res.render('profile')
 }

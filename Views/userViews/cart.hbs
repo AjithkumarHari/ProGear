@@ -48,7 +48,7 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item active"><a class="nav-link" href="/landing">Home</a></li>
+							<li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Category</a>
@@ -120,10 +120,11 @@
                                 <td>
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="img/cart.jpg" alt="">
+                                            <img src="../product-images/{{product.image.[0]}}" alt="" style="height: 100px; width :100px">
                                         </div>
                                         <div class="media-body">
-                                            <p>Minimalistic shop for multipurpose use</p>
+                                            <p>{{cart.product.product_id.name}}</p>
+
                                         </div>
                                     </div>
                                 </td>
@@ -211,11 +212,11 @@
 
                                 </td>
                                 <td>
-                                    <div class="cupon_text d-flex align-items-center">
+                                    {{!-- <div class="cupon_text d-flex align-items-center">
                                         <input type="text" placeholder="Coupon Code">
                                         <a class="primary-btn" href="#">Apply</a>
                                         <a class="gray_btn" href="#">Close Coupon</a>
-                                    </div>
+                                    </div> --}}
                                 </td>
                             </tr>
                             <tr>
@@ -232,8 +233,8 @@
                                     <h5>$2160.00</h5>
                                 </td>
                             </tr>
-                            <tr class="shipping_area">
-                                <td>
+                           {{!-- <tr class="shipping_area"> --}}
+                                {{!-- <td>
 
                                 </td>
                                 <td>
@@ -241,8 +242,8 @@
                                 </td>
                                 <td>
                                     <h5>Shipping</h5>
-                                </td>
-                                <td>
+                                </td> --}}
+                                {{!-- <td>
                                     <div class="shipping_box">
                                         <ul class="list">
                                             <li><a href="#">Flat Rate: $5.00</a></li>
@@ -264,8 +265,8 @@
                                         <input type="text" placeholder="Postcode/Zipcode">
                                         <a class="gray_btn" href="#">Update Details</a>
                                     </div>
-                                </td>
-                            </tr>
+                                </td> --}}
+                            {{!-- </tr> --}}
                             <tr class="out_button_area">
                                 <td>
 
@@ -279,6 +280,7 @@
                                 <td>
                                     <div class="checkout_btn_inner d-flex align-items-center">
                                         <a class="gray_btn" href="#">Continue Shopping</a>
+                                        
                                         <a class="primary-btn" href="/checkout">Proceed to checkout</a>
                                     </div>
                                 </td>

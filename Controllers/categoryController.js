@@ -41,10 +41,10 @@ module.exports.newCategory = async (req ,res) => {
             const savedCategory = await category.save();
             res.redirect('/admin/category')
         }
-      } catch (error) {
+    } catch (error) {
         console.log(error.message)
         res.status(500).json({ error: 'Failed to create category' });
-      }
+    }
     
 }
 
