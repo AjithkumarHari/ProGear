@@ -175,7 +175,8 @@
                             <th> Category </th>
                             <th> Price </th>
                             <th> Edit </th>
-                            <th>List/Unlist</th>
+                            <th>List</th>
+                            <th>Unlist</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -192,7 +193,8 @@
                             <td>{{category.name}}</td>
                             <td>&#8377; {{price}} </td>
                             <td><a href="/admin/updateProduct?userid={{_id}}"><i class="mdi mdi-border-color"></i></a></td>
-							              <td><a href="/admin/deleteProduct?userid={{_id}}"><i class="mdi mdi-delete"></i></a></td>
+							              <td><a href="/admin/unlistProduct?id={{_id}}"><i class="mdi mdi-delete">relist</i></a></td>
+                            <td><a href="/admin/reListProduct?id={{_id}}"><i class="mdi mdi-delete">unlist</i></a></td>
                           </tr>
                           {{/each}}
                         </tbody>

@@ -15,7 +15,7 @@
     <!-- meta character set -->
     <meta charset="UTF-8">
     <!-- Site Title -->
-    <title>Karma Shop</title>
+    <title>ProGear Shop</title>
     <!--
 			CSS
 			============================================= -->
@@ -49,36 +49,20 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+							<li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Shop</a>
+								 aria-expanded="false">Category</a>
 								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
-									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
-									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+									<li class="nav-item"><a class="nav-link" href="#">Game Pads</a></li>
+									<li class="nav-item"><a class="nav-link" href="#">Keyboard</a></li>
+									<li class="nav-item"><a class="nav-link" href="#"> Mouse</a></li>
+									<li class="nav-item"><a class="nav-link" href="#">Headphones</a></li>
+									<li class="nav-item"><a class="nav-link" href="#">VR Glasses</a></li>
 								</ul>
 							</li>
-							<li class="nav-item submenu dropdown active">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Blog</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-									<li class="nav-item active"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-								</ul>
-							</li>
-							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Pages</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
-								</ul>
-							</li>
-							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+							<li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+							<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
@@ -107,10 +91,10 @@
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
                 <div class="col-first">
-                    <h1>Blog Page</h1>
+                    <h1>Your Account</h1>
                     <nav class="d-flex align-items-center">
                         <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="category.html">Blog</a>
+                        <a href="category.html">Your Account</a>
                     </nav>
                 </div>
             </div>
@@ -122,7 +106,7 @@
     <section class="blog_area single-post-area section_gap">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 posts-list">
+                <div class="col-lg-12 posts-list">
                     {{!-- <div class="single-post row">
                         <div class="col-lg-12">
                             <div class="feature-img">
@@ -373,77 +357,94 @@
 
 
 
-                <div class="col-lg-4">
+                <div class="col-lg-12">
                     <div class="blog_right_sidebar">
                         <aside class="single_sidebar_widget search_widget">
-                            <div class="input-group">
+                            {{!-- <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search Posts" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
                                 </span>
-                            </div><!-- /input-group -->
+                            </div> --}}
+                            <!-- /input-group -->
                             <div class="br"></div>
                         </aside>
                         <aside class="single_sidebar_widget author_widget">
-                            <img class="author_img rounded-circle" src="img/blog/author.png" alt="">
-                            <h4>Charlie Barber</h4>
-                            <p>Senior blog writer</p>
-                            <div class="social_icon">
+                            {{!-- <img class="author_img rounded-circle" src="img/blog/author.png" alt=""> --}}
+                            <h4>Name</h4>
+                            <br>
+                            <p>emailid@gmail.com</p>
+                            <br>
+                            <p>12334849033</p>
+                            <br>
+                            {{!-- <div class="social_icon">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
                                 <a href="#"><i class="fa fa-github"></i></a>
                                 <a href="#"><i class="fa fa-behance"></i></a>
-                            </div>
-                            <p>Boot camps have its supporters andit sdetractors. Some people do not understand why you
+                            </div> --}}
+                            {{!-- <p>ADDRESS Boot camps have its supporters andit sdetractors. Some people do not understand why you
                                 should have to spend money on boot camp when you can get. Boot camps have itssuppor
                                 ters andits detractors.</p>
+                                <br> --}}
+                                <div class="button-group-area mt-10">
+				                    <a href="#" class="genric-btn primary-border circle">Edit</a>
+			                    </div>
                             <div class="br"></div>
                         </aside>
-                        <aside class="single_sidebar_widget popular_post_widget">
-                            <h3 class="widget_title">Popular Posts</h3>
-                            <div class="media post_item">
-                                <img src="img/blog/popular-post/post1.jpg" alt="post">
-                                <div class="media-body">
-                                    <a href="blog-details.html">
-                                        <h3>Space The Final Frontier</h3>
+                        <aside class="single_sidebar_widget post_category_widget">
+                            <h4 class="widget_title">Settings</h4>
+                            <ul class="list cat-list">
+                                <li>
+                                    <a href="#" class="d-flex justify-content-between">
+                                        <p>Your Orders</p>
+                                        <p>37</p>
                                     </a>
-                                    <p>02 Hours ago</p>
-                                </div>
-                            </div>
-                            <div class="media post_item">
-                                <img src="img/blog/popular-post/post2.jpg" alt="post">
-                                <div class="media-body">
-                                    <a href="blog-details.html">
-                                        <h3>The Amazing Hubble</h3>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex justify-content-between">
+                                        <p>Your Address</p>
+                                        <p>24</p>
                                     </a>
-                                    <p>02 Hours ago</p>
-                                </div>
-                            </div>
-                            <div class="media post_item">
-                                <img src="img/blog/popular-post/post3.jpg" alt="post">
-                                <div class="media-body">
-                                    <a href="blog-details.html">
-                                        <h3>Astronomy Or Astrology</h3>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex justify-content-between">
+                                        <p>Forgot Password</p>
+                                        <p>59</p>
                                     </a>
-                                    <p>03 Hours ago</p>
-                                </div>
-                            </div>
-                            <div class="media post_item">
-                                <img src="img/blog/popular-post/post4.jpg" alt="post">
-                                <div class="media-body">
-                                    <a href="blog-details.html">
-                                        <h3>Asteroids telescope</h3>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex justify-content-between">
+                                        <p>Contact</p>
+                                        <p>29</p>
                                     </a>
-                                    <p>01 Hours ago</p>
-                                </div>
-                            </div>
+                                </li>
+                                {{!-- <li>
+                                    <a href="#" class="d-flex justify-content-between">
+                                        <p>Food</p>
+                                        <p>15</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex justify-content-between">
+                                        <p>Architecture</p>
+                                        <p>09</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex justify-content-between">
+                                        <p>Adventure</p>
+                                        <p>44</p>
+                                    </a>
+                                </li> --}}
+                            </ul>
                             <div class="br"></div>
                         </aside>
                         <aside class="single_sidebar_widget ads_widget">
                             <a href="#"><img class="img-fluid" src="img/blog/add.jpg" alt=""></a>
                             <div class="br"></div>
                         </aside>
-                        <aside class="single_sidebar_widget post_category_widget">
+                        {{!-- <aside class="single_sidebar_widget post_category_widget">
                             <h4 class="widget_title">Post Catgories</h4>
                             <ul class="list cat-list">
                                 <li>
@@ -490,7 +491,7 @@
                                 </li>
                             </ul>
                             <div class="br"></div>
-                        </aside>
+                        </aside> --}}
                         <aside class="single-sidebar-widget newsletter_widget">
                             <h4 class="widget_title">Newsletter</h4>
                             <p>

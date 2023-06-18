@@ -120,7 +120,7 @@ body {
   font-size: 16px;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  color: #cecece;
+  color: #515151;
   /* background: #393939;} */
   background: #181a1e; }
 *{
@@ -5213,7 +5213,7 @@ label {
 
 .blog_right_sidebar {
   border: 1px solid #eeeeee;
-  background: #fafaff;
+  background: #e5ecee;
   padding: 30px; }
   .blog_right_sidebar .widget_title {
     font-size: 18px;
@@ -5257,7 +5257,8 @@ label {
     transform: translateY(-50%);
     z-index: 1; }
   .blog_right_sidebar .author_widget {
-    text-align: center; }
+    text-align: left
+    ; }
     .blog_right_sidebar .author_widget h4 {
       font-size: 18px;
       line-height: 20px;

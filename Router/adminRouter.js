@@ -79,6 +79,9 @@ router.post('/updateCategory',categoryController.editCategory)
 
 router.get('/changeStatus', categoryController.changeStatus)
 
+router.get('/unlistProduct',productController.unlistProduct)
+
+router.get('/reListProduct',productController.reListProduct)
 
 router.get('/logout',adminController.logout)
 

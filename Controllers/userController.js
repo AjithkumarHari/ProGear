@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 
 const userData = require("../Model/userModel")
 const productData = require("../Model/productModel")
+ 
+const otpHelper = require("../Helper/otpHelper")
 
 
 module.exports.homePage = async ( req, res ) => {
@@ -97,13 +99,14 @@ module.exports.loginVerify = async (req,res) =>{
                     }
                     else{
                         const product = await productData.find({ })
-                        const user = res.locals.user
-                        res.render('landing',{product : product ,token : user})
+                        const token = res.locals.user
+                        res.render('landing', { product: product, token: token });
+
                         console.log('show landing page');
                     
                         //Create Token and Sending it as cookie
-                        const token = createToken(userDetails._id)
-                        res.cookie('jwt',token, {httpOnly: true, maxAge : maxAge*1000 })
+                        const jwttoken = createToken(userDetails._id)
+                        res.cookie('jwt',jwttoken, {httpOnly: true, maxAge : maxAge*1000 })
                         console.log('token created');
                     }
                 }
@@ -145,13 +148,16 @@ module.exports.forgotPasswordOtp = async (req, res) => {
     }
     else{
 
-        //generate otp
-        const OTP = otpGenerator.generate(6,{
-            lowerCaseAlphabets: false, 
-            upperCaseAlphabets: false, 
-            specialChars: false
-        })
-        console.log(OTP)                                      
+        // //generate otp
+        // const OTP = otpGenerator.generate(6,{
+        //     lowerCaseAlphabets: false, 
+        //     upperCaseAlphabets: false, 
+        //     specialChars: false
+        // })
+        // console.log(OTP)          
+                         
+        const OTP = otpHelper.generateOtp()
+        await otpHelper.sendOtp(user.number,OTP)
 
         // req.session.number = number
         req.session.otp = OTP
@@ -236,11 +242,14 @@ module.exports.signupAction = async (req,res) =>{
      console.log('data : \n',req.session.userData);
 
      //OTP Genetation
-     const OTP = otpGenerator.generate(6,{
-        lowerCaseAlphabets: false, 
-        upperCaseAlphabets: false, 
-        specialChars: false
-    })
+    //  const OTP = otpGenerator.generate(6,{
+    //     lowerCaseAlphabets: false, 
+    //     upperCaseAlphabets: false, 
+    //     specialChars: false
+    // })
+    
+    const OTP = otpHelper.generateOtp()
+    await otpHelper.sendOtp(data.number,OTP)
     console.log(OTP)
 
     //sending message
@@ -339,5 +348,12 @@ module.exports.logout = async (req,res) =>{
 
 
 module.exports.profilePage = async (req,res) => {
-    res.render('profile')
+    try{
+        const user = res.locals.user
+        res.render('profile')
+    }
+    catch(error){
+        console.log(error);
+        res.send({ success: false, error: error.message });
+    }
 }
