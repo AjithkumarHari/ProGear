@@ -14,6 +14,21 @@ router.set('view engine', 'hbs')
 router.set('views',  './Views/userViews')
 
 
+// // Configure Handlebars as the template engine
+// router.engine(
+//   'hbs',
+//   exphbs({
+//     extname: '.hbs',
+//     // Register the custom helper
+//     helpers: {
+//       multiply: function(a, b) {
+//         return a * b;
+//       },
+//     },
+//   })
+// );
+
+
 router.use(express.json())
 router.use(express.urlencoded({ extended : false }))
 
@@ -54,9 +69,11 @@ router.get('/product',userController.productPage)
 //Get Cart Page 
 router.get('/cart',validate.authenticate,cartController.cartPage)
 router.get('/addToCart',cartController.addToCart)
-
+router.get('/removeFromCart',cartController.removeFromCart)
 
 router.get('/profile',userController.profilePage)
+router.get('/editProfile',userController.editProfilePage)
+
 //Get Checkout Page 
 router.get('/checkout',userController.checkoutPage)
 

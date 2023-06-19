@@ -4852,7 +4852,7 @@ label {
 ============================================================================================ */
 .tracking_box_area .tracking_box_inner p {
   max-width: 870px;
-  color: #222222;
+  color: #ccc;
   margin-bottom: 25px; }
 .tracking_box_area .tracking_box_inner .tracking_form {
   max-width: 645px; }

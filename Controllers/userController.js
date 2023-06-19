@@ -6,8 +6,10 @@ const jwt = require('jsonwebtoken')
 
 const userData = require("../Model/userModel")
 const productData = require("../Model/productModel")
+const cartData = require("../Model/cartModel")
  
 const otpHelper = require("../Helper/otpHelper")
+const { request } = require("../Router/usersRouter")
 
 
 module.exports.homePage = async ( req, res ) => {
@@ -35,6 +37,7 @@ module.exports.productPage = async ( req, res ) => {
         const id = req.query.productId
         console.log('id', id);
         const product = await productData.findOne({ _id : id }).populate('category')
+        console.log('Product',product);
         res.render('product',{product : product})
     }
     catch(error){
@@ -48,22 +51,6 @@ module.exports.productPage = async ( req, res ) => {
 
 //***************************************************************  CART PAGE  *******************************************************//
 
-
-
-//***************************************************************  CHECKOUT PAGE  *******************************************************//
-
-module.exports.checkoutPage = async ( req, res ) => {
-    try{
-        const product = await productData.find({ })
-        res.render('checkout',{product : product})
-    }
-    catch(error){
-        console.log(error);
-        res.send({ success: false, error: error.message });
-    }
-    
-    
-}
 
 //***************************************************************  Helper Functions  *******************************************************//
 
@@ -345,6 +332,7 @@ module.exports.logout = async (req,res) =>{
 }
 
 
+//*********************************************************  PROFILE  ************************************************************//
 
 
 module.exports.profilePage = async (req,res) => {
@@ -356,4 +344,59 @@ module.exports.profilePage = async (req,res) => {
         console.log(error);
         res.send({ success: false, error: error.message });
     }
+}
+
+
+//*********************************************************  EDIT_PROFILE  ************************************************************//
+
+//GET
+module.exports.editProfilePage = async (req,res) => {
+    try{
+        const user = res.locals.user
+        const userdata = await userData.findOne({_id : user.id})
+        console.log(userdata);
+        res.render('editProfile',{userdata : userdata})
+    }
+    catch(error){
+        console.log(error);
+        res.send({ success: false, error: error.message });
+    }
+}
+
+
+
+//***************************************************************  CHECKOUT PAGE  *******************************************************//
+
+module.exports.checkoutPage = async ( req, res ) => {
+    try{
+        const user = res.locals.user
+        
+      const cart = await cartData.aggregate([
+        {
+          $match: {
+            user_id: user.id
+          }
+        },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'product.product_id',
+            foreignField: '_id',
+            as: 'product'
+          }
+        },
+        {
+          $unwind: '$product'
+        }
+      ]);
+      
+      console.log('Cart:', cart);
+        res.render('checkout',{cart : cart , user : user})
+    }
+    catch(error){
+        console.log(error);
+        res.send({ success: false, error: error.message });
+    }
+    
+    
 }

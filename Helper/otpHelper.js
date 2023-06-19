@@ -14,7 +14,7 @@ const generateOtp = () => {
 const sendOtp = async (mobileNumber, otp) => {
   try {
     await client.messages.create({
-      body: `Your OTP for Smart Wrist Sign Up is: ${otp}`,
+      body: `ProGear OTP: ${otp}`,
       from: '+13613488421',
       to: `+91${mobileNumber}`,
     });

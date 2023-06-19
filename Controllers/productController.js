@@ -5,6 +5,7 @@ const categoryData = require("../Model/categoryModel")
 
 const multer = require("multer")
 const path = require('path');
+const { log } = require("console");
 
 
 //***************************************************************  PRODUCT-MANAGEMENT PAGE  *******************************************************//
@@ -75,7 +76,8 @@ module.exports.updateProduct = async (req ,res) => {
         id = req.query.userid
         console.log('updateproduct');
         const product = await productData.findOne({_id : id })
-        res.render('updateProduct',{ product: product })
+        const category = await categoryData.find({ })
+        res.render('updateProduct',{ product: product , category : category})
         }
     catch (error) {
         res.send("error")
@@ -87,9 +89,16 @@ module.exports.updateProduct = async (req ,res) => {
 module.exports.editProduct = async (req, res) => {
     try{
         const id = req.body.id
-        const result = await categoryData.updateMany({_id : id}, {$set:{name : req.body.name , description : req.body.des, brand : req.body.brand, }})
+        // console.log('id',id);
 
-        res.redirect('/admin/category')
+        const filesArray = Object.values(req.files).flat();
+        const image = filesArray.map((file) => file.filename);
+
+        const result = await productData.updateOne({_id : id}, {$set:{name : req.body.name , description : req.body.des, brand : req.body.brand, image : image , price : req.body.price}})
+        // console.log(result);
+    
+        res.redirect('/admin/product');
+    
     }catch (error) {
         res.send("error")
         console.log(error.message);

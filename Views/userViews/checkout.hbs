@@ -142,36 +142,37 @@
                         <h3>Billing Details</h3>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="name">
-                                <span class="placeholder" data-placeholder="First name"></span>
+                                <input type="text" class="form-control" id="first" name="name" value="{{user.fname}}">
+                                {{!-- <span class="placeholder" data-placeholder="First name"></span> --}}
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="name">
-                                <span class="placeholder" data-placeholder="Last name"></span>
+                                <input type="text" class="form-control" id="last" name="name" value="{{user.lname}}">
+                                {{!-- <span class="placeholder" data-placeholder="Last name"></span> --}}
                             </div>
                           
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="number" name="number">
-                                <span class="placeholder" data-placeholder="Phone number"></span>
+                                <input type="text" class="form-control" id="number" name="number" value="{{user.number}}">
+                                {{!-- <span class="placeholder" data-placeholder="Phone number"></span> --}}
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany">
-                                <span class="placeholder" data-placeholder="Email Address"></span>
+                                <input type="text" class="form-control" id="email" name="compemailany" value="{{user.email}}">
+                                {{!-- <span class="placeholder" data-placeholder="Email Address"></span> --}}
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 <select class="country_select">
-                                    <option value="1">Country</option>
-                                    <option value="2">Country</option>
-                                    <option value="4">Country</option>
+                                    <option value="1">State</option>
+                                    <option value="1">Kerala</option>
+                                    <option value="2">Tamilnadu</option>
+                                    <option value="4">Karnataka</option>
                                 </select>
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add1" name="add1">
+                                <input type="text" class="form-control" id="add1" name="add1" required>
                                 <span class="placeholder" data-placeholder="Address line 01"></span>
                             </div>
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add2" name="add2">
-                                <span class="placeholder" data-placeholder="Address line 02"></span>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="add2" name="add2" placeholder="Address line 02">
+                                {{!-- <span class="placeholder" data-placeholder="Address line 02"></span> --}}
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 <input type="text" class="form-control" id="city" name="city">
@@ -180,8 +181,9 @@
                             <div class="col-md-12 form-group p_star">
                                 <select class="country_select">
                                     <option value="1">District</option>
-                                    <option value="2">District</option>
-                                    <option value="4">District</option>
+                                    <option value="1">Thrissur</option>
+                                    <option value="2">Eranakulam</option>
+                                    <option value="4">Palakkad</option>
                                 </select>
                             </div>
                             <div class="col-md-12 form-group">
@@ -206,16 +208,22 @@
                     <div class="col-lg-4">
                         <div class="order_box">
                             <h2>Your Order</h2>
+                            
                             <ul class="list">
+                                
                                 <li><a href="#">Product <span>Total</span></a></li>
-                                <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                                <li><a href="#">Fresh Tomatoes <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                                <li><a href="#">Fresh Brocoli <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
+                                
+                                {{#each cart}}
+                                <li><a href="#">{{this.product.name}}<span class="middle">x {{this.quantity}}</span> <span class="last">&#8377;{{this.product.price}}</span></a></li>
+                                {{/each}}
+                                {{!-- <li><a href="#">Fresh Tomatoes <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
+                                <li><a href="#">Fresh Brocoli <span class="middle">x 02</span> <span class="last">$720.00</span></a></li> --}}
                             </ul>
+                            
                             <ul class="list list_2">
-                                <li><a href="#">Subtotal <span>$2160.00</span></a></li>
-                                <li><a href="#">Shipping <span>Flat rate: $50.00</span></a></li>
-                                <li><a href="#">Total <span>$2210.00</span></a></li>
+                                <li><a href="#">Subtotal <span>&#8377;2160.00</span></a></li>
+                                <li><a href="#">Shipping <span>Flat rate: &#8377;50.00</span></a></li>
+                                <li><a href="#">Total <span>&#8377;2210.00</span></a></li>
                             </ul>
                             <div class="payment_item">
                                 <div class="radion_btn">
@@ -242,15 +250,15 @@
                                     <label for="f-option7">Cash on Delivery</label>
                                     <div class="check"></div>
                                 </div>
-                                <p>Please send a check to Store Name, Store Street, Store Town, Store State / County,
-                                    Store Postcode.</p>
+                                <p>Pay on the time of delivery. Both online payment and cash in hand is acceptable
+                                     on cash on delivery</p>
                             </div>
                             <div class="creat_account">
                                 <input type="checkbox" id="f-option4" name="selector">
                                 <label for="f-option4">I’ve read and accept the </label>
                                 <a href="#">terms & conditions*</a>
                             </div>
-                            <a class="primary-btn" href="#">Proceed to Paypal</a>
+                            <a class="primary-btn" href="#">Confirm Order</a>
                         </div>
                     </div>
                 </div>

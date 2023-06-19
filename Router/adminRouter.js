@@ -65,7 +65,7 @@ router.get('/addProduct',productController.addProduct)
 router.post('/addProduct',multipleUpload,productController.newProduct)
 
 router.get('/updateProduct',productController.updateProduct)
-router.post('/updateProduct',productController.editProduct)
+router.post('/updateProduct',multipleUpload,productController.editProduct)
 
 
 //                                                   CATEGORY

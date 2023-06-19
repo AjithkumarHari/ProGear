@@ -1,6 +1,11 @@
 const cartData = require('../Model/cartModel')
 // const userData = require('../Model/userModel')
 
+
+
+
+
+
 module.exports.cartPage = async ( req, res ) => {
     try{
       const user = res.locals.user;
@@ -22,10 +27,18 @@ module.exports.cartPage = async ( req, res ) => {
         },
         {
           $unwind: '$product'
+        }, {
+          $project: {
+            'product._id': 1,
+            'product.name': 1,
+            'product.image': 1,
+            'product.price': 1,
+            'quantity' : 1
+          }
         }
+        
       ]);
       
-      // console.log('Cart:', cart);
       
       res.render('cart', { cart: cart });
       
@@ -52,4 +65,23 @@ module.exports.addToCart = async (req , res) => {
         console.log(error.message)
         res.status(500).json({ error: 'Failed to add product to cart' });
     }
+}
+
+
+
+module.exports.removeFromCart = async (req, res )=>{
+  try{
+      console.log("remove form cart");
+      const id = req.query.id
+      console.log(id);
+      const result = await cartData.deleteOne({'product.product_id' : id}) 
+      // console.log(result);
+
+
+      res.redirect('/cart')
+  }catch (error) {
+        console.log(error.message)
+        res.status(500).json({ error: 'Failed to remove product from cart' });
+    }
+
 }
