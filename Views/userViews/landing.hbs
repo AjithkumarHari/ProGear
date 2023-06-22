@@ -30,6 +30,11 @@
 	<link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
 	<link rel="stylesheet" href="css/magnific-popup.css">
 	<link rel="stylesheet" href="css/main.css">
+
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
 </head>
 
 <body>
@@ -506,7 +511,7 @@
 						</div>
 					</div> --}}
 					<!-- single product -->
-					{{#each product}}
+					{{#each product}} 
 					<div class="col-lg-3 col-md-6">
 						<div class="single-product">
 							<img class="img-fluid" src="../product-images/{{image.[0]}}" alt="">
@@ -517,22 +522,17 @@
 									<h6><i class="fa fa-inr" aria-hidden="true"></i>{{price}}</h6>
 								</div>
 								<div class="prd-bottom">
+									<a href="/product?productId={{_id}}" class="social-info">
+										<span class="lnr lnr-move"></span>
+										<p class="hover-text">view more</p>
+									</a>
+									<a class="social-info" onclick="addtocart('{{_id}}'); return false;">
+									<span class="ti-bag"></span>
+									<p class="hover-text">add cart</p>
+									</a>
+										{{!-- <input type="button" class="social-info" onclick="addtocart('{{_id}}');" value="add cart"> --}}
 
-											<a href="/product?productId={{_id}}" class="social-info">
-												<span class="lnr lnr-move"></span>
-												<p class="hover-text">view more</p>
-											</a>
-	
-											<a href="/addToCart?productId={{_id}}" class="social-info">
-												<span class="ti-bag"></span>
-												<p class="hover-text">add cart</p>
-											</a>
-											{{!-- <a href="" class="social-info">
-												<span class="lnr lnr-heart"></span>
-												<p class="hover-text">Wishlist</p>
-											</a> --}}
-											
-										</div>
+								</div>
 							</div>
 							</center>
 						</div>
@@ -826,7 +826,7 @@
 	<!-- end product Area -->
 
 	<!-- Start exclusive deal Area -->
-	<section class="exclusive-deal-area">
+	{{!-- <section class="exclusive-deal-area">
 		<div class="container-fluid">
 			<div class="row justify-content-center align-items-center">
 				<div class="col-lg-6 no-padding exclusive-left">
@@ -896,7 +896,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> --}}
 	<!-- End exclusive deal Area -->
 
 	<!-- Start brand Area -->
@@ -924,7 +924,7 @@
 	<!-- End brand Area -->
 
 	<!-- Start related-product Area -->
-	<section class="related-product-area section_gap_bottom">
+	{{!-- <section class="related-product-area section_gap_bottom">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-6 text-center">
@@ -1057,7 +1057,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> --}}
 	<!-- End related-product Area -->
 
 	<!-- start footer Area -->
@@ -1155,6 +1155,31 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
+
+
+
+ 
+    
+	<script>
+		function addtocart(proId) {
+		  $.ajax({
+			url: '/addToCart/' + proId,
+			method: 'POST',
+	  
+			success: (response) => {
+			  if (response.status) {
+				Swal.fire({
+				  title: 'Added To Cart',
+				  text: 'Your Product has been added to Cart',
+				  icon: 'success',
+				  timer: 5000
+				})
+				
+			  }
+			}
+		  })
+		}
+	</script>
 </body>
 
 </html>

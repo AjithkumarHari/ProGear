@@ -16,17 +16,18 @@
     <meta charset="UTF-8">
     <!-- Site Title -->
     <title>ProGear</title>
-
     <!--
-            CSS
-            ============================================= -->
+			CSS
+			============================================= -->
     <link rel="stylesheet" href="css/linearicons.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/nice-select.css">
     <link rel="stylesheet" href="css/nouislider.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
     <link rel="stylesheet" href="css/main.css">
 </head>
 
@@ -64,7 +65,7 @@
 							<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="/cart" class="cart"><span class="ti-bag"></span></a></li>
+							<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
 							<li class="nav-item">
 								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							</li>
@@ -90,10 +91,11 @@
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
                 <div class="col-first">
-                    <h1>Shopping Cart</h1>
+                    <h1>Your Account</h1>
                     <nav class="d-flex align-items-center">
                         <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="category.html">Cart</a>
+                        <a href="category.html">Your Account<span class="lnr lnr-arrow-right"></span></a>
+                         <a href="category.html">Edit Address</a>
                     </nav>
                 </div>
             </div>
@@ -101,96 +103,59 @@
     </section>
     <!-- End Banner Area -->
 
-    <!--================Cart Area =================-->
-    <section class="cart_area">
+     <!--================Blog Area =================-->
+    <section class="blog_area single-post-area section_gap">
         <div class="container">
-            <div class="cart_inner">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Product</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {{!-- {{#let total = 0}} --}}
-                   
-{{!-- {{> initTotal (set total 0)}} --}}
+            <div class="row">
+                <div class="col-lg-12 posts-list">
+                    <div class="comments-area">
+                        <h4>Address</h4>
+                         {{#each userdata}}
 
-  {{#each cart}}
-          <tr>
-            <td>
-              <div class="media">
-                <div class="d-flex">
-                  <img src="../product-images/{{this.carted.image.[0]}}" alt="" style="height: 100px; width: 100px">
-                </div>
-                <div class="media-body">
-                  <p>{{this.carted.name}}</p>
-                </div>
-              </div>
-            </td>
-            <td>
-              <h5>&#8377;{{this.carted.price}}</h5>
-            </td>
-            <td>
-              <div class="product_count">
-                <input type="text" name="qty" id="sst" maxlength="12" value="{{this.quantity}}" title="Quantity:" class="input-text qty">
-                <button onclick="changeItemQuantity('{{this.carted._id}}','{{this.quantity}}',1)" class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                <button onclick="changeItemQuantity('{{this.carted._id}}','{{this.quantity}}',-1)" class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
-              </div>
-            </td>
-            <td>
-              <h5>&#8377;{{this.carted.price }}</h5>
-            </td>
-            <td>
-              <a href="/removeFromCart?id={{this.carted._id}}"><input type="submit" id="close-button" class="close text-dark" value="&times;" style="border:none; border-radius:7px; background-color: #ffce09 "></a>
-            </td>
-          </tr>
-  {{/each}}
+                           
 
-  <tr>
-    <td></td>
-    <td></td>
-    <td>
-      <h5>Subtotal</h5>
-    </td>
-    <td>
-      <h5>&#8377;{{totalSum}}</h5>
-    </td>
-    <td></td>
-  </tr>
-{{!-- {{/let}} --}}
+                        <div class="comment-list">
+                            <div class="single-comment justify-content-between d-flex">
+                                
+                                <div class="user justify-content-between d-flex">
 
-                           <tr class="shipping_area">
-                            <tr class="out_button_area">
-                                <td>
-                                </td>
-                                <td>
+                                    <div class="desc">
+                                        {{!-- <h5><a href="#"> {{this.address_1}}</a></h5> --}}
+                                        <p class="date"> </p>
+                                        <p class="comment">
+                                            {{!-- {{this.city}} --}}
 
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                    <div class="checkout_btn_inner d-flex align-items-center">
-                                        <a class="gray_btn" href="/">Continue Shopping</a>
-                                        
-                                        <a class="primary-btn" href="/checkout">Proceed to checkout</a>
+                                        </p>
+                                        {{!-- <p>Pin: {{this.pin}}</p> --}}
                                     </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                </div>
+                                <div class="reply-btn">
+                                    <a href="" class="btn-reply text-uppercase">edit</a>
+                                </div>
+                               
+                            </div>
+                        </div>
+                         {{/each}}
+
+                    </div>
+                </div> 
+                
+			</div> 
+
+
+
+                     
+                        
+                      
+                   
+                        
+                        
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--================End Cart Area =================-->
+    </section> 
+    <!--================Blog Area =================-->
 
     <!-- start footer Area -->
     <footer class="footer-area section_gap">
@@ -208,8 +173,8 @@
                 </div>
                 <div class="col-lg-4  col-md-6 col-sm-6">
                     <div class="single-footer-widget">
-                        <h6>Newsletter</h6>
-                        <p>Stay update with our latest</p>
+                        <h6>Feedback</h6>
+                        <p>Comments and suggetions on your experience on this website </p>
                         <div class="" id="mc_embed_signup">
 
                             <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
@@ -217,8 +182,8 @@
 
                                 <div class="d-flex flex-row">
 
-                                    <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''"
-                                        onblur="this.placeholder = 'Enter Email '" required="" type="email">
+                                    <input class="form-control" name="EMAIL" placeholder="Enter Message" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Enter Message '" required="" type="email">
 
 
                                     <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
@@ -229,8 +194,8 @@
                                     </div>
 
                                     <!-- <div class="col-lg-4 col-md-4">
-													<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-												</div>  -->
+                                                        <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+                                                    </div>  -->
                                 </div>
                                 <div class="info"></div>
                             </form>
@@ -289,38 +254,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
-    <script>
-        function changeItemQuantity(prdtId,qty, count) {
-            $.ajax({
-                url: "/changeItemQuantity",
-                method: "post",
-                data: {
-                    productId: ObjectId(prdtId),//////stopped
-                    count: count,
-                    quantity : qty
-
-
-                },
-                {{!-- success: function(response) {
-                    var updatedQuantity = response.updatedQuantity;
-                    var field = document.getElementById(prdtId);
-                    if (field) {
-                        field.textContent = updatedQuantity;
-                    }
-                    // Additional actions or updates based on the response can be performed here
-                }, --}}
-                error: function(error) {
-                    console.log("An error occurred:", error);
-                }
-            });
-        }
-        
-    </script>   
-
 </body>
 
 </html>
-
-
-
-

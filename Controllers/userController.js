@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken')
 const userData = require("../Model/userModel")
 const productData = require("../Model/productModel")
 const cartData = require("../Model/cartModel")
+const addressData = require('../Model/adderssModel')
+
  
 const otpHelper = require("../Helper/otpHelper")
 const { request } = require("../Router/usersRouter")
@@ -37,7 +39,9 @@ module.exports.productPage = async ( req, res ) => {
         const id = req.query.productId
         console.log('id', id);
         const product = await productData.findOne({ _id : id }).populate('category')
-        console.log('Product',product);
+
+        product ? console.log('Product') : console.log('No product found');
+        
         res.render('product',{product : product})
     }
     catch(error){
@@ -133,15 +137,7 @@ module.exports.forgotPasswordOtp = async (req, res) => {
     if(!user){
         res.render('forgotPasswordNum',{message:"User Not Found"})
     }
-    else{
-
-        // //generate otp
-        // const OTP = otpGenerator.generate(6,{
-        //     lowerCaseAlphabets: false, 
-        //     upperCaseAlphabets: false, 
-        //     specialChars: false
-        // })
-        // console.log(OTP)          
+    else{  
                          
         const OTP = otpHelper.generateOtp()
         await otpHelper.sendOtp(user.number,OTP)
@@ -228,23 +224,11 @@ module.exports.signupAction = async (req,res) =>{
      req.session.userData = data
      console.log('data : \n',req.session.userData);
 
-     //OTP Genetation
-    //  const OTP = otpGenerator.generate(6,{
-    //     lowerCaseAlphabets: false, 
-    //     upperCaseAlphabets: false, 
-    //     specialChars: false
-    // })
     
     const OTP = otpHelper.generateOtp()
     await otpHelper.sendOtp(data.number,OTP)
     console.log(OTP)
 
-    //sending message
-    // await client.messages.create({
-    // body: `Your OTP for Sign Up is: ${OTP}`,
-    // from: '+13613488421',
-    // to: '+91 73064 46815',
-    //  })
 
     req.session.otp = OTP
     req.session.number = req.body.number
@@ -338,7 +322,7 @@ module.exports.logout = async (req,res) =>{
 module.exports.profilePage = async (req,res) => {
     try{
         const user = res.locals.user
-        res.render('profile')
+        res.render('profile',{user : user})
     }
     catch(error){
         console.log(error);
@@ -364,9 +348,48 @@ module.exports.editProfilePage = async (req,res) => {
 }
 
 
+//POST
+module.exports.updateProfile = async (req , res) => {
+    try{
+        console.log(req.body);
+        const user = res.locals.user
+
+        const data = {
+            fname: req.body.fname,
+            lname: req.body.lname,
+            email: req.body.email,
+            number:req.body.number,
+         }
+            
+        const newData = await userData.updateOne({ _id : user.id },{$set:{ fname: data.fname,lname : data.lname,email:data.email,number:data.number}})
+        console.log(newData);
+
+        res.redirect('/profile');
+    }catch(error){
+        console.log(error);
+        res.send({ success: false, error: error.message });
+    }
+}
+
+//GET EDIT ADDRESS
+module.exports.editAddress = async (req,res) => {
+    try{
+        const user = res.locals.user
+        const userdata = await addressData.find({user_data : user.id})
+        console.log('Userdata :',userdata);
+        res.render('editAddress',{userdata : userdata})
+    }
+    catch(error){
+        console.log(error);
+        res.send({ success: false, error: error.message });
+    }
+}
+
+
 
 //***************************************************************  CHECKOUT PAGE  *******************************************************//
 
+//GET
 module.exports.checkoutPage = async ( req, res ) => {
     try{
         const user = res.locals.user
@@ -389,14 +412,50 @@ module.exports.checkoutPage = async ( req, res ) => {
           $unwind: '$product'
         }
       ]);
-      
       console.log('Cart:', cart);
+      
+      const address = await addressData.find({user_data : user.id }).populate('address')
+      console.log('Address : ',address);
+      if(address)
+      {
+        res.render('checkout',{cart : cart , user : user , address : address})
+      }else{
         res.render('checkout',{cart : cart , user : user})
+      }
     }
     catch(error){
         console.log(error);
         res.send({ success: false, error: error.message });
     }
-    
-    
+}
+
+//POST
+module.exports.checkout = async (req,res) =>{
+    try{
+        const user = res.locals.user
+        const {add1, add2 , city,pin ,COD} = req.body;
+       
+        // console.log("USER :",user);
+        const details = new addressData({
+            user_data: user.id, // Assuming you have a user_data field in req.body with the ObjectId value
+            address: [{address_1 : add1,address_2 : add2,city : city,pin : pin}]
+            });
+            
+            details.save()
+            .then(() => {
+                if(COD){
+                    res.render('confirmation');
+                }
+               
+            })
+            .catch((err) => {
+                console.error("Error adding product:", err);
+                res.status(500).send("Error adding product to the database");
+            });
+        // console.log(details);
+        // res.send('form submit')
+    } catch(error){
+        console.log(error);
+        res.send({ success: false, error: error.message });
+    }
 }

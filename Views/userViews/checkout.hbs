@@ -15,7 +15,7 @@
     <!-- meta character set -->
     <meta charset="UTF-8">
     <!-- Site Title -->
-    <title>Karma Shop</title>
+    <title>ProGear</title>
 
     <!--
             CSS
@@ -140,32 +140,53 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <h3>Billing Details</h3>
-                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                        <form class="row contact_form" action="/checkout" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="name" value="{{user.fname}}">
+                                <input type="text" class="form-control" id="first" name="fname" value="{{user.fname}}">
                                 {{!-- <span class="placeholder" data-placeholder="First name"></span> --}}
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="name" value="{{user.lname}}">
+                                <input type="text" class="form-control" id="last" name="lname" value="{{user.lname}}">
                                 {{!-- <span class="placeholder" data-placeholder="Last name"></span> --}}
                             </div>
-                          
+                            
                             <div class="col-md-6 form-group p_star">
                                 <input type="text" class="form-control" id="number" name="number" value="{{user.number}}">
-                                {{!-- <span class="placeholder" data-placeholder="Phone number"></span> --}}
+                                    {{!-- <span class="placeholder" data-placeholder="Phone number"></span> --}}
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany" value="{{user.email}}">
-                                {{!-- <span class="placeholder" data-placeholder="Email Address"></span> --}}
+                                <input type="text" class="form-control" id="email" name="email" value="{{user.email}}">
+                                    {{!-- <span class="placeholder" data-placeholder="Email Address"></span> --}}
+                            </div>
+                            {{!-- <div class="col-md-12 form-group p_star">
+                                    <select class="country_select">
+                                        <option value="1">State</option>
+                                        <option value="1">Kerala</option>
+                                        <option value="2">Tamilnadu</option>
+                                        <option value="4">Karnataka</option>
+                                    </select>
+                            </div> --}}
+                            {{#if address}}
+
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="add1" name="add1" required>
+                                <span class="placeholder" data-placeholder="Address line 01"></span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="add2" name="add2" value="{{this.address_1}}">
+                                {{!-- <span class="placeholder" data-placeholder="Address line 02"></span> --}}
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <select class="country_select">
-                                    <option value="1">State</option>
-                                    <option value="1">Kerala</option>
-                                    <option value="2">Tamilnadu</option>
-                                    <option value="4">Karnataka</option>
-                                </select>
+                                <input type="text" class="form-control" id="city" name="city " value="{{address.city}}">
+                                {{!-- <span class="placeholder"></span> --}}
                             </div>
+                
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="pin" name="pin" value="{{address.pin}}">
+                            </div>
+                            <div class="col-md-12 form-group">
+                            </div>
+                            {{else}}
                             <div class="col-md-12 form-group p_star">
                                 <input type="text" class="form-control" id="add1" name="add1" required>
                                 <span class="placeholder" data-placeholder="Address line 01"></span>
@@ -178,89 +199,80 @@
                                 <input type="text" class="form-control" id="city" name="city">
                                 <span class="placeholder" data-placeholder="Town/City"></span>
                             </div>
-                            <div class="col-md-12 form-group p_star">
-                                <select class="country_select">
-                                    <option value="1">District</option>
-                                    <option value="1">Thrissur</option>
-                                    <option value="2">Eranakulam</option>
-                                    <option value="4">Palakkad</option>
-                                </select>
+                
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="pin" name="pin" placeholder="Postcode">
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP">
                             </div>
-                            <div class="col-md-12 form-group">
-                                {{!-- <div class="creat_account">
-                                    <input type="checkbox" id="f-option2" name="selector">
-                                    <label for="f-option2">Create an account?</label>
-                                </div> --}}
-                            </div>
+                            {{/if}}
                             <div class="col-md-12 form-group">
                                 <div class="creat_account">
-                                    <h3>Shipping Details</h3>
-                                    <input type="checkbox" id="f-option3" name="selector">
-                                    <label for="f-option3">Ship to a different address?</label>
+                                        <h3>Shipping Details</h3>
+                                        <input type="checkbox" id="f-option3" name="selector">
+                                        <label for="f-option3">Ship to a different address?</label>
+                                    </div>
+                                    <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
                                 </div>
-                                <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
+                            
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="order_box">
+                                    <h2>Your Order</h2>
+                                    
+                                    <ul class="list">
+                                        
+                                        <li><a href="#">Product <span>Total</span></a></li>
+                                        
+                                        {{#each cart}}
+                                        <li><a href="#">{{this.product.name}}<span class="middle">x {{this.quantity}}</span> <span class="last">&#8377;{{this.product.price}}</span></a></li>
+                                        {{/each}}
+                                        {{!-- <li><a href="#">Fresh Tomatoes <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
+                                        <li><a href="#">Fresh Brocoli <span class="middle">x 02</span> <span class="last">$720.00</span></a></li> --}}
+                                    </ul>
+                                    
+                                    <ul class="list list_2">
+                                        <li><a href="#">Subtotal <span>&#8377;2160.00</span></a></li>
+                                        <li><a href="#">Shipping <span>Flat rate: &#8377;50.00</span></a></li>
+                                        <li><a href="#">Total <span>&#8377;2210.00</span></a></li>
+                                    </ul>
+                                    <div class="payment_item">
+                                        <div class="radion_btn">
+                                            <input type="radio" id="f-option5" name="check">
+                                            <label for="f-option5">Check payments</label>
+                                            <div class="check"></div>
+                                        </div>
+                                        <p>Please send a check to Store Name, Store Street, Store Town, Store State / County,
+                                            Store Postcode.</p>
+                                    </div>
+                                    <div class="payment_item active">
+                                        <div class="radion_btn">
+                                            <input type="radio" id="f-option6" name="paypal">
+                                            <label for="f-option6">Paypal </label>
+                                            <img src="img/product/card.jpg" alt="">
+                                            <div class="check"></div>
+                                        </div>
+                                        <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
+                                            account.</p>
+                                    </div>
+                                    <div class="payment_item">
+                                        <div class="radion_btn">
+                                            <input type="radio" id="f-option7" name="COD">
+                                            <label for="f-option7">Cash on Delivery</label>
+                                            <div class="check"></div>
+                                        </div>
+                                        <p>Pay on the time of delivery. Both online payment and cash in hand is acceptable
+                                            on cash on delivery</p>
+                                    </div>
+                                    <div class="creat_account">
+                                        <input type="checkbox" id="f-option4" name="terms">
+                                        <label for="f-option4">I’ve read and accept the </label>
+                                        <a href="#">terms & conditions*</a>
+                                    </div>
+                                    <input type="submit" class="primary-btn" style="width: 100%;" value="Confirm Order">
+                                </div>
                             </div>
                         </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="order_box">
-                            <h2>Your Order</h2>
-                            
-                            <ul class="list">
-                                
-                                <li><a href="#">Product <span>Total</span></a></li>
-                                
-                                {{#each cart}}
-                                <li><a href="#">{{this.product.name}}<span class="middle">x {{this.quantity}}</span> <span class="last">&#8377;{{this.product.price}}</span></a></li>
-                                {{/each}}
-                                {{!-- <li><a href="#">Fresh Tomatoes <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                                <li><a href="#">Fresh Brocoli <span class="middle">x 02</span> <span class="last">$720.00</span></a></li> --}}
-                            </ul>
-                            
-                            <ul class="list list_2">
-                                <li><a href="#">Subtotal <span>&#8377;2160.00</span></a></li>
-                                <li><a href="#">Shipping <span>Flat rate: &#8377;50.00</span></a></li>
-                                <li><a href="#">Total <span>&#8377;2210.00</span></a></li>
-                            </ul>
-                            <div class="payment_item">
-                                <div class="radion_btn">
-                                    <input type="radio" id="f-option5" name="selector">
-                                    <label for="f-option5">Check payments</label>
-                                    <div class="check"></div>
-                                </div>
-                                <p>Please send a check to Store Name, Store Street, Store Town, Store State / County,
-                                    Store Postcode.</p>
-                            </div>
-                            <div class="payment_item active">
-                                <div class="radion_btn">
-                                    <input type="radio" id="f-option6" name="selector">
-                                    <label for="f-option6">Paypal </label>
-                                    <img src="img/product/card.jpg" alt="">
-                                    <div class="check"></div>
-                                </div>
-                                <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
-                                    account.</p>
-                            </div>
-                            <div class="payment_item">
-                                <div class="radion_btn">
-                                    <input type="radio" id="f-option7" name="selector">
-                                    <label for="f-option7">Cash on Delivery</label>
-                                    <div class="check"></div>
-                                </div>
-                                <p>Pay on the time of delivery. Both online payment and cash in hand is acceptable
-                                     on cash on delivery</p>
-                            </div>
-                            <div class="creat_account">
-                                <input type="checkbox" id="f-option4" name="selector">
-                                <label for="f-option4">I’ve read and accept the </label>
-                                <a href="#">terms & conditions*</a>
-                            </div>
-                            <a class="primary-btn" href="#">Confirm Order</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

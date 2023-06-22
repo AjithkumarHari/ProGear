@@ -19,6 +19,11 @@ const orderSchema = new mongoose.Schema({
       }
     }
   ],
+  address: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'userdatas',
+    required: true
+  },
   totalAmount: {
     type: Number,
     required: true

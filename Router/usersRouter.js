@@ -1,7 +1,7 @@
 // const router = require('express').Router()
 const express = require('express')
 const router = express()
-const path = require('path');
+// const path = require('path');
 const cookieparser = require('cookie-parser')
 const session = require('express-session')
 
@@ -9,24 +9,10 @@ const userController = require("../Controllers/userController")
 const validate = require('../authentication/userAutentication')
 
 const cartController = require('../Controllers/cartController')
+// const orderController = require('../Controllers/orderController')
 
 router.set('view engine', 'hbs')
 router.set('views',  './Views/userViews')
-
-
-// // Configure Handlebars as the template engine
-// router.engine(
-//   'hbs',
-//   exphbs({
-//     extname: '.hbs',
-//     // Register the custom helper
-//     helpers: {
-//       multiply: function(a, b) {
-//         return a * b;
-//       },
-//     },
-//   })
-// );
 
 
 router.use(express.json())
@@ -40,7 +26,7 @@ router.use(session({
   }))
 router.use(cookieparser())
 
-router.get('*',validate.checkUser)
+router.all('*',validate.checkUser)
 
 router.get('/',userController.homePage)
 
@@ -68,18 +54,18 @@ router.get('/product',userController.productPage)
 
 //Get Cart Page 
 router.get('/cart',validate.authenticate,cartController.cartPage)
-router.get('/addToCart',cartController.addToCart)
+router.put('/addToCart/:id',cartController.addToCart)
 router.get('/removeFromCart',cartController.removeFromCart)
+router.post('/changeItemQuantity',cartController.changeItemQuantity)
 
 router.get('/profile',userController.profilePage)
 router.get('/editProfile',userController.editProfilePage)
+router.post('/updateProfile',userController.updateProfile)
+router.get('/editAddress',userController.editAddress)
 
 //Get Checkout Page 
 router.get('/checkout',userController.checkoutPage)
-
-
-
-
+router.post('/checkout',userController.checkout)
 
 module.exports = router
 
