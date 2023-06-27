@@ -14,13 +14,21 @@ const mongoose = require('mongoose')
                 },
           quantity: {
                   type: Number,
-                  default: 1
+                  default: 1,
+                  required:true
                 },
           total: {
                   type : Number,
+                  default  : 0
+                
                 }
         }
     ],
+    sub_total : {
+      type : Number,
+      default:0,
+      required:true
+    }
   });
 
 

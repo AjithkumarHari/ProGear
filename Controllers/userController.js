@@ -2,15 +2,16 @@ const bcrypt = require("bcrypt")
 const _  = require("lodash")
 const axios = require("axios")
 const otpGenerator = require("otp-generator")
+const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
 const userData = require("../Model/userModel")
 const productData = require("../Model/productModel")
 const cartData = require("../Model/cartModel")
 const addressData = require('../Model/adderssModel')
-
  
 const otpHelper = require("../Helper/otpHelper")
+const addressHelper = require("../Helper/addressHelper")
 const { request } = require("../Router/usersRouter")
 
 
@@ -183,13 +184,17 @@ module.exports.fpOtpVerify = async (req,res)  => {
     }
 }
 
+module.exports.setNewPasswordGet = async (req ,res) => {
+    res.render('setNewPassword')
+}
+
 //POST RESET-PASSWORD
 
 module.exports.setNewPassword = async (req ,res) => {
     const newpw = req.body.newpassword
     const confpw = req.body.confpassword
 
-    const email = req.session.email
+    const email = res.locals.user.email
 
     console.log("np :",newpw," cp :",confpw,"\nemail: ",email);
     
@@ -322,6 +327,10 @@ module.exports.logout = async (req,res) =>{
 module.exports.profilePage = async (req,res) => {
     try{
         const user = res.locals.user
+        console.log('user profile', user._id);
+
+        // const useraddress = await addressData.findOne({ user_id : new mongoose.Types.String(user._id) });
+        // console.log(useraddress);
         res.render('profile',{user : user})
     }
     catch(error){
@@ -371,19 +380,15 @@ module.exports.updateProfile = async (req , res) => {
     }
 }
 
-//GET EDIT ADDRESS
-module.exports.editAddress = async (req,res) => {
-    try{
-        const user = res.locals.user
-        const userdata = await addressData.find({user_data : user.id})
-        console.log('Userdata :',userdata);
-        res.render('editAddress',{userdata : userdata})
-    }
-    catch(error){
-        console.log(error);
-        res.send({ success: false, error: error.message });
-    }
-}
+
+
+
+
+
+
+
+//***************************************************************  ADDRESS  *******************************************************//
+
 
 
 
@@ -392,30 +397,50 @@ module.exports.editAddress = async (req,res) => {
 //GET
 module.exports.checkoutPage = async ( req, res ) => {
     try{
+        console.log('checkout page');
         const user = res.locals.user
+
+     
         
-      const cart = await cartData.aggregate([
-        {
-          $match: {
-            user_id: user.id
-          }
-        },
-        {
-          $lookup: {
-            from: 'products',
-            localField: 'product.product_id',
-            foreignField: '_id',
-            as: 'product'
-          }
-        },
-        {
-          $unwind: '$product'
-        }
-      ]);
-      console.log('Cart:', cart);
+        const cart = await cartData.aggregate([
+            {
+              $match: {
+                user_id: user.id
+              }
+            },
+            {
+              $unwind: '$product'
+            },
+            {
+              $lookup: {
+                from: 'products',
+                localField: 'product.product_id',
+                foreignField: '_id',
+                as: 'items'
+              }
+            },
+            {
+              $unwind: '$items'
+            },
+            {
+              $project: {
+                user_id: 1,
+                itemId: '$items._id',
+                itemName: '$items.name',
+                itemPrice: '$items.price',
+                quantity: '$product.quantity'
+              }
+            }
+          ]);
+          
+          
+      const address = await addressData.findOne({ user_data: user.id }).lean().exec();
       
-      const address = await addressData.find({user_data : user.id }).populate('address')
-      console.log('Address : ',address);
+
+    //   console.log('Cart:', cart);
+    //   console.log('User', user);
+    //   console.log('Address', address);
+    
       if(address)
       {
         res.render('checkout',{cart : cart , user : user , address : address})
@@ -429,23 +454,25 @@ module.exports.checkoutPage = async ( req, res ) => {
     }
 }
 
-//POST
+// POST
 module.exports.checkout = async (req,res) =>{
     try{
         const user = res.locals.user
-        const {add1, add2 , city,pin ,COD} = req.body;
+
+      const { name, number, houseadd, city, street, pin, paymentMethod } = req.body;
+
        
         // console.log("USER :",user);
-        const details = new addressData({
+        const details = new ({
             user_data: user.id, // Assuming you have a user_data field in req.body with the ObjectId value
-            address: [{address_1 : add1,address_2 : add2,city : city,pin : pin}]
+            address: [{ name, number, houseadd, city, street, pin, paymentMethod }]
             });
             
             details.save()
             .then(() => {
-                if(COD){
+             
                     res.render('confirmation');
-                }
+        
                
             })
             .catch((err) => {

@@ -1,13 +1,15 @@
 const cartData = require('../Model/cartModel')
-// const userData = require('../Model/userModel')
-const cartHelper = require('../Helper/addToCartHelper');
-// const { response } = require('../Router/usersRouter');
-// const { ObjectId } = require('mongoose');
+const Product = require("../Model/productModel")
+const mongoose = require('mongoose')
+const cartHelper = require('../Helper/cartHelper');
+
+
 
 
 module.exports.cartPage = async ( req, res ) => {
     try{
-      const user = res.locals.user;
+      console.log('cart page loaded');
+      const user = res.locals.user
       // console.log('id', user.id);
       
       const cart = await cartData.aggregate([
@@ -22,7 +24,9 @@ module.exports.cartPage = async ( req, res ) => {
           $project:{
             item: "$product.product_id",
                 quantity: "$product.quantity",
-          }
+            user : "$user_id",
+            subtotal : "$sub_total"
+          },
         },
         {
           $lookup: {
@@ -37,12 +41,46 @@ module.exports.cartPage = async ( req, res ) => {
             "item": 1,
             "quantity": 1,
             "carted": { $arrayElemAt: ["$carted", 0] },
+            "user" : 1,
+            "total": {
+              $let: {
+                vars: {
+                  price: { $arrayElemAt: ["$carted.price", 0] }
+                },
+                in: { $multiply: ["$quantity", "$$price"] }
+              }
+            },
+           
           },
         }, 
       ]);
-
+      const subtotal = await cartData.aggregate([
+        {
+          $match: {
+            user_id: user.id
+          }
+        },
+        {
+          $unwind: "$product"
+        },
+        {
+          $group: {
+            _id: "$_id",
+            user_id: { $first: "$user_id" },
+            totalSum: { $sum: "$product.total" }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            totalSum: 1
+          }
+        }
+      ]);
+      
+      console.log('cart page subtotal ',subtotal);
       // console.log('cart:',cart);
-      res.render('cart', {cart:cart });
+      res.render('cart', {cart:cart, subtotal});
       
     }
     catch(error){
@@ -59,14 +97,45 @@ module.exports.cartPage = async ( req, res ) => {
 
 module.exports.addToCart = async (req , res) => {
     try{
-        cartHelper.addCart(req.params.id,res.locals.user.id)
+    //    const productId = new mongoose.Types.ObjectId(req.params.id)
+    //    console.log('add to cart',productId);
+       
+    //     const product = cartData
+        
+        
+    //     .findOne(
+    //       {
+    //         "product.product_id": productId
+    //       },
+    //       {
+    //         "product.$.quantity": 1
+    //       })
+
+    //  const quantity = product._userProvidedFields.product.$.quantity
+   
+
+
+
+
+
+    //     if (product) {
+    //       console.log("Product:", quantity);
+    //     } else {
+    //       console.log("Product not found.");
+    //     }
+     
+  
+        // cartHelper.addCart(req.params.id,res.locals.user.id,)
+        cartHelper.addCart(req.params.id,res.locals.user.id,req.params.price)
         .then((response)=>{
           res.send(response)
         }) 
     }catch (error) {
         console.log(error.message)
-        res.status(500).json({ error: 'Failed to add product to cart' });
+        res.status(500).json({ error: 'Failed to add product to cart ' });
     }
+
+
 }
 
 
@@ -78,8 +147,11 @@ module.exports.removeFromCart = async (req, res )=>{
   try{
       console.log("remove form cart");
       const id = req.query.id
-      // console.log(id);
-      const result = await cartData.deleteOne({'product.product_id' : id}) 
+      console.log('removing id',id);
+      const result = await cartData.updateOne(
+        { user_id: res.locals.user.id }, // Match the user_id
+        { $pull: { product: { product_id: new mongoose.Types.ObjectId(id) } } } // Remove the matching product_id from the product array
+      );
       // console.log(result);
       res.redirect('/cart')
   }catch (error) {
@@ -92,31 +164,19 @@ module.exports.removeFromCart = async (req, res )=>{
 
 
 
-
-module.exports.changeItemQuantity= async (req, res) =>{
-    // console.log('called');
-
+module.exports.changeItemQuantity = async (req, res )=>{
   try{
-    const count = req.body.count;
-    const productId = req.body.productId
-    const qty = req.body.quantity
-    console.log('qty:',qty);
-    console.log('count:',count);
-    console.log('pID',productId);
-    // console.log(res.locals.user.id);
-    if(qty == 1 && count == -1){
-      const result = await cartData.findOneAndUpdate(
-        { user_id: res.locals.user.id}, // Replace with the desired document ID
-        { $pull: { product: { product_id: ObjectId(productId) } } }, // Replace with the desired product_id
-        { new: true }
-      );
-    
-      console.log(result);
-    }
-
+      console.log(" called change item quantity");
+      // const id = req.query.id
+      // console.log("body :",req.body);
+      cartHelper.changeProductQuantity(req.body)
+        .then((response)=>{
+          res.send(response)
+        }) 
   }catch (error) {
         console.log(error.message)
         res.status(500).json({ error: 'Failed to remove product from cart' });
     }
 
 }
+

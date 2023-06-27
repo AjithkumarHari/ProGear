@@ -28,6 +28,13 @@
     <link rel="stylesheet" href="css/nouislider.min.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/main.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    
+
+
 </head>
 
 <body>
@@ -106,6 +113,7 @@
         <div class="container">
             <div class="cart_inner">
                 <div class="table-responsive">
+                    {{#if cart}}
                     <table class="table">
                         <thead>
                             <tr>
@@ -116,76 +124,75 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {{!-- {{#let total = 0}} --}}
-                   
-{{!-- {{> initTotal (set total 0)}} --}}
-
-  {{#each cart}}
-          <tr>
-            <td>
-              <div class="media">
-                <div class="d-flex">
-                  <img src="../product-images/{{this.carted.image.[0]}}" alt="" style="height: 100px; width: 100px">
-                </div>
-                <div class="media-body">
-                  <p>{{this.carted.name}}</p>
-                </div>
-              </div>
-            </td>
-            <td>
-              <h5>&#8377;{{this.carted.price}}</h5>
-            </td>
-            <td>
-              <div class="product_count">
-                <input type="text" name="qty" id="sst" maxlength="12" value="{{this.quantity}}" title="Quantity:" class="input-text qty">
-                <button onclick="changeItemQuantity('{{this.carted._id}}','{{this.quantity}}',1)" class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                <button onclick="changeItemQuantity('{{this.carted._id}}','{{this.quantity}}',-1)" class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
-              </div>
-            </td>
-            <td>
-              <h5>&#8377;{{this.carted.price }}</h5>
-            </td>
-            <td>
-              <a href="/removeFromCart?id={{this.carted._id}}"><input type="submit" id="close-button" class="close text-dark" value="&times;" style="border:none; border-radius:7px; background-color: #ffce09 "></a>
-            </td>
-          </tr>
-  {{/each}}
-
-  <tr>
-    <td></td>
-    <td></td>
-    <td>
-      <h5>Subtotal</h5>
-    </td>
-    <td>
-      <h5>&#8377;{{totalSum}}</h5>
-    </td>
-    <td></td>
-  </tr>
-{{!-- {{/let}} --}}
-
-                           <tr class="shipping_area">
-                            <tr class="out_button_area">
+                        {{#each cart}}
+                            <tr>
                                 <td>
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                    <div class="checkout_btn_inner d-flex align-items-center">
-                                        <a class="gray_btn" href="/">Continue Shopping</a>
-                                        
-                                        <a class="primary-btn" href="/checkout">Proceed to checkout</a>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                        <img src="../product-images/{{this.carted.image.[0]}}" alt="" style="height: 100px; width: 100px">
+                                        </div>
+                                        <div class="media-body">
+                                        <p>{{this.carted.name}}</p>
+                                        </div>
                                     </div>
                                 </td>
+                                <td>
+                                    <h5>&#8377;{{this.carted.price}}</h5>
+                                </td>
+                                <td>
+                                    <div class="product_count">
+                                        <input type="text" name="qty" id="quantityInput_{{this.carted._id}}" maxlength="12" value="{{this.quantity}}" title="Quantity:"
+                                            class="input-text qty">
+                                        <button onclick="changeQuantity('{{this.carted._id}}','{{this.user}}','{{this.quantity}}',1)"
+                                            class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+                                        <button onclick="changeQuantity('{{this.carted._id}}','{{this.user}}','{{this.quantity}}',-1)"
+                                            class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5 id="summary_{{this.carted._id}}">₹{{this.total}}</h5>
+                                </td>
+                                <td>
+                                    <a href="/removeFromCart?id={{this.carted._id}}"><input type="submit" id="close-button" class="close text-dark" value="&times;" style="border:none; border-radius:7px; background-color: #ffce09 "></a>
+                                </td>
                             </tr>
-                        </tbody>
+                    {{/each}}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                        <h5>Subtotal</h5>
+                        </td>   
+                        <td>
+                        <h5 id="tsummary">&#8377;{{subtotal.[0].totalSum}}</h5>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr class="shipping_area">
+                        <tr class="out_button_area">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <div class="checkout_btn_inner d-flex align-items-center">
+                                    <a class="gray_btn" href="/">Continue Shopping</a>
+                                    <a class="primary-btn" href="/checkout">Proceed to checkout</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tr>
+                    </tbody>
                     </table>
+                    {{else}}
+                    <center>
+                        <div class="col-md-lg-5">
+                            <div class="typography">
+                                <h1>THERE IS NO ITEMS IN CART</h1>
+                            </div>
+                        </div>
+                    </center>
+                    {{/if}}
                 </div>
             </div>
         </div>
@@ -289,33 +296,50 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
-    <script>
-        function changeItemQuantity(prdtId,qty, count) {
-            $.ajax({
-                url: "/changeItemQuantity",
-                method: "post",
-                data: {
-                    productId: ObjectId(prdtId),//////stopped
-                    count: count,
-                    quantity : qty
 
 
-                },
-                {{!-- success: function(response) {
-                    var updatedQuantity = response.updatedQuantity;
-                    var field = document.getElementById(prdtId);
-                    if (field) {
-                        field.textContent = updatedQuantity;
-                    }
-                    // Additional actions or updates based on the response can be performed here
-                }, --}}
-                error: function(error) {
-                    console.log("An error occurred:", error);
-                }
-            });
-        }
+
+
+
+
+
+
+  
+<script>
+    function changeQuantity(proId, userId, quantity,count) {
+   
+
+    $.ajax({
+      url: "/changeItemQuantity",
+      method: "post",
+      data: {
+        productId: proId,
+        userId: userId,
+        quantity: quantity,
+        count: count,
+      },
+      
+    success: (response) => {
+       if(response.deleteProduct){
+          location.reload(); // Reload the page
+       }else{
+             console.log(response,'ajax response')
+        const quantityInput = document.getElementById(`quantityInput_${proId}`);
+        quantityInput.value = response.quantity;
+
+        const total = document.getElementById(`summary_${proId}`);
+        total.innerHTML =  `₹${response.total}`
+
+        const subtotal = document.getElementById(`tsummary`);
+        subtotal.innerHTML = `₹${response.subtotal}`
+
+        //{{!-- const summarySubtotal = document.getElementById(`summary-subtotal`);
+        //summarySubtotal.textContent = response.subtotal --}}
         
-    </script>   
+       } 
+      }
+    })
+  }</script>
 
 </body>
 

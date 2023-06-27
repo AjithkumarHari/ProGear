@@ -1,10 +1,33 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  user: {
+  user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'userdatas',
     required: true
+  },
+  date : {
+    type : Date,
+    default : Date.now
+  },
+  payment_method : {
+    type : String,
+    required : true,
+  },
+  
+  delivery_address: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'address',
+    required: true
+  },
+  total_amount: {
+    type: Number,
+    required: true
+  },
+  order_status : {
+    type : String,
+    required : true,
+    default : 'Placed'
   },
   products: [
     {
@@ -16,26 +39,13 @@ const orderSchema = new mongoose.Schema({
       quantity: {
         type: Number,
         required: true
-      }
+      },
+      total: {
+        type: Number,
+        required: true
+      },
     }
   ],
-  address: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'userdatas',
-    required: true
-  },
-  totalAmount: {
-    type: Number,
-    required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  order_status : {
-    type : String,
-    required : true,
-  },
 });
 
 const Order = mongoose.model('Order', orderSchema);

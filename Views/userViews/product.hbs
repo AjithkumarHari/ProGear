@@ -145,7 +145,7 @@
 							 class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
 						</div> --}}
 						<div class="card_area d-flex align-items-center">
-							<input type="button"  class="primary-btn" onclick="addtocart('{{this.product._id}}')" value="Add to Cart" >
+							<input type="button"  class="primary-btn"  onclick="addtocart('{{product._id}}','{{product.price}}');" value="Add to Cart" >
 							{{!-- href="/addToCart?productId={{this.product._id}}" --}}
 							{{!-- <a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
 							<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a> --}}
@@ -485,11 +485,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
 
-
-	<script>
-		function addtocart(proId) {
+<script>
+		function addtocart(proId,price) {
 		  $.ajax({
-			url: '/addToCart/' + proId,
+			url: '/addToCart/' + proId + '/' + price,
 			method: 'POST',
 	  
 			success: (response) => {

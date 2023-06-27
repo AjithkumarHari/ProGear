@@ -117,7 +117,7 @@
 
 body {
   line-height: 24px;
-  font-size: 16px;
+  font-size: 20px;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   color: #515151;
@@ -144,6 +144,7 @@ h6 {
   font-family: "Poppins", sans-serif;
   color: #6f7592;
   font-weight: 500;
+  font-size: large;
   line-height: 1.2 !important; }
 
 .list {
@@ -4135,9 +4136,11 @@ label {
         top: 14px;
         @include transition; }
         .review_item .media .media-body .reply_btn:hover {
-          background: #ffba00;
+          background: #ffcc00;
           border-color: #ffba00;
           color: #fff; }
+          
+
   .review_item p {
     padding-top: 10px;
     margin-bottom: 0px; }
@@ -5506,8 +5509,8 @@ label {
     padding-bottom: 0px; } }
 
 .comments-area {
-  background: #fafaff;
-  border: 1px solid #eee;
+  background: #181a1e;
+  /* border: 1px solid #eee; */
   padding: 50px 30px;
   margin-top: 50px; }
   @media (max-width: 414px) {
@@ -5516,8 +5519,8 @@ label {
   .comments-area h4 {
     text-align: center;
     margin-bottom: 50px;
-    color: #222222;
-    font-size: 18px; }
+    color: #fff;
+    font-size: 28px; }
   .comments-area h5 {
     font-size: 16px;
     margin-bottom: 0px; }
@@ -5531,7 +5534,7 @@ label {
       padding-left: 25px; }
     @media (max-width: 413px) {
       .comments-area .comment-list .single-comment h5 {
-        font-size: 12px; }
+        font-size: 22px; }
       .comments-area .comment-list .single-comment .date {
         font-size: 11px; }
       .comments-area .comment-list .single-comment .comment {
@@ -5546,7 +5549,7 @@ label {
     color: #777777;
     margin-bottom: 0px; }
   .comments-area .btn-reply {
-    background-color: #fff;
+    /* background-color: #fff;
     color: #222222;
     border: 1px solid #eee;
     padding: 2px 18px;
@@ -5556,10 +5559,38 @@ label {
     -webkit-transition: all 0.3s ease 0s;
     -moz-transition: all 0.3s ease 0s;
     -o-transition: all 0.3s ease 0s;
-    transition: all 0.3s ease 0s; }
+    transition: all 0.3s ease 0s; } */
+    border: none;
+  outline: none;
+  background-color: #17222a;
+  padding: 10px 35px;
+  font-size: 18px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  border-radius: 10px;}
     .comments-area .btn-reply:hover {
-      background-color: #c5322d;
-      color: #fff; }
+      /* background-color: #f09359;
+      color: #fff; */
+      background-color: #121c2480;
+     }
+      .comments-area .btn-add {
+        
+        border: none;
+        outline: none;
+        background-color: #17222a;
+        padding: 11px 35px;
+        font-size: 18px;
+        color: white;
+        font-weight: 700;
+        transition: background-color 0.3s ease-in-out;
+        border-radius: 10px;
+        }
+        .comments-area .btn-add:hover {
+          background-color: #121c2480;
+      }
 
 .comment-form {
   background: #fafaff;
@@ -5848,4 +5879,110 @@ label {
 /*# sourceMappingURL=main.css.map */
 .close {
   color: #ffcc00;
+}
+
+        /* popup------------------------------------------------- */
+        .overlay-pop-up{
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: black;
+          opacity: 0.5;
+          z-index: 99;
+      }
+      .pop-up-button{
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 35px;
+          outline: none;
+          border: none;
+          background-color: #e47312;
+          transition: all 300ms ease;
+          color: #fff;
+          font-size: 22px;
+          font-weight: 100;
+          text-transform: uppercase;
+          cursor: pointer;
+      }
+      .pop-up-list{
+          box-sizing: border-box;
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 500px;
+          height: 100%;
+          z-index: 10000;
+          padding: 95px 50px 35px 70px;
+          background-color: #fff;
+          color: black;
+          transition: all 0.2s ease-out;
+          display: none;
+      }
+
+      .list-wrapper{
+          margin-top: 80px;
+      }
+     
+      /* popup ends------------------------------ */
+
+      .info-wrapper:hover{
+          background-color: #e98a38;
+          color: white;
+      }
+
+      .button{
+          margin-top: 0x;
+          min-width: 160px;
+          padding: 15px 25px;
+          transition: all 300ms ease;
+          color: #fff;
+          font-weight: 500;
+          text-align:center;
+          letter-spacing: 1px;
+          background-color: #e47312;
+          border: 0;
+          cursor: pointer;
+      }
+      .button:hover{
+          background-color: #e98a38;
+      }
+      .change{
+
+          padding: 10px 20px;
+          transition: all 300ms ease;
+          color: #fff;
+          font-weight: 500;
+          text-align:center;
+          letter-spacing: 1px;
+          background-color: #e47312;
+          border: 0;
+          cursor: pointer;
+      }
+      .change:hover{
+          background-color: #e98a38;
+      }
+
+
+.top-title-section{
+box-sizing: border-box;
+width: 100%;
+height: 60px;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.top-title.special{
+z-index: 2;
+position: relative;
+color: black;
+margin: 0;
+font-size: 40px;
+line-height: 50px;
+letter-spacing: 1px;
+font-weight: 600;
 }

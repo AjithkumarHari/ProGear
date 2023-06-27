@@ -10,10 +10,16 @@ const details = new mongoose.Schema({
     },
     address: [
         {
-            address_1: {
+            name: {
                 type: String
             },
-            address_2: {
+            number: {
+                type: Number
+            },
+            houseAddress: {
+                type: String
+            },
+            street: {
                 type: String
             },
             city: {
@@ -21,6 +27,11 @@ const details = new mongoose.Schema({
             },
             pin: {
                 type: String
+            },
+            is_default :{
+                type : Boolean,
+                required : true,
+                default : false
             }
         }
     ]

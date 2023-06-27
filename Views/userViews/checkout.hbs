@@ -28,6 +28,136 @@
     <link rel="stylesheet" href="css/nouislider.min.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        {{!-- <link rel="stylesheet" href="css/form-style.css"> --}}
+
+    <style>
+
+
+
+body.no-scroll {
+  overflow-y: hidden;
+}
+
+
+#btn {
+
+          min-width: 160px;
+          padding: 14px 25px;
+          transition: all 300ms ease;
+          color: #fff;
+          font-weight: 500;
+          text-align:center;
+          letter-spacing: 1px;
+          background-color: #e47312;
+          border: 0;
+          cursor: pointer;
+}
+
+#btn:hover {
+      background-color: #e98a38;
+}
+
+.popup-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(2, 2, 2, 0.685);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  padding: 10px 20px;
+  transition: opacity 0.3s ease-in-out;
+   text-align:center;
+}
+
+.popup-wrapper.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.popup {
+  padding: 20px 25px;
+  max-width: 500px;
+  width: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #12192c;
+  border-radius: 15px;
+}
+
+.popup-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-button {
+  position: absolute;
+  margin-right: 10px;
+  top: -30;
+  right: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  border: 0;
+  width: 25px;
+  height: 45px;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.3s, opacity 0.3s;
+  -webkit-transition: transform 0.3s, opacity 0.3s;
+  -moz-transition: transform 0.3s, opacity 0.3s;
+  -ms-transition: transform 0.3s, opacity 0.3s;
+  -o-transition: transform 0.3s, opacity 0.3s;
+}
+
+.close-button:before,
+.close-button:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 1.5px;
+  transform: translateY(-50%);
+}
+
+.close-button:before {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.close-button:after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.close-button:hover {
+  transform: scale(1.1);
+}
+
+.close-button:active {
+  opacity: 0.8;
+  transform: scale(0.9);
+}
+
+.popup-form__input {
+    margin-top: 10px;
+  margin-bottom: 20px;
+
+  padding: 12px 20px;
+  width: 90%;
+}
+
+
+    </style>
 </head>
 
 <body>
@@ -101,37 +231,13 @@
     </section>
     <!-- End Banner Area -->
 
-    <!--================Checkout Area =================-->
+    <!--============================================================Checkout Area =============================================================-->
     <section class="checkout_area section_gap">
         <div class="container">
             <div class="returning_customer">
-                {{!-- <div class="check_title">
-                    <h2>Returning Customer? <a href="#">Click here to login</a></h2>
-                </div> --}}
-                {{!-- <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new
-                    customer, please proceed to the Billing & Shipping section.</p> --}}
-                {{!-- <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                    <div class="col-md-6 form-group p_star">
-                        <input type="text" class="form-control" id="name" name="name">
-                        <span class="placeholder" data-placeholder="Username or Email"></span>
-                    </div>
-                    <div class="col-md-6 form-group p_star">
-                        <input type="password" class="form-control" id="password" name="password">
-                        <span class="placeholder" data-placeholder="Password"></span>
-                    </div>
-                    <div class="col-md-12 form-group">
-                        <button type="submit" value="submit" class="primary-btn">login</button>
-                        <div class="creat_account">
-                            <input type="checkbox" id="f-option" name="selector">
-                            <label for="f-option">Remember me</label>
-                        </div>
-                        <a class="lost_pass" href="#">Lost your password?</a>
-                    </div>
-                </form> --}}
             </div>
             <div class="cupon_area">
                 <div class="check_title">
-                    {{!-- <h2>Have a coupon? <a href="#">Click here to enter your code</a></h2> --}}
                 </div>
                 <input type="text" placeholder="Enter coupon code">
                 <a class="tp_btn" href="#">Apply Coupon</a>
@@ -142,50 +248,33 @@
                         <h3>Billing Details</h3>
                         <form class="row contact_form" action="/checkout" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="fname" value="{{user.fname}}">
-                                {{!-- <span class="placeholder" data-placeholder="First name"></span> --}}
+                                <input type="text" class="form-control" id="first" name="fname" value="{{address.address.[0].name}}">
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="lname" value="{{user.lname}}">
-                                {{!-- <span class="placeholder" data-placeholder="Last name"></span> --}}
-                            </div>
-                            
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="number" name="number" value="{{user.number}}">
-                                    {{!-- <span class="placeholder" data-placeholder="Phone number"></span> --}}
+                                <input type="text" class="form-control" id="primnumber" name="primnumber" value="{{user.number}}">
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="email" value="{{user.email}}">
-                                    {{!-- <span class="placeholder" data-placeholder="Email Address"></span> --}}
+                                <input type="text" class="form-control" id="secnumber" name="secnumber" value="{{user.email}}">
                             </div>
-                            {{!-- <div class="col-md-12 form-group p_star">
-                                    <select class="country_select">
-                                        <option value="1">State</option>
-                                        <option value="1">Kerala</option>
-                                        <option value="2">Tamilnadu</option>
-                                        <option value="4">Karnataka</option>
-                                    </select>
-                            </div> --}}
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" class="form-control" id="email" name="email" value="{{address.address.[0].number}}">
+                            </div>
                             {{#if address}}
-
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="add1" name="add1" required>
-                                <span class="placeholder" data-placeholder="Address line 01"></span>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="add2" name="add2" value="{{address.address.[0].houseAddress}}">
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="add2" name="add2" value="{{this.address_1}}">
-                                {{!-- <span class="placeholder" data-placeholder="Address line 02"></span> --}}
+                                <input type="text" class="form-control" id="add2" name="add2" value="{{address.address.[0].street}}">
                             </div>
                             <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="city" name="city " value="{{address.city}}">
-                                {{!-- <span class="placeholder"></span> --}}
+                                <input type="text" class="form-control" id="city" name="city " value="{{address.address.[0].city}}">
                             </div>
-                
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="pin" name="pin" value="{{address.pin}}">
+                                <input type="text" class="form-control" id="pin" name="pin" value="{{address.address.[0].pin}}">
                             </div>
                             <div class="col-md-12 form-group">
                             </div>
+                            <input type="hidden" value="{{address.address.[0]._id}}" name="address">
                             {{else}}
                             <div class="col-md-12 form-group p_star">
                                 <input type="text" class="form-control" id="add1" name="add1" required>
@@ -193,7 +282,6 @@
                             </div>
                             <div class="col-md-12 form-group">
                                 <input type="text" class="form-control" id="add2" name="add2" placeholder="Address line 02">
-                                {{!-- <span class="placeholder" data-placeholder="Address line 02"></span> --}}
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 <input type="text" class="form-control" id="city" name="city">
@@ -206,6 +294,18 @@
                             <div class="col-md-12 form-group">
                             </div>
                             {{/if}}
+    <!--============================================================change address Form  =============================================================-->
+                            <div class="banner-desc"  style="margin-left: 50px; margin-top:15px; ">
+                                <a class="button" style="color: #fff;" >CHANGE ADDRESS</a>
+                            </div>
+    <!--============================================================Add new address Form  =============================================================-->
+                           <div class="banner-desc" style="margin-left: 50px">
+                                <section class="intro">
+                                    <button class="btn-reply" id="btn">ADD NEW ADDRESS</button>
+                                </section>
+                            </div>
+    <!--============================================================Close add new address  =============================================================-->
+                            <br><br><br>
                             <div class="col-md-12 form-group">
                                 <div class="creat_account">
                                         <h3>Shipping Details</h3>
@@ -214,23 +314,21 @@
                                     </div>
                                     <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
                                 </div>
-                            
                             </div>
                             <div class="col-lg-4">
                                 <div class="order_box">
                                     <h2>Your Order</h2>
-                                    
                                     <ul class="list">
-                                        
                                         <li><a href="#">Product <span>Total</span></a></li>
-                                        
                                         {{#each cart}}
-                                        <li><a href="#">{{this.product.name}}<span class="middle">x {{this.quantity}}</span> <span class="last">&#8377;{{this.product.price}}</span></a></li>
+                                        <li>
+                                            <a href="#">{{this.itemName}}
+                                            <span class="middle">x {{this.quantity}}</span> 
+                                            <span class="last">&#8377;{{this.itemPrice}}</span>
+                                            </a>
+                                        </li>
                                         {{/each}}
-                                        {{!-- <li><a href="#">Fresh Tomatoes <span class="middle">x 02</span> <span class="last">$720.00</span></a></li>
-                                        <li><a href="#">Fresh Brocoli <span class="middle">x 02</span> <span class="last">$720.00</span></a></li> --}}
                                     </ul>
-                                    
                                     <ul class="list list_2">
                                         <li><a href="#">Subtotal <span>&#8377;2160.00</span></a></li>
                                         <li><a href="#">Shipping <span>Flat rate: &#8377;50.00</span></a></li>
@@ -238,46 +336,46 @@
                                     </ul>
                                     <div class="payment_item">
                                         <div class="radion_btn">
-                                            <input type="radio" id="f-option5" name="check">
+                                            <input type="radio" id="f-option5" name="payment_method" value="check">
                                             <label for="f-option5">Check payments</label>
                                             <div class="check"></div>
                                         </div>
                                         <p>Please send a check to Store Name, Store Street, Store Town, Store State / County,
                                             Store Postcode.</p>
                                     </div>
-                                    <div class="payment_item active">
+                                   <div class="payment_item active">
                                         <div class="radion_btn">
-                                            <input type="radio" id="f-option6" name="paypal">
-                                            <label for="f-option6">Paypal </label>
+                                            <input type="radio" id="f-option6" name="payment_method" value="paypal">
+                                            <label for="f-option6">Paypal</label>
                                             <img src="img/product/card.jpg" alt="">
                                             <div class="check"></div>
                                         </div>
-                                        <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
-                                            account.</p>
-                                    </div>
-                                    <div class="payment_item">
+                                        <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
+                                        </div>
+                                        <div class="payment_item">
                                         <div class="radion_btn">
-                                            <input type="radio" id="f-option7" name="COD">
+                                            <input type="radio" id="f-option7" name="payment_method" value="cash_on_delivery">
                                             <label for="f-option7">Cash on Delivery</label>
                                             <div class="check"></div>
                                         </div>
-                                        <p>Pay on the time of delivery. Both online payment and cash in hand is acceptable
-                                            on cash on delivery</p>
-                                    </div>
-                                    <div class="creat_account">
+                                        <p>Pay on the time of delivery. Both online payment and cash in hand are acceptable 
+                                            on cash on delivery.</p>
+                                        </div>
+                                        <div class="creat_account">
                                         <input type="checkbox" id="f-option4" name="terms">
-                                        <label for="f-option4">I’ve read and accept the </label>
+                                        <label for="f-option4">I’ve read and accept the</label>
                                         <a href="#">terms & conditions*</a>
-                                    </div>
+                                        </div>
+                                        
+
                                     <input type="submit" class="primary-btn" style="width: 100%;" value="Confirm Order">
                                 </div>
-                            </div>
                         </form>
                 </div>
             </div>
         </div>
     </section>
-    <!--================End Checkout Area =================-->
+    <!--=====================================End Checkout Area =========================================-->
 
     <!-- start footer Area -->
     <footer class="footer-area section_gap">
@@ -298,26 +396,17 @@
                         <h6>Newsletter</h6>
                         <p>Stay update with our latest</p>
                         <div class="" id="mc_embed_signup">
-
                             <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
                                 method="get" class="form-inline">
-
                                 <div class="d-flex flex-row">
-
                                     <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''"
                                         onblur="this.placeholder = 'Enter Email '" required="" type="email">
-
-
                                     <button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right"
                                             aria-hidden="true"></i></button>
                                     <div style="position: absolute; left: -5000px;">
                                         <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value=""
                                             type="text">
                                     </div>
-
-                                    <!-- <div class="col-lg-4 col-md-4">
-													<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-												</div>  -->
                                 </div>
                                 <div class="info"></div>
                             </form>
@@ -354,14 +443,69 @@
             </div>
             <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
                 <p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-</p>
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                <!-- Li nk back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </p>
             </div>
         </div>
     </footer>
-    <!-- End footer Area -->
 
+
+<!--******************************************************** pop up side bar   ****************************************************  <-->
+
+
+    <div class="pop-up-list">
+        <button class="pop-up-button"><i class="fas fa-times"></i></button>
+            <div class="top-title-section">
+            <p class="top-title special">Addresses</p>
+            </div>
+            <br>
+            <div class="comment-list grid-view">                                        
+                <form id="addressForm" action="/changeDefaultAddress" method="POST">
+                    {{#each address.address}}
+                    <label for="address{{@index}}">Address</label>
+                    <input type="radio" id="addressRadio{{@index}}" name="addressRadio" value="{{_id}}" onchange="this.form.submit()">
+                    <br>
+                    <div class="single-comment grid-item">
+                        <div class="user justify-content-between d-flex">
+                        <div class="desc">
+                            <h5>Name: {{this.name}}</h5>
+                            <h5>Number: {{this.number}}</h5>
+                            <h5>Address: {{this.houseAddress}}</h5>
+                            <h5>City: {{this.city}}</h5>
+                            <h5>Street: {{this.street}}</h5>
+                            <h5>Pin: {{this.pin}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <br>
+                    {{/each}}
+                </form>
+            </div>
+    </div>
+    <div class="overlay-pop-up"></div>
+<!--******************************************************** pop up form   ****************************************************  <-->
+
+
+    <div class="popup-wrapper">
+        <div class="popup">
+            <button class="close-button"></button>
+            <form class="popup-form"   action="/addNewAddress" method="POST" >
+                <h2 class="popup-form__title">Add Address</h2>
+                <input type="text" class="popup-form__input" placeholder="Name" name="name">
+                <input type="number" class="popup-form__input" placeholder="Mobile Number" name="number">
+                <textarea class="popup-form__input" placeholder="House Address" name="houseadd"></textarea>
+                <input type="text" class="popup-form__input" placeholder="City" name="city">
+                <input type="text" class="popup-form__input" placeholder="Street" name="street">
+                <input type="number" class="popup-form__input" placeholder="PostalCode/PIN" name="pin">
+                <button type="submit" id="btn" class="popup-form__submit">ADD</button>
+            </form>
+        </div>
+    </div>
+
+<!--******************************************************** pop up side bar   **************************************************** -->
+
+    <!-- End footer Area -->
 
     <script src="js/vendor/jquery-2.2.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
@@ -377,6 +521,130 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
     <script src="js/gmaps.min.js"></script>
     <script src="js/main.js"></script>
+
+
+
+
+
+
+
+    <script>
+
+        var popup = document.getElementsByClassName("pop-up-list")[0];
+        var overlay = document.getElementsByClassName("overlay-pop-up")[0];
+
+        var button = document.getElementsByClassName("button")[0];
+
+        var close = document.getElementsByClassName('pop-up-button')[0];
+
+        button.onclick=function(){
+        popup.style.display = "block";
+        overlay.style.display = "block";
+        }
+
+        overlay.onclick=function(){
+        popup.style.display = "none";
+        overlay.style.display = "none"; 
+        }
+        close.onclick=function(){
+        popup.style.display = "none";
+        overlay.style.display = "none"; 
+        
+        }
+    </script>
+    <script>
+        function submitForm(addressId) {
+            var form = document.getElementById('addressForm');
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'addressId';
+            input.value = addressId;
+            form.appendChild(input);
+            form.submit();
+        }
+    </script>
+      <script>
+    // Get references to the elements
+    let popupWrappers = document.querySelectorAll(".popup-wrapper");
+    let popupForms = document.querySelectorAll(".popup-form");
+    let popupBtns = document.querySelectorAll(".btn-reply");
+    let popupCloses = document.querySelectorAll(".close-button");
+
+    // Add event listeners to each popup button
+    popupBtns.forEach((btn, index) => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            showPopup(index);
+        });
+    });
+
+    // Add event listeners to each popup close button
+    popupCloses.forEach((closeBtn, index) => {
+        closeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            removePopup(index);
+        });
+    });
+
+    // Add event listeners to each popup form
+    popupForms.forEach((form) => {
+        form.addEventListener("submit", () => {
+            // Implement your form submission logic here
+            removePopup();
+        });
+    });
+
+    // Add event listeners to each popup wrapper
+    popupWrappers.forEach((wrapper, index) => {
+        wrapper.addEventListener("click", (e) => {
+            let target = e.target;
+            if (target.classList.contains("popup-wrapper")) {
+                removePopup(index);
+            } else {
+                return;
+            }
+        });
+    });
+
+    function showPopup(index) {
+        popupWrappers[index].classList.add("active");
+        bodyScroll();
+    }
+
+    function removePopup(index) {
+        popupWrappers[index].classList.remove("active");
+        bodyScroll();
+    }
+
+    function bodyScroll() {
+        document.body.classList.toggle("no-scroll");
+    }
+</script>
+
+
+{{!-- <script>
+    
+    function submitInnerForm() {
+        const innerForm = document.querySelector('.popup-form');
+        const formData = new FormData(innerForm);
+        const url = innerForm.getAttribute('action');
+
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                // Handle the response as needed
+            })
+            .catch(error => {
+                // Handle any errors that occur
+            });
+    }
+    // Automatically submit the inner form when the page loads
+    window.addEventListener('DOMContentLoaded', function () {
+        submitInnerForm();
+    });
+</script> --}}
 </body>
 
 </html>

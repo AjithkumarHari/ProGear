@@ -9,7 +9,8 @@ const userController = require("../Controllers/userController")
 const validate = require('../authentication/userAutentication')
 
 const cartController = require('../Controllers/cartController')
-// const orderController = require('../Controllers/orderController')
+const addressController =  require('../Controllers/addressController')
+const orderController = require('../Controllers/orderController')
 
 router.set('view engine', 'hbs')
 router.set('views',  './Views/userViews')
@@ -38,6 +39,10 @@ router.post('/forgotPasswordNum',userController.forgotPasswordOtp)
 router.post('/fpOtp',userController.fpOtpVerify)
 router.post('/setNewPassword',userController.setNewPassword)
 
+router.get('/setNewPassword',userController.setNewPasswordGet)
+
+
+
 router.get('/signup',userController.signupPage)
 router.post('/signup',userController.signupAction)
 
@@ -54,18 +59,25 @@ router.get('/product',userController.productPage)
 
 //Get Cart Page 
 router.get('/cart',validate.authenticate,cartController.cartPage)
-router.put('/addToCart/:id',cartController.addToCart)
+router.post('/addToCart/:id/:price', cartController.addToCart);
 router.get('/removeFromCart',cartController.removeFromCart)
 router.post('/changeItemQuantity',cartController.changeItemQuantity)
 
 router.get('/profile',userController.profilePage)
 router.get('/editProfile',userController.editProfilePage)
 router.post('/updateProfile',userController.updateProfile)
-router.get('/editAddress',userController.editAddress)
+router.get('/userAddress',addressController.viewAddress)
+router.post('/addNewAddress',addressController.addNewAddress)
+
+router.post('/editAddress',addressController.editAddress)
+
+router.post('/changeDefaultAddress',addressController.changeDefaultAddress)
+
+router.get('/deleteAddress/',addressController.deleteAddress)
 
 //Get Checkout Page 
 router.get('/checkout',userController.checkoutPage)
-router.post('/checkout',userController.checkout)
+router.post('/checkout',orderController.checkout)
 
 module.exports = router
 

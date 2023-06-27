@@ -31,7 +31,21 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/form-style.css">
 
+    <style>
+        .grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust the column width as needed */
+    gap: 30px; /* Adjust the gap between items */
+}
 
+.grid-item {
+    border: 3px solid #a4a4a4;
+    border-radius: 10px;
+    background-color:white;
+    padding: 30px;
+}
+
+    </style>
 </head>
 
 <body>
@@ -107,87 +121,134 @@
     <!-- End Banner Area -->
 
      <!--================Blog Area =================-->
-    <section class="blog_area single-post-area section_gap">
+    {{!-- <section class="blog_area single-post-area section_gap">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 posts-list">
                     <div class="comments-area">
-						<h3 class="mb-30">Form Element</h3>
-						<form action="#">
-							<div class="mt-10 ">
-								<input type="text" name="first_name" value=""
-							</div>
-							<div class="mt-10">
-								<input type="text" name="last_name" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'"
-								 required class="single-input" style="width: 100px;">
-							</div>
-							<div class="mt-10">
-								<input type="text" name="last_name" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'"
-								 required class="single-input" style="width: 100px;">
-							</div>
-							<div class="mt-10">
-								<input type="email" name="EMAIL" placeholder="Email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email address'"
-								 required class="single-input"style="width: 100px;">
-							</div>
-							<div class="input-group-icon mt-10">
-								<div class="icon"><i class="fa fa-thumb-tack" aria-hidden="true"></i></div>
-								<input type="text" name="address" placeholder="Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Address'"
-								 required class="single-input" style="width: 100px;">
-							</div>
-							{{!-- <div class="input-group-icon mt-10">
-								<div class="icon"><i class="fa fa-plane" aria-hidden="true"></i></div>
-								<div class="form-select" id="default-select">
-											<select>
-												<option value=" 1">City</option>
-									<option value="1">Dhaka</option>
-									<option value="1">Dilli</option>
-									<option value="1">Newyork</option>
-									<option value="1">Islamabad</option>
-									</select>
-								</div>
-							</div>
-							<div class="input-group-icon mt-10">
-								<div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
-								<div class="form-select" id="default-select">
-											<select>
-												<option value=" 1">Country</option>
-									<option value="1">Bangladesh</option>
-									<option value="1">India</option>
-									<option value="1">England</option>
-									<option value="1">Srilanka</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="mt-10">
-								<textarea class="single-textarea" placeholder="Message" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Message'"
-								 required></textarea>
-							</div> --}}
-							<!-- For Gradient Border Use -->
-							<!-- <div class="mt-10">
-										<div class="primary-input">
-											<input id="primary-input" type="text" name="first_name" placeholder="Primary color" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Primary color'">
-											<label for="primary-input"></label>
-										</div>
-									</div> -->
-							{{!-- <div class="mt-10">
-								<input type="text" name="first_name" placeholder="Primary color" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Primary color'"
-								 required class="single-input-primary">
-							</div>
-							<div class="mt-10">
-								<input type="text" name="first_name" placeholder="Accent color" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Accent color'"
-								 required class="single-input-accent">
-							</div>
-							<div class="mt-10">
-								<input type="text" name="first_name" placeholder="Secondary color" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Secondary color'"
-								 required class="single-input-secondary">
-							</div> --}}
-						</form>
-			       </div>
+                        <h4>Address</h4>
+                        <div class="comment-list">
+                            {{#each addressDetails}}
+                            <div class="single-comment justify-content-between d-flex">
+                                <div class="user justify-content-between d-flex">
+                                    <div class="desc">
+                                        <h5>Address : {{this.houseAddress}}</h5>
+                                        <h5>City : {{this.city}}</h5>
+                                        <h5>Street : {{this.street}}</h5>
+                                        <p>Pin : {{this.pin}}</p>
+                                    </div>
+                                </div>
+                                <section class="intro">
+                                    <button class="btn-reply" data-address-id="{{this}}">Edit </button>
+                                    <div class="popup-wrapper">
+                                        <div class="popup">
+                                        <botton class="close-btn"></botton>
+                                        <form class="popup-form" action="/editAddress" method="POST">
+                                            <h2 class="popup-form__title">Edit Address</h2>
+                                            <textarea class="popup-form__input" name="houseadd">{{this.houseAddress}}</textarea>
+                                            <input type="text" class="popup-form__input" value=" {{this.city}}" name="city">
+                                            <input type="text" class="popup-form__input" value="{{this.street}}" name="street">
+                                            <input type="number" class="popup-form__input" value="{{this.pin}}" name="pin">
+                                            <input type="hidden" name="index" value="{{@index}}">
+                                            <button type="submit" class="popup-form__submit">Save</button>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <hr>
+                            {{/each}}
+                            <section class="intro">
+                                <button class="btn-reply">Add New Address</button>
+                                <div class="popup-wrapper">
+                                    <div class="popup">
+                                    <botton class="close-btn"></botton>
+                                    <form class="popup-form" action="/addNewAddress" method="POST">
+                                        <h2 class="popup-form__title">Add Address</h2>
+                                        <textarea class="popup-form__input" placeholder="House Address" name="houseadd"></textarea>
+                                        <input type="text" class="popup-form__input" placeholder="City" name="city">
+                                        <input type="text" class="popup-form__input" placeholder="Street" name="street">
+                                        <input type="number" class="popup-form__input" placeholder="PostalCode/PIN" name="pin">
+                                        <button type="submit" class="popup-form__submit">ADD</button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
                 </div> 
 			</div>            
         </div>
-    </section> 
+    </section>  --}}
+    <section class="blog_area single-post-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 posts-list">
+                <div class="comments-area">
+                    <h4>Address</h4>
+                    
+                    <div class="comment-list grid-view"> <!-- Updated class "grid-view" -->
+                        {{#each addressDetails}}
+                        <div class="single-comment grid-item"> <!-- Updated class "grid-item" -->
+                            <div class="user justify-content-between d-flex">
+                                <div class="desc">
+                                    <h5>Name : {{this.name}}</h5>
+                                    <h5>Number : {{this.number}}</h5>
+                                    <h5>Address : {{this.houseAddress}}</h5>
+                                    <h5>City : {{this.city}}</h5>
+                                    <h5>Street : {{this.street}}</h5>
+                                    <p>Pin : {{this.pin}}</p>
+                                </div>
+                            </div>
+                            <section class="intro">
+                                <button class="btn-reply" data-address-id="{{this}}">Edit</button>
+                                 
+                                <div class="popup-wrapper">
+                                    <div class="popup">
+                                        <botton class="close-btn"></botton>
+                                        <form class="popup-form" action="/editAddress" method="POST">
+                                            <h2 class="popup-form__title">Edit Address</h2>
+                                             <input type="text" class="popup-form__input" value=" {{this.name}}" name="name">
+                                            <input type="number" class="popup-form__input" value="{{this.number}}" name="number">
+                                            <textarea class="popup-form__input" name="houseadd">{{this.houseAddress}}</textarea>
+                                            <input type="text" class="popup-form__input" value=" {{this.city}}" name="city">
+                                            <input type="text" class="popup-form__input" value="{{this.street}}" name="street">
+                                            <input type="number" class="popup-form__input" value="{{this.pin}}" name="pin">
+                                            <input type="hidden" name="index" value="{{@index}}">
+                                            <button type="submit" class="popup-form__submit">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                             <a  class="btn-add" href="/deleteAddress?id={{this.id}}" >Delete</a>  
+                            </section>
+
+                        </div>
+                        {{/each}}
+                    </div>
+                    <section class="intro">
+                        <button class="btn-reply" style="background-color: #fff;color:black;">Add New Address</button>
+                        <div class="popup-wrapper">
+                            <div class="popup">
+                                <botton class="close-btn"></botton>
+                                <form class="popup-form" action="/addNewAddress" method="POST">
+                                    <h2 class="popup-form__title">Add Address</h2>
+                                    <input type="text" class="popup-form__input" placeholder="Name" name="name">
+                                    <input type="number" class="popup-form__input" placeholder="Mobile Number" name="number">
+                                    <textarea class="popup-form__input" placeholder="House Address" name="houseadd"></textarea>
+                                    <input type="text" class="popup-form__input" placeholder="City" name="city">
+                                    <input type="text" class="popup-form__input" placeholder="Street" name="street">
+                                    <input type="number" class="popup-form__input" placeholder="PostalCode/PIN" name="pin">
+                                    <button type="submit" class="popup-form__submit">ADD</button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
     <!--================Blog Area =================-->
 
     <!-- start footer Area -->
@@ -330,6 +391,64 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             document.body.classList.toggle("no-scroll");
         }
     </script>
+    <script>
+    // Get references to the elements
+    let popupWrappers = document.querySelectorAll(".popup-wrapper");
+    let popupForms = document.querySelectorAll(".popup-form");
+    let popupBtns = document.querySelectorAll(".btn-reply");
+    let popupCloses = document.querySelectorAll(".close-btn");
+
+    // Add event listeners to each popup button
+    popupBtns.forEach((btn, index) => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            showPopup(index);
+        });
+    });
+
+    // Add event listeners to each popup close button
+    popupCloses.forEach((closeBtn, index) => {
+        closeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            removePopup(index);
+        });
+    });
+
+    // Add event listeners to each popup form
+    popupForms.forEach((form) => {
+        form.addEventListener("submit", () => {
+            // Implement your form submission logic here
+            removePopup();
+        });
+    });
+
+    // Add event listeners to each popup wrapper
+    popupWrappers.forEach((wrapper, index) => {
+        wrapper.addEventListener("click", (e) => {
+            let target = e.target;
+            if (target.classList.contains("popup-wrapper")) {
+                removePopup(index);
+            } else {
+                return;
+            }
+        });
+    });
+
+    function showPopup(index) {
+        popupWrappers[index].classList.add("active");
+        bodyScroll();
+    }
+
+    function removePopup(index) {
+        popupWrappers[index].classList.remove("active");
+        bodyScroll();
+    }
+
+    function bodyScroll() {
+        document.body.classList.toggle("no-scroll");
+    }
+</script>
+
 </body>
 
 
