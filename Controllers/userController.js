@@ -2,26 +2,34 @@ const bcrypt = require("bcrypt")
 const _  = require("lodash")
 const axios = require("axios")
 const otpGenerator = require("otp-generator")
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
 const userData = require("../Model/userModel")
 const productData = require("../Model/productModel")
 const cartData = require("../Model/cartModel")
 const addressData = require('../Model/adderssModel')
+const Category = require('../Model/categoryModel')
  
 const otpHelper = require("../Helper/otpHelper")
-const addressHelper = require("../Helper/addressHelper")
-const { request } = require("../Router/usersRouter")
+const { default: mongoose } = require("mongoose")
+// const addressHelper = require("../Helper/addressHelper")
+// const { request } = require("../Router/usersRouter")
 
 
 module.exports.homePage = async ( req, res ) => {
     try{
         const product = await productData.find({ })
+        const category = await Category.find({ })
         const token = res.locals.user
         // console.log(res.locals.user);
         // console.log("User :",token);
-        res.render('landing',{product : product, token : token})
+        // console.log("product", product);
+        res.render('landing',{
+            layout:'userLayout',
+            product : product, 
+            token : token , 
+            category:category })
     }
     catch(error){
         console.log(error);
@@ -39,11 +47,13 @@ module.exports.productPage = async ( req, res ) => {
     try{
         const id = req.query.productId
         console.log('id', id);
+        const category = await Category.find({ })
+        const token = res.locals.user
         const product = await productData.findOne({ _id : id }).populate('category')
 
-        product ? console.log('Product') : console.log('No product found');
+        product ? console.log(product) : console.log('No product found');
         
-        res.render('product',{product : product})
+        res.render('product',{product : product,category:category, token:token})
     }
     catch(error){
         console.log(error);
@@ -72,16 +82,26 @@ const createToken = (id) => {
 
 //GET
 module.exports.loginPage = async (req, res) =>{
-    console.log("login page")
-    res.render('login',{ title : 'LogIn'})
+    try{
+        if(res.locals.user!=null){
+            redirect('/')
+        }else{
+            console.log("login page")
+            res.render('login',{ title : 'LogIn'})
+
+        }
+    }catch(err){
+        console.log("login page error",err);
+    }
+
 }
 
 //POST
 module.exports.loginVerify = async (req,res) =>{
     try{
         console.log('/login-POST');
-        console.log(req.body.email);
-        console.log(req.body.password);
+        // console.log(req.body.email);
+        // console.log(req.body.password);
         const userDetails = await userData.findOne({email : req.body.email})
 
             if(userDetails){
@@ -133,7 +153,7 @@ module.exports.forgotPasswordOtp = async (req, res) => {
     
     console.log('forget password');        
     const user = await userData.findOne({number : req.body.number})
-    console.log('',user);
+    // console.log('',user);
 
     if(!user){
         res.render('forgotPasswordNum',{message:"User Not Found"})
@@ -148,7 +168,7 @@ module.exports.forgotPasswordOtp = async (req, res) => {
         req.session.email = user.email
         req.session.number = user.number
 
-        console.log("user email",req.session.email);
+        // console.log("user email",req.session.email);
         //renderin page
         res.render('forgotPasswordOtp')
     }
@@ -217,21 +237,21 @@ module.exports.signupPage = async (req,res) =>{
 module.exports.signupAction = async (req,res) =>{
 
     console.log('/signup-POST');
-
+    const {fname, lname, email,password, number} = req.body
     //storing user data in session
     const data = {
-        fname: req.body.fname,
-        lname: req.body.lname,
-        email: req.body.email,
-        password: req.body.password,
-        number:req.body.number,
+        fname,
+        lname,
+        email,
+        password,
+        number,
      }
      req.session.userData = data
      console.log('data : \n',req.session.userData);
 
     
     const OTP = otpHelper.generateOtp()
-    await otpHelper.sendOtp(data.number,OTP)
+    // await otpHelper.sendOtp(data.number,OTP)
     console.log(OTP)
 
 
@@ -269,9 +289,11 @@ module.exports.verifySignupOtp = async (req,res) =>{
             if(userSave){
     
                 //creating sending token as a cookie
-                const token = createToken(userData._id)
-                res.cookie('jwt',token, {httpOnly: true, maxAge : maxAge*1000 })
-                res.render('landing',{token})
+                const usertoken = createToken(userData._id)
+                res.cookie('jwt',usertoken, {httpOnly: true, maxAge : maxAge*1000 })
+                const product = await productData.find({ })
+                const token = res.locals.user
+                res.render('landing', { product: product, token: token });
             }
             else{
                 return console.log("Your OTP was Wrong")
@@ -328,10 +350,11 @@ module.exports.profilePage = async (req,res) => {
     try{
         const user = res.locals.user
         console.log('user profile', user._id);
+        const category = await Category.find({ })
 
         // const useraddress = await addressData.findOne({ user_id : new mongoose.Types.String(user._id) });
         // console.log(useraddress);
-        res.render('profile',{user : user})
+        res.render('profile',{user : user, category, token:null})
     }
     catch(error){
         console.log(error);
@@ -397,59 +420,72 @@ module.exports.updateProfile = async (req , res) => {
 //GET
 module.exports.checkoutPage = async ( req, res ) => {
     try{
-        console.log('checkout page');
+        let subtotal=0
+        console.log('checkout page'); 
         const user = res.locals.user
 
-     
         
         const cart = await cartData.aggregate([
             {
-              $match: {
-                user_id: user.id
-              }
+                $match: {
+                    user_id: user.id
+                }
             },
             {
-              $unwind: '$product'
+                $unwind: '$product'
             },
             {
-              $lookup: {
-                from: 'products',
-                localField: 'product.product_id',
-                foreignField: '_id',
-                as: 'items'
-              }
+                $lookup: {
+                    from: 'products',
+                    localField: 'product.product_id',
+                    foreignField: '_id',
+                    as: 'items'
+                }
             },
             {
               $unwind: '$items'
             },
             {
-              $project: {
-                user_id: 1,
-                itemId: '$items._id',
-                itemName: '$items.name',
-                itemPrice: '$items.price',
-                quantity: '$product.quantity'
-              }
+                $project: {
+                    user_id: 1,
+                    itemId: '$items._id',
+                    itemName: '$items.name',
+                    itemPrice: { $multiply: ["$product.quantity",  '$items.price'] },
+                    quantity: '$product.quantity'
+                }
             }
-          ]);
+        ]);
           
           
-      const address = await addressData.findOne({ user_data: user.id }).lean().exec();
-      
+        const address = await addressData.findOne({ user_data: user.id }).lean().exec();
+        console.log("address",address);
 
-    //   console.log('Cart:', cart);
-    //   console.log('User', user);
-    //   console.log('Address', address);
-    
-      if(address)
-      {
-        res.render('checkout',{cart : cart , user : user , address : address})
-      }else{
-        res.render('checkout',{cart : cart , user : user})
-      }
+
+        try {
+            
+            if (cart && cart.length > 0) {
+                subtotal = cart.reduce((acc, itemId) => acc + itemId.itemPrice, 0);
+                // console.log('subtotal', subtotal);
+            } else {
+                throw new Error('Cart is empty or invalid.');
+            }
+            // console.log('check out page subtotal', subtotal);
+
+            }   
+            catch (error) {
+                console.error('Error:', error.message);
+            }
+          
+            const category = await Category.find({ })
+        if(address)
+        {
+            res.render('checkout',{cart , user  , address , subtotal, category, token:null })
+        }else{
+            res.render('checkout',{cart : cart ,address:[], user : user, category,token:null,subtotal : null})
+        }
     }
     catch(error){
-        console.log(error);
+        console.log(error); 
         res.send({ success: false, error: error.message });
     }
 }
@@ -486,3 +522,28 @@ module.exports.checkout = async (req,res) =>{
         res.send({ success: false, error: error.message });
     }
 }
+
+
+//***************************************************************  CATEGORY PAGE  *******************************************************//
+
+
+//GET
+
+module.exports.categoryPage = async (req,res) =>{
+
+    try{
+        const  categoryId = req.query.id
+        console.log("categoryId",categoryId);
+
+        const category = await Category.find({ })
+         
+        const products = await productData.find({ category:new mongoose.Types.ObjectId(categoryId)})
+        // console.log("products",products);
+        console.log("categories",category);
+        res.render('category',{products , category, token:null})
+    }
+    catch(err){ 
+        console.log('category page error',err);
+    }
+}
+

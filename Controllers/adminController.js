@@ -2,9 +2,15 @@ const userData = require("../Model/userModel")
 const adminData = require("../Model/adminModel")
 const productData = require("../Model/productModel")
 const categoryData = require("../Model/categoryModel")
+const orderData = require('../Model/orderModel')
 
 const path = require("path")
 const jwt = require('jsonwebtoken')
+const moment = require("moment-timezone")
+
+
+const orderHelper = require('../Helper/orderHelper')
+const { log } = require("console")
 
 
 const maxAge = 3* 24* 60 * 60
@@ -67,7 +73,7 @@ module.exports.verifyLogin = async (req, res) => {
 module.exports.userManagement = async (req ,res) => {
     try {
         const find = await userData.find({})
-        res.render('userManagement', { find: find })
+        res.render('userManagement', { defaultLayout: null, find: find })
         console.log("user managment loaded")
     } catch (error) {
         res.send("error")
@@ -113,4 +119,75 @@ module.exports.logout = (req,res) =>{
   res.cookie('jwtAdmin', '' ,{maxAge : 1})
   console.log("Admin token destroyed");
   res.redirect('/admin')
+}
+
+
+
+//Get
+module.exports.orderManagement = async( req,res ) =>{
+  try{
+    userId = res.locals.user.id
+    // const order = await orderHelper.getOrder(res.locals.user.id)
+    const order = await orderData.aggregate([
+      { $unwind: "$orders" },
+      { $sort: { 'orders.createdAt' : -1 } },
+    ])
+    // console.log("order",order);
+
+    const orders = order.map(obj => obj.orders);
+  // console.log(orders);
+
+
+    const orderDetails = orders.map(history =>{
+      let createdOnIST = moment(history.date)
+      .tz('Asia/kolkata')
+      .format('DD-MM-YYYY' );
+
+      return{...history, date:createdOnIST};
+  })
+  
+
+
+      console.log('orderlist : ',orderDetails);
+
+      res.render('orderManagement',{  defaultLayout: null,order : orderDetails})
+
+
+  }
+  catch(err){
+    res.send("error",err)
+    console.log("error form order Managment",err);
+  }
+}
+
+//GET
+module.exports.orderData = async (req,res) =>{ 
+
+  try {
+      const user = res.locals.user
+      const id = req.query.id
+      console.log(id);
+
+      orderHelper.getOrderDetails(id, user._id).then((orders) => {
+        const address = orders[0].shippingAddress
+        const products = orders[0].productDetails
+
+        
+        orderDetails = orders.map(history =>{
+          let createdOnIST = moment(history.date)
+          .tz('Asia/kolkata')
+          .format('DD-MM-YYYY h:mm A' );  
+
+          return{...history, date:createdOnIST};
+      })
+        console.log("orderdata",orderDetails);
+        // console.log("products",products);
+
+
+        res.render('orderData',{orderDetails, address,products})
+      });    
+  } catch (error) { 
+      console.log(error);
+      res.send({ success: false, error: error.message });
+  }
 }

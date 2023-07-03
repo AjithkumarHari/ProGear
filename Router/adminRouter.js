@@ -16,15 +16,8 @@ const categoryController = require("../Controllers/categoryController")
 const validate = require("../Authentication/adminAuthentication")
 
 
-
-router.set('view engine', 'hbs')
-router.set('views',  './Views/adminViews')
-
-
-router.use(express.json())
-router.use(express.urlencoded({ extended : false }))
-
-
+router.set('view engine','ejs')
+router.set('views','./Views/adminViews')
 
 router.use(session({
     secret: 'keyboard cat',
@@ -82,6 +75,13 @@ router.get('/changeStatus', categoryController.changeStatus)
 router.get('/unlistProduct',productController.unlistProduct)
 
 router.get('/reListProduct',productController.reListProduct)
+
+
+
+//-------------------------------------------ORDER--------------------------------------------
+router.get('/order',adminController.orderManagement)
+router.get('/orderData',adminController.orderData)
+
 
 router.get('/logout',adminController.logout)
 

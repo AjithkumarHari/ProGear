@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>ProGear</title>
+    <!--
+			CSS
+			============================================= -->
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/form-style.css">
+
+    <style>
+
+.grid-item {
+    border: 1.7px solid #e47312;
+    border-radius: 5px;
+    background-color:white;
+    color: black;
+    padding: 30px 30px 30px 70px;
+    margin-bottom: 30px;
+    
+
+}
+   .comment-list .desc h5 {
+        display: inline-block;
+        padding-bottom: 20px;
+        margin: 0;
+        margin-right: 100px;
+        margin-left: 10px;
+      
+
+    }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+
+</head>
+
+<body>
+
+    <!-- Start Header Area -->
+	<%- include('../layouts/userHeader.ejs') %>
+	<!-- End Header Area -->
+
+     <!--================ Order Card Area =================-->
+    <!-- {{!-- <section class="blog_area single-post-area section_gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 posts-list">
+                    <div class="comments-area" style="padding-bottom:30px;">
+                        <h4>Orders</h4>
+                        <div class="comment-list grid-item ">
+                            {{#each order}}
+                            <div class="single-comment justify-content-between d-flex">
+                                <div class="user justify-content-between d-flex">
+                                    <div class="desc">
+                                        <h5>Item : {{this.houseAddress}}</h5>
+                                        <h5>price : {{this.city}}</h5>
+                                        <h5>Status : {{this.street}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div> 
+			</div>            
+        </div>
+    </section>  --}} -->
+    <section class="blog_area single-post-area section_gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 posts-list">
+                    <div class="comments-area" style="padding-bottom:30px;">
+                        <h4>Orders</h4>
+                        <% order.forEach((item) => { %>
+                        <div class="comment-list grid-item">
+                            <div class="single-comment justify-content-between d-flex">
+                                <div class="user justify-content-between d-flex">
+                                    <div class="desc col-lg-8">
+                                        <h5><span style="color: black;">Date:</span> <%= item.date %></h5>
+                                        <h5><span style="color: black;">Price ₹ :</span><%= item.totalPrice %></h5>
+                                        <h5><span style="color: black;">Status :</span> <%= item.paymentStatus %></h5>
+                                        <h5><span style="color: black;">Payment method: </span><%= item.paymentMethod %></h5>
+                                    </div>
+                                    <div class="col-lg-4" style="margin-top:20px;">
+                                        <a id="btn" href="/orderDetails?id=<%= item._id %>">SHOW DETAILS</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--================ Order Card Area=================-->
+
+    <!-- start footer Area -->
+    <%- include('../layouts/userFooter.ejs') %>
+    <!-- End footer. Area -->
+
+    <script src="js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	 crossorigin="anonymous"></script>
+	<script src="js/vendor/bootstrap.min.js"></script>
+	<script src="js/jquery.ajaxchimp.min.js"></script>
+	<script src="js/jquery.nice-select.min.js"></script>
+	<script src="js/jquery.sticky.js"></script>
+    <script src="js/nouislider.min.js"></script>
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<!--gmaps Js-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<script src="js/gmaps.min.js"></script>
+	<script src="js/main.js"></script>
+
+    <script>
+                
+        let popup = document.querySelector(".popup-wrapper");
+        let popupForm = document.querySelector(".popup-form");
+        let popupBtn = document.querySelector(".popup-open");
+        let popupClose = document.querySelector(".close-btn");
+
+        popupBtn.addEventListener("click", (e) => {
+            e.preventDefault;
+            showPopup();
+        });
+
+        popupClose.addEventListener("click", (e) => {
+            e.preventDefault;
+            removePopup();
+        });
+
+        popupForm.addEventListener("submit", () => {
+            removePopup();
+        });
+
+        popup.addEventListener("click", (e) => {
+            let target = e.target;
+            if (target.classList.contains("popup-wrapper")) {
+                removePopup();
+            } else return;
+        });
+
+        function showPopup() {
+            popup.classList.add("active");
+            bodyScroll();
+        }
+
+        function removePopup() {
+            popup.classList.remove("active");
+            bodyScroll();
+        }
+
+        function bodyScroll() {
+            document.body.classList.toggle("no-scroll");
+        }
+    </script>
+    <script>
+    // Get references to the elements
+    let popupWrappers = document.querySelectorAll(".popup-wrapper");
+    let popupForms = document.querySelectorAll(".popup-form");
+    let popupBtns = document.querySelectorAll(".btn-rply");
+    let popupCloses = document.querySelectorAll(".close-btn");
+
+    // Add event listeners to each popup button
+    popupBtns.forEach((btn, index) => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            showPopup(index);
+        });
+    });
+
+    // Add event listeners to each popup close button
+    popupCloses.forEach((closeBtn, index) => {
+        closeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            removePopup(index);
+        });
+    });
+
+    // Add event listeners to each popup form
+    popupForms.forEach((form) => {
+        form.addEventListener("submit", () => {
+            // Implement your form submission logic here
+            removePopup();
+        });
+    });
+
+    // Add event listeners to each popup wrapper
+    popupWrappers.forEach((wrapper, index) => {
+        wrapper.addEventListener("click", (e) => {
+            let target = e.target;
+            if (target.classList.contains("popup-wrapper")) {
+                removePopup(index);
+            } else {
+                return;
+            }
+        });
+    });
+
+    function showPopup(index) {
+        popupWrappers[index].classList.add("active");
+        bodyScroll();
+    }
+
+    function removePopup(index) {
+        popupWrappers[index].classList.remove("active");
+        bodyScroll();
+    }
+
+    function bodyScroll() {
+        document.body.classList.toggle("no-scroll");
+    }
+</script>
+
+</body>
+
+
+</html>

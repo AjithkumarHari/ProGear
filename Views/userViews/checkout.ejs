@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>ProGear</title>
+
+    <!--
+            CSS
+            ============================================= -->
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
+
+
+
+    <style>
+        body.no-scroll {
+            overflow-y: hidden;
+        }
+
+
+        #btn {
+
+            min-width: 160px;
+            padding: 14px 25px;
+            transition: all 300ms ease;
+            color: #fff;
+            font-weight: 500;
+            text-align: center;
+            letter-spacing: 1px;
+            background-color: #e47312;
+            border: 0;
+            cursor: pointer;
+        }
+
+        #btn:hover {
+            background-color: #e98a38;
+        }
+
+        .popup-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(2, 2, 2, 0.685);
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            padding: 10px 20px;
+            transition: opacity 0.3s ease-in-out;
+            text-align: center;
+        }
+
+        .popup-wrapper.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .popup {
+            padding: 20px 25px;
+            max-width: 500px;
+            width: 100%;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #12192c;
+            border-radius: 15px;
+        }
+
+        .popup-form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .close-button {
+            position: absolute;
+            margin-right: 10px;
+            top: -30;
+            right: 0;
+            background: none;
+            border: none;
+            padding: 0;
+            border: 0;
+            width: 25px;
+            height: 45px;
+            outline: none;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.3s, opacity 0.3s;
+            -webkit-transition: transform 0.3s, opacity 0.3s;
+            -moz-transition: transform 0.3s, opacity 0.3s;
+            -ms-transition: transform 0.3s, opacity 0.3s;
+            -o-transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .close-button:before,
+        .close-button:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 30px;
+            background-color: #fff;
+            border-radius: 1.5px;
+            transform: translateY(-50%);
+        }
+
+        .close-button:before {
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .close-button:after {
+            transform: translateY(-50%) rotate(-45deg);
+        }
+
+        .close-button:hover {
+            transform: scale(1.1);
+        }
+
+        .close-button:active {
+            opacity: 0.8;
+            transform: scale(0.9);
+        }
+
+        .popup-form__input {
+            margin-top: 10px;
+            margin-bottom: 20px;
+
+            padding: 12px 20px;
+            width: 90%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Start Header Area -->
+    <%- include('../layouts/userHeader.ejs') %>
+
+    <!-- End Header Area -->
+
+
+    <!--============================================================Checkout Area =============================================================-->
+    <section class="checkout_area section_gap">
+        <div class="container">
+            <br><br><br>
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="cupon_area ">
+                            <input type="text" placeholder="Enter coupon code">
+                            <a class="tp_btn" href="#">Apply Coupon</a>
+                        </div>
+                        <h3>Billing Details</h3>
+    
+                        <form class="row contact_form" action="/checkout" method="post" novalidate="novalidate"
+                            id="checkOut-form">
+    
+                            <% if (address.address[0]) { %>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" class="form-control" id="first" name="fname"
+                                    value="<%= address.address[0].name %>">
+                            </div>
+    
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" class="form-control" id="primnumber" name="primnumber"
+                                    value="<%= user.number %>">
+                            </div>
+    
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" class="form-control" id="secnumber" name="secnumber"
+                                    value="<%= user.email %>">
+                            </div>
+    
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" class="form-control" id="email" name="email"
+                                    value="<%= address.address[0].number %>">
+                            </div>
+    
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="add2" name="add2"
+                                    value="<%= address.address[0].houseAddress %>">
+                            </div>
+    
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="add2" name="add2"
+                                    value="<%= address.address[0].street %>">
+                            </div>
+    
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="city" name="city "
+                                    value="<%= address.address[0].city %>">
+                            </div>
+    
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="pin" name="pin"
+                                    value="<%= address.address[0].pin %>">
+                            </div>
+    
+                            <div class="col-md-12 form-group">
+                                <input type="hidden" value="<%= address.address[0]._id %>" name="address">
+                            </div>
+                            <% } else { %>
+                            <div class="col-md-12 form-group p_star">
+                                <h1>Please Add An Address</h1>
+                            </div>
+                            <% } %>
+    
+                            <!--==============change address Form  ========================-->
+    
+                            <div class="banner-desc" style="margin-left: 50px; margin-top:15px; ">
+                                <a class="button" style="color: #fff;">CHANGE ADDRESS</a>
+                            </div>
+    
+                            <!--==============Add new address Form  ========================-->
+    
+                            <div class="banner-desc" style="margin-left: 50px">
+                                <section class="intro">
+                                    <button class="btn-reply" id="btn">ADD NEW ADDRESS</button>
+                                </section>
+                            </div>
+    
+                            <!--======================Close add new address  =======================-->
+                            <br><br><br>
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <div class="order_box">
+                            <h2>Your Order</h2>
+    
+                            <ul class="list">
+                                <li><a href="#">Product <span>Total</span></a></li>
+                                <% cart.forEach(function(item) { %>
+                                <li>
+                                    <a href="#"><%= item.itemName %>
+                                        <span class="middle">x <%= item.quantity %></span>
+                                        <span class="last">₹<%= item.itemPrice %></span>
+                                    </a>
+                                </li>
+                                <% }); %>
+                            </ul>
+    
+                            <ul class="list list_2">
+                                <li>
+                                    <a href="#">Subtotal
+                                        <span>₹<%= subtotal %></span>
+                                    </a>
+                                </li>
+                                <li><a href="#">Shipping <span>Flat rate: ₹ 0.00</span></a></li>
+                                <li><a href="#">Total <span>₹<%= subtotal %></span></a></li>
+                            </ul>
+    
+                            <input type="hidden" value="<%= subtotal %>" name="total">
+                            <input type="hidden" name="productName" id="productName" value="<%= cart.itemName %>">
+                            <input type="hidden" name="qty" id="qty" value="<%= cart.quantity %>">
+                            <input type="hidden" name="price" id="price" value="<%= cart.itemPrice %>">
+    
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option5" name="payment_method" value="check">
+                                    <label for="f-option5">Check payments</label>
+                                    <div class="check"></div>
+                                </div>
+                            </div>
+    
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option6" name="payment_method" value="RazorPay">
+                                    <label for="f-option6">Paypal</label>
+                                    <img src="img/product/card.jpg" alt="">
+                                    <div class="check"></div>
+                                </div>
+                            </div>
+    
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option7" name="payment_method" value="COD">
+                                    <label for="f-option7">Cash on Delivery</label>
+                                    <div class="check"></div>
+                                </div>
+    
+                                <div class="creat_account">
+                                    <input type="checkbox" id="f-option4" name="terms">
+                                    <label for="f-option4">I’ve read and accept the</label>
+                                    <a href="#">terms & conditions*</a>
+                                </div>
+                                <% if (address.address[0]) { %>
+                                <input type="submit" class="primary-btn" style="width: 100%; border:none;"
+                                    value="Confirm Order" onclick="proceedToPayment()">
+                                <% } else { %>
+                                    <input type="submit" class="primary-btn" style="width: 100%; border:none;"
+                                    value="Confirm Order" onclick="proceedToPayment()" disabled>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--=====================================End Checkout Area =========================================-->
+
+    <!-- start footer Area -->
+    <%- include('../layouts/userFooter.ejs') %>
+
+
+    <!--******************************************************** pop up side bar   ****************************************************  <-->
+
+    <div class="pop-up-list">
+        <button class="pop-up-button"><i class="fas fa-times"></i></button>
+        <div class="top-title-section">
+            <p class="top-title special">Addresses</p>
+        </div>
+        <br>
+        <div class="comment-list grid-view" style="height: 530px; overflow-y:scroll;">
+            <form id="addressForm" action="/changeDefaultAddress" method="POST">
+                <% address.address.forEach((address, index) => { %>
+                <label for="address<%= index %>">Address</label>
+                <input type="radio" id="addressRadio<%= index %>" name="addressRadio" value="<%= address._id %>"
+                    onchange="this.form.submit()">
+                <br>
+                <div class="single-comment grid-item">
+                    <div class="user justify-content-between d-flex">
+                        <div class="desc">
+                            <h5>Name: <%= address.name %></h5>
+                            <h5>Number: <%= address.number %></h5>
+                            <h5>Address: <%= address.houseAddress %></h5>
+                            <h5>City: <%= address.city %></h5>
+                            <h5>Street: <%= address.street %></h5>
+                            <h5>Pin: <%= address.pin %></h5>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <% }); %>
+            </form>
+        </div>
+    </div>
+    <div class="overlay-pop-up"></div>
+    
+    <!--******************************************************** pop up form   ****************************************************  <-->
+
+
+    <div class="popup-wrapper">
+        <div class="popup">
+            <button class="close-button"></button>
+            <form class="popup-form" action="/addNewAddress" method="POST">
+                <h2 class="popup-form__title">Add Address</h2>
+                <input type="text" class="popup-form__input" placeholder="Name" name="name">
+                <input type="number" class="popup-form__input" placeholder="Mobile Number" name="number">
+                <textarea class="popup-form__input" placeholder="House Address" name="houseadd"></textarea>
+                <input type="text" class="popup-form__input" placeholder="City" name="city">
+                <input type="text" class="popup-form__input" placeholder="Street" name="street">
+                <input type="number" class="popup-form__input" placeholder="PostalCode/PIN" name="pin">
+                <button type="submit" id="btn" class="popup-form__submit">ADD</button>
+            </form>
+        </div>
+    </div>
+
+    <!--******************************************************** pop up side bar   **************************************************** -->
+
+    <!-- End footer Area -->
+
+    <script src="js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/nouislider.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <!--gmaps Js-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+    <script src="js/gmaps.min.js"></script>
+    <script src="js/main.js"></script>
+
+
+
+
+
+
+
+    <script>
+
+        var popup = document.getElementsByClassName("pop-up-list")[0];
+        var overlay = document.getElementsByClassName("overlay-pop-up")[0];
+
+        var button = document.getElementsByClassName("button")[0];
+
+        var close = document.getElementsByClassName('pop-up-button')[0];
+
+        button.onclick = function () {
+            popup.style.display = "block";
+            overlay.style.display = "block";
+        }
+
+        overlay.onclick = function () {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+        }
+        close.onclick = function () {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+
+        }
+    </script>
+    <script>
+        function submitForm(addressId) {
+            var form = document.getElementById('addressForm');
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'addressId';
+            input.value = addressId;
+            form.appendChild(input);
+            form.submit();
+        }
+    </script>
+    <script>
+        // Get references to the elements
+        let popupWrappers = document.querySelectorAll(".popup-wrapper");
+        let popupForms = document.querySelectorAll(".popup-form");
+        let popupBtns = document.querySelectorAll(".btn-reply");
+        let popupCloses = document.querySelectorAll(".close-button");
+
+        // Add event listeners to each popup button
+        popupBtns.forEach((btn, index) => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                showPopup(index);
+            });
+        });
+
+        // Add event listeners to each popup close button
+        popupCloses.forEach((closeBtn, index) => {
+            closeBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                removePopup(index);
+            });
+        });
+
+        // Add event listeners to each popup form
+        popupForms.forEach((form) => {
+            form.addEventListener("submit", () => {
+                // Implement your form submission logic here
+                removePopup();
+            });
+        });
+
+        // Add event listeners to each popup wrapper
+        popupWrappers.forEach((wrapper, index) => {
+            wrapper.addEventListener("click", (e) => {
+                let target = e.target;
+                if (target.classList.contains("popup-wrapper")) {
+                    removePopup(index);
+                } else {
+                    return;
+                }
+            });
+        });
+
+        function showPopup(index) {
+            popupWrappers[index].classList.add("active");
+            bodyScroll();
+        }
+
+        function removePopup(index) {
+            popupWrappers[index].classList.remove("active");
+            bodyScroll();
+        }
+
+        function bodyScroll() {
+            document.body.classList.toggle("no-scroll");
+        }
+    </script>
+
+
+<!--Onsubmit pop up-->
+
+   <script>
+      function proceedToPayment() {
+        event.preventDefault()
+  $.ajax({
+    url: "/checkout",
+    method: 'POST',
+    data: $('#checkOut-form').serialize(),
+    success: (response) => {
+      console.log(response,'+++++=========== ');
+      if (response.error) {
+        console.log(response,'error--------------------------------');
+
+        console.log(response.error.message,'---------------');
+        Swal.fire({
+          title: 'Error!',
+          text: response.error,
+          icon: 'error',
+          timer: 5000
+        })
+      } else if (response.codStatus == true) {
+        console.log("res"+response.codStatus)
+        console.log(response,'status');
+        Swal.fire({
+          title: 'Order Placed!',
+          text: 'Your order has been placed successfully.',
+          icon: 'success',
+          timer: 5000
+        }).then(() => {
+          location.href = '/'
+        })
+      } 
+    }
+})
+}
+</script>
+</body>
+
+</html>
+
+

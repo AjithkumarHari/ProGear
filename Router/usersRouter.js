@@ -1,7 +1,7 @@
 // const router = require('express').Router()
 const express = require('express')
 const router = express()
-// const path = require('path');
+const path = require('path');
 const cookieparser = require('cookie-parser')
 const session = require('express-session')
 
@@ -12,8 +12,10 @@ const cartController = require('../Controllers/cartController')
 const addressController =  require('../Controllers/addressController')
 const orderController = require('../Controllers/orderController')
 
-router.set('view engine', 'hbs')
-router.set('views',  './Views/userViews')
+
+
+  router.set('view engine','ejs')
+router.set('views','./Views/userViews')
 
 
 router.use(express.json())
@@ -57,6 +59,9 @@ router.get('/logout',userController.logout)
 //Get Prouct Page 
 router.get('/product',userController.productPage)
 
+//Get category page
+router.get('/category', userController.categoryPage)
+
 //Get Cart Page 
 router.get('/cart',validate.authenticate,cartController.cartPage)
 router.post('/addToCart/:id/:price', cartController.addToCart);
@@ -77,7 +82,21 @@ router.get('/deleteAddress/',addressController.deleteAddress)
 
 //Get Checkout Page 
 router.get('/checkout',userController.checkoutPage)
+//Get Checkout Page 
 router.post('/checkout',orderController.checkout)
+
+// ----------------------------------------------------------------ORDER------------------------------------------------------------------------------
+
+
+router.get('/orderDetails',orderController.orderDetails)
+
+router.get('/order',orderController.orderList)
+
+router.put('/cancelOrder',orderController.cancelOrder)
+
+
+
+
 
 module.exports = router
 

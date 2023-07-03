@@ -1,39 +1,37 @@
+
 const Cart = require('../Model/cartModel')
-// const Product = require("../Model/productModel")
+
 const mongoose = require('mongoose')
 
 
 
 
 
-  const addCart = async (productId, userId, price) => {
-  
-  
+const addCart = async (productId, userId, price) => {
+
   let productObj = {
     product_id: productId,
     quantity: 1,
     total :0
   };
 
-  try {
+  try { 
     return new Promise((resolve, reject) => {
-        console.log('cart helper');
+        
+      console.log('cart helper');
+
       Cart.findOne({ user_id: userId }).then(async (cart) => {
         if (cart) {
-          let productExist = await Cart.findOne({ "product.product_id": productId });
+          let productExist = await Cart.findOne({ user_id : userId,"product.product_id": productId });
 
           if (productExist) {
             Cart.updateOne(
               { user_id: userId, "product.product_id": productId },
               {
                 $inc: { "product.$.quantity": 1 },
-                // $set: {
-                //   subTotal: cart.sub_total + totalPrice, // Update the subTotal field by adding the new total price
-                // },
-
               }
             )
-            // total += product.price
+
             .then((response) => {
               
               resolve({ response, status: false });
@@ -63,10 +61,11 @@ const mongoose = require('mongoose')
       });
     });
 
-  } catch (error) {
+  } 
+  catch (error) {
     console.log(error.message);
   }
-  }
+}
 
 
 const changeProductQuantity = async (data) => {
@@ -112,12 +111,12 @@ const changeProductQuantity = async (data) => {
           const response = {deleteProduct : true}
           return response
       }
-
+ 
       // Calculate the new subtotal for all products in the cart
       const subtotal = cart.product.reduce((acc, product) => {
       return acc + product.total;
       }, 0);
-      console.log('subtotal',subtotal);
+      console.log('subtotal after change quantity',subtotal);
       // Prepare the response object
       const response = {
           quantity: updatedProduct.quantity,
@@ -133,7 +132,31 @@ const changeProductQuantity = async (data) => {
           }
 
 
+
+
+const getCart = async(userId)=>{
+  try {
+ 
+    const cart = await Cart.findOne({ user_id : userId })
+    .lean().exec()
+
+    console.log('cart',cart);
+  
+        if(cart){
+          return cart
+        }
+      else{
+        return null
+      }
+
+  }
+catch (error) {
+  console.log(error.message);
+}
+}
+
 module.exports = {
   addCart,
   changeProductQuantity,
+  getCart
 }

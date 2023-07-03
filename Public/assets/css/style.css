@@ -9759,13 +9759,17 @@ input[type="button"].btn-block {
 .dropright,
 .dropdown,
 .dropleft {
-  position: relative; }
+  position: relative;
+   }
 
 .dropdown-toggle {
-  white-space: nowrap; }
+  white-space: nowrap;
+  padding-top: 10px;
+  padding-bottom: 10px; }
   .dropdown-toggle::after {
     display: inline-block;
     margin-left: 0.255em;
+    
     vertical-align: 0.255em;
     content: "";
     border-top: 0.3em solid;
@@ -9783,13 +9787,13 @@ input[type="button"].btn-block {
   display: none;
   float: left;
   min-width: 10rem;
-  padding: 0.5rem 0;
+  padding: 0.5rem ;
   margin: 0.125rem 0 0;
   font-size: 1rem;
   color: #ffffff;
   text-align: left;
   list-style: none;
-  background-color: #191c24;
+  background-color: #28344b;
   background-clip: padding-box;
   border: 1px solid #2c2e33;
   border-radius: 0.25rem; }
@@ -9929,13 +9933,13 @@ input[type="button"].btn-block {
   background-color: transparent;
   border: 0; }
   .dropdown-item:hover, .dropdown-item:focus {
-    color: #16181b;
+    color: #c3dbff;
     text-decoration: none;
     background-color: #13151b; }
   .dropdown-item.active, .dropdown-item:active {
-    color: #fff;
+    color: #000000;
     text-decoration: none;
-    background-color: #007bff; }
+    background-color: #ffffff; }
   .dropdown-item.disabled, .dropdown-item:disabled {
     color: #6c757d;
     pointer-events: none;

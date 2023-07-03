@@ -1,0 +1,57 @@
+	<%- include('../layouts/adminHeader.ejs') %>
+        <!-- partial -->
+ <div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">Category Management</h3>
+      <nav aria-label="breadcrumb">
+        <a href="/admin/addCategory" class="btn btn-primary btn-fw">Add Category</a>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Category List</h4>
+            
+            <div class="table-responsive">
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Edit</th>
+                    <th>List/Unlist</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% find.forEach((category) => { %>
+                  <tr>
+                    <td><%= category.name %></td>
+                    <td>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= category.description %>" style="display: inline-block; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <%= category.description %>
+                      </span>
+                    </td>
+                    <td><a href="/admin/updateCategory?userid=<%= category._id %>"><i class="mdi mdi-border-color"></i></a></td>
+                    <td><a href="/admin/changeStatus?userid=<%= category._id %>"><i class="mdi mdi-delete-variant"></i></a></td>
+                    <% if (category.is_listed) { %>
+                      <td><label class="badge badge-success">Listed</label></td>
+                    <% } else { %>
+                      <td><label class="badge badge-danger">Unlisted</label></td>
+                    <% } %>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+ <%- include('../layouts/adminFooter.ejs') %>

@@ -2,91 +2,81 @@ const cartData = require('../Model/cartModel')
 const Product = require("../Model/productModel")
 const mongoose = require('mongoose')
 const cartHelper = require('../Helper/cartHelper');
-
+const Category = require('../Model/categoryModel')
 
 
 
 module.exports.cartPage = async ( req, res ) => {
-    try{
-      console.log('cart page loaded');
-      const user = res.locals.user
-      // console.log('id', user.id);
+
+      try {
+        console.log('cart page loaded');
+        const user = res.locals.user;
       
-      const cart = await cartData.aggregate([
-        {
-          $match: {
-            user_id: user.id
-          }
-        },
-        {
-          $unwind: "$product"
-        },{
-          $project:{
-            item: "$product.product_id",
-                quantity: "$product.quantity",
-            user : "$user_id",
-            subtotal : "$sub_total"
+        const cart = await cartData.aggregate([
+          {
+            $match: {
+              user_id: user.id
+            }
           },
-        },
-        {
-          $lookup: {
-                from: "products",
-                localField: "item",
-                foreignField: "_id",
-                as: "carted"
-              }
-        },
-         {
-          $project: {
-            "item": 1,
-            "quantity": 1,
-            "carted": { $arrayElemAt: ["$carted", 0] },
-            "user" : 1,
-            "total": {
-              $let: {
-                vars: {
-                  price: { $arrayElemAt: ["$carted.price", 0] }
-                },
-                in: { $multiply: ["$quantity", "$$price"] }
-              }
-            },
-           
+          {
+            $unwind: "$product"
           },
-        }, 
-      ]);
-      const subtotal = await cartData.aggregate([
-        {
-          $match: {
-            user_id: user.id
+          {
+            $lookup: {
+              from: "products",
+              localField: "product.product_id",
+              foreignField: "_id",
+              as: "carted"
+            }
+          },
+          {
+            $project: {
+              "item": "$product.product_id",
+              "quantity": "$product.quantity",
+              "user": "$user_id",
+              "carted": { $arrayElemAt: ["$carted", 0] },
+              "total": { $multiply: ["$product.quantity", { $arrayElemAt: ["$carted.price", 0] }] }
+            }
           }
-        },
-        {
-          $unwind: "$product"
-        },
-        {
-          $group: {
-            _id: "$_id",
-            user_id: { $first: "$user_id" },
-            totalSum: { $sum: "$product.total" }
-          }
-        },
-        {
-          $project: {
-            _id: 0,
-            totalSum: 1
-          }
+        ]);
+      
+        let subtotal = 0;
+            try {
+              
+                    if (cart && cart.length > 0) {
+                      subtotal = cart.reduce((acc, item) => acc + item.total, 0);
+                      console.log('subtotal', subtotal);
+                    } else {
+                      throw new Error('Cart is empty or invalid.');
+                    }
+
+                } 
+      catch (error) {
+        console.error('Error:', error.message);
+      }
+
+
+
+        console.log('cart page subtotal', subtotal);
+
+        const category = await Category.find({ })
+
+        if(cart==null){
+        res.render('cart', { cart:[], subtotal, category , token:null});
+          
         }
-      ]);
+        else{
+        res.render('cart', { cart, subtotal, category , token:null});
+
+        }
+      }
       
-      console.log('cart page subtotal ',subtotal);
-      // console.log('cart:',cart);
-      res.render('cart', {cart:cart, subtotal});
       
-    }
-    catch(error){
-        console.log(error);
-        res.send({ success: false, error: error.message });
-    }
+      catch (error) {
+        console.error('Error:', error.message);
+        res.send({ success: false, error: error.message });
+      }
+      
 }
 
 
@@ -97,33 +87,6 @@ module.exports.cartPage = async ( req, res ) => {
 
 module.exports.addToCart = async (req , res) => {
     try{
-    //    const productId = new mongoose.Types.ObjectId(req.params.id)
-    //    console.log('add to cart',productId);
-       
-    //     const product = cartData
-        
-        
-    //     .findOne(
-    //       {
-    //         "product.product_id": productId
-    //       },
-    //       {
-    //         "product.$.quantity": 1
-    //       })
-
-    //  const quantity = product._userProvidedFields.product.$.quantity
-   
-
-
-
-
-
-    //     if (product) {
-    //       console.log("Product:", quantity);
-    //     } else {
-    //       console.log("Product not found.");
-    //     }
-     
   
         // cartHelper.addCart(req.params.id,res.locals.user.id,)
         cartHelper.addCart(req.params.id,res.locals.user.id,req.params.price)

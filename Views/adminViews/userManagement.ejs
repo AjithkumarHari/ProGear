@@ -1,0 +1,59 @@
+
+	<%- include('../layouts/adminHeader.ejs') %>
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title"> User Management </h3>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <!-- <li class="breadcrumb-item"><a href="#">Tables</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Basic tables</li> -->
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">User List</h4>
+            <!-- <p class="card-description"> Add class <code>.table-striped</code> -->
+            </p>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th> User </th>
+                    <th> E-mail </th>
+                    <th> Phone </th>
+                    <th> Block </th>
+                    <th> Status </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% find.forEach((user) => { %>
+                    <tr>
+                      <td><%= user.fname %> <%= user.lname %></td>
+                      <td><%= user.email %></td>
+                      <td><%= user.number %></td>
+                      <td><a href="/admin/block?userid=<%= user._id %>"><i class="mdi mdi-block-helper"></i> Block/Unblock</a></td>
+                      <% if (user.is_blocked) { %>
+                        <td><label class="badge badge-danger">Blocked</label></td>
+                      <% } else { %>
+                        <td><label class="badge badge-success">Unblocked</label></td>
+                      <% } %>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- content-wrapper ends -->
+</div>
+
+	<%- include('../layouts/adminFooter.ejs') %>
+

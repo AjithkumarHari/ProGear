@@ -1,0 +1,125 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<!-- partial -->
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title"> Order Management </h3>
+        </div>
+        <!--Order list-->
+        <div class="row ">
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                    <h4 class="card-title">Order List</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th> User Name </th>
+                                        <th> Order No </th>
+                                        <th> Cost </th>   
+                                        <th> Payment Mode </th>
+                                        <th> Date </th>
+                                        <th> Order Status </th>
+                                        <th> View Order</th>
+                                        <th> Change Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% order.forEach(function(item) { %>
+                                    <tr>
+                                        <td><span class="pl-2"><%= item.name %></span></td>
+                                        <td><%= item._id %></td>
+                                        <td>₹<%= item.totalPrice %></td>
+                                        <td><%= item.paymentMethod %></td>
+                                        <td><%= item.date %></td>
+                                        <td>
+                                            <% if (item.orderStatus === 'Placed') { %>
+                                                <div class="badge badge-outline-primary"><%= item.orderStatus %></div>
+                                            <% } else if (item.orderStatus === 'Shipped') { %>
+                                                <div class="badge badge-outline-info"><%= item.orderStatus %></div>
+                                            <% } else if (item.orderStatus === 'Cancel Requested') { %>
+                                                <div class="badge badge-outline-warning"><%= item.orderStatus %></div>
+                                            <% } else if (item.orderStatus === 'Delivered') { %>
+                                                <div class="badge badge-outline-success"><%= item.orderStatus %></div>
+                                            <% } else { %>
+                                                <div class="badge badge-outline-danger"><%= item.orderStatus %></div>
+                                            <% } %>
+                                        </td>
+                                       
+                                        <td><a class="btn btn-light create-new-button" id="createbuttonDropdown" aria-expanded="false" href="/admin/orderData?id=<%= item._id %>">View</a></td>
+                                        <td>
+                                            <div class="input-group-prepend">
+                                                <% if (item.orderStatus === 'Cancelled' || item.orderStatus === 'Delivered') { %>
+                                                    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>Action</button>
+                                                    <div class="dropdown-menu">
+                                                        <% if (item.orderStatus === 'Placed') { %>
+                                                            <a class="dropdown-item" href="#">Cancel order</a>
+                                                            <a class="dropdown-item" href="#">Dispatch</a>
+                                                        <% } else if (item.orderStatus === 'Shipped') { %>
+                                                            <a class="dropdown-item" href="#">Delivered</a>
+                                                        <% } else if (item.orderStatus === 'Cancel Requested') { %>
+                                                            <a class="dropdown-item" href="#">Accept</a>
+                                                            <a class="dropdown-item" href="#">Decline</a>
+                                                        <% } else { %>
+                                                            <a class="dropdown-item" href="#">No Action</a>
+                                                        <% } %>
+                                                    </div>
+                                                <% } else { %>
+                                                    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                                                    <div class="dropdown-menu">
+                                                        <% if (item.orderStatus === 'Placed') { %>
+                                                            <a class="dropdown-item" href="#">Cancel order</a>
+                                                            <a class="dropdown-item" href="#">Dispatch</a>
+                                                        <% } else if (item.orderStatus === 'Shipped') { %>
+                                                            <a class="dropdown-item" href="#">Delivered</a>
+                                                        <% } else if (item.orderStatus === 'Cancel Requested') { %>
+                                                            <a class="dropdown-item" href="#">Accept</a>
+                                                            <a class="dropdown-item" href="#">Decline</a>
+                                                        <% } else { %>
+                                                            <a class="dropdown-item" href="#">No Action</a>
+                                                        <% } %>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+              
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--Order list-->
+
+</div>
+<!-- content-wrapper ends -->
+<!-- partial:../../partials/_footer.html -->
+<%- include('../layouts/adminFooter.ejs') %>
+
+<script>
+    function cancelStatus(orderId, status)
+        {
+          console.log(orderId, status);
+          $.ajax({
+            url:'/admin/cancelOrder',
+            method:'put',
+            data: {
+              orderId: orderId,
+              status: status
+            },
+            success:(response)=>
+            {
+              if(response.update)
+              {
+                location.reload() 
+              }
+            }
+          })
+        }
+</script>

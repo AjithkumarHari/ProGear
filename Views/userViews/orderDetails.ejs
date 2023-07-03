@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="img/fav.png">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>ProGear</title>
+
+	<!--
+		CSS
+		============================================= -->
+	<link rel="stylesheet" href="css/linearicons.css">
+	<link rel="stylesheet" href="css/owl.carousel.css">
+	<link rel="stylesheet" href="css/themify-icons.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/nice-select.css">
+	<link rel="stylesheet" href="css/nouislider.min.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+
+	<!-- Start Header Area -->
+		<%- include('../layouts/userHeader.ejs') %>
+	<!-- End Header Area -->
+
+	<!--================Order Details Area =================-->
+	<section class="order_details section_gap">
+	<div class="container">
+		<br><br><br>	
+		<div class="row order_d_inner">
+			<div class="col-lg-5" style="border: 1px solid #fff;  margin-left:60px;">
+				<br>
+				<div class="details_item">
+					<h4>Order Info</h4>
+					<ul class="list">
+						<li><a href="#"><span>Order number</span> : <%= orderDetails[0]._id %></a></li>
+						<li><a href="#"><span>Date</span> : <%= orderDetails[0].date %></a></li>
+						<li><a href="#"><span>Total</span> :  ₹<%= orderDetails[0].totalPrice %></a></li>
+						<li><a href="#"><span>Payment method</span> : <%= orderDetails[0].paymentMethod %></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-lg-5" style="border: 1px solid #fff; margin-left:60px;">
+				<br>
+				<div class="details_item">
+					<h4>Billing Address</h4>
+					<ul class="list">
+						<li><a href="#"><span>House address</span> : <%= address.item.houseAddress %></a></li>
+						<li><a href="#"><span>Street</span> : <%= address.item.street %></a></li>
+						<li><a href="#"><span>City</span> : <%= address.item.city %></a></li>
+						<li><a href="#"><span>Postcode </span> : <%= address.item.pin %></a></li>
+					</ul>
+				</div>
+			</div>	
+		</div>
+		<div class="order_details_table">
+			<h2>Order Details</h2>
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">Product</th>
+							<th scope="col">Quantity</th>
+							<th scope="col">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% products.forEach((product) => { %>
+						<tr>
+							<td>
+								<p><%= product.productName %></p>
+							</td>
+							<td>
+								<h5>x <%= product.quantity %></h5>
+							</td>
+							<td>
+								<p>₹<%= product.productPrice %></p>
+							</td>
+						</tr>
+						<% }); %>
+
+						<tr>
+							<td>
+								<h4>Subtotal</h4>
+							</td>
+							<td>
+								<h5></h5>
+							</td>
+							<td>
+								<p> ₹<%= orderDetails[0].totalPrice %></p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4>Shipping</h4>
+							</td>
+							<td>
+								<h5></h5>
+							</td>
+							<td>
+								<p>₹0.00</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4>Total</h4>
+							</td>
+							<td>
+								<h5></h5>
+							</td>
+							<td>
+								<p> ₹<%= orderDetails[0].totalPrice %></p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+						
+
+								
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			<% if(orderDetails[0].orderStatus === 'Placed') { %>
+				<div style="margin-left: 410px;">
+					<a id="btn" onclick="cancelOrder('<%= orderDetails[0]._id %>', 'Cancel Requested')"> CANCEL ORDER</a>
+				</div>	
+			<% } else if (orderDetails[0].orderStatus === 'Delivered') { %>
+				<div style="margin-left: 410px;">
+					<a id="btn" onclick="cancelOrder('<%= orderDetails[0]._id %>', 'Return Requested')"> RETURN</a>
+				</div>	
+			<% } %>
+		</div>
+	</div>
+</section>
+
+	<!--================End Order Details Area =================-->
+
+	<!-- start footer Area -->
+		<%- include('../layouts/userFooter.ejs') %>
+	<!-- End footer Area -->
+
+
+
+
+	<script src="js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	 crossorigin="anonymous"></script>
+	<script src="js/vendor/bootstrap.min.js"></script>
+	<script src="js/jquery.ajaxchimp.min.js"></script>
+	<script src="js/jquery.nice-select.min.js"></script>
+	<script src="js/jquery.sticky.js"></script>
+	<script src="js/nouislider.min.js"></script>
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<!--gmaps Js-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<script src="js/gmaps.min.js"></script>
+	<script src="js/main.js"></script>
+
+	<script>
+		function cancelOrder(orderId,status)
+			{
+				console.log(orderId);
+				$.ajax({
+				url:'/cancelOrder',
+				method:'put',
+				data: {
+					orderId: orderId,
+				status:status
+
+				},
+				success:(response)=>
+				{
+					if(response)
+					{
+					location.reload()
+					}
+				}
+				})
+			  }
+	</script>
+	
+</body>
+
+</html>

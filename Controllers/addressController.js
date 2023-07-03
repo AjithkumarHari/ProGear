@@ -1,4 +1,5 @@
 const Address = require("../Model/adderssModel")
+const Category = require('../Model/categoryModel')
 
 const addressHelper = require("../Helper/addressHelper");
 
@@ -7,19 +8,26 @@ const addressHelper = require("../Helper/addressHelper");
 module.exports.viewAddress = async (req, res) => {
     try {
       const userId = res.locals.user.id;
-      console.log(userId);
+      // console.log(userId);
       const addressDetails = await addressHelper.getAddressDetails(userId);
+      const category = await Category.find({ })
+
+      // console.log("addressDetails",addressDetails);
+
   
       if (addressDetails) {
-        res.render('address', { addressDetails , userId});
+        res.render('address', { addressDetails , userId , category, token:null});
       } else {
-        res.render('address');
+        res.render('address',{addressDetails:[],category, token:null});
       }
     } catch (error) {
       console.log(error);
       res.send({ success: false, error: error.message });
     }
   };
+
+
+
 
 
    
@@ -38,6 +46,9 @@ module.exports.addNewAddress = async (req, res) =>{
     }
     
 };
+
+
+
 
 
 //GET EDIT ADDRESS
@@ -59,6 +70,8 @@ module.exports.editAddress = async (req, res) =>{
 
 
 
+
+
 module.exports.deleteAddress = async (req, res) =>{
   try {
       const id = req.query
@@ -75,6 +88,10 @@ module.exports.deleteAddress = async (req, res) =>{
   }
   
 };
+
+
+
+
 
 //POST
 module.exports.changeDefaultAddress = async (req, res) =>{
@@ -110,3 +127,7 @@ module.exports.changeDefaultAddress = async (req, res) =>{
   }
 
 }
+
+
+
+

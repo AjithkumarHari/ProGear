@@ -1,0 +1,41 @@
+	<%- include('../layouts/adminHeader.ejs') %>
+
+        <!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">Add Category</h3>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/admin/category">Category Management</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Add Category</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Enter the details of the new category</h4>
+            <form class="forms-sample" action="/admin/addCategory" method="POST">
+              <div class="form-group">
+                <label for="exampleInputName1">Name</label>
+                <input type="text" class="form-control" id="exampleInputName1" name="name">
+              </div>
+              <div class="form-group">
+                <label for="exampleTextarea1">Description</label>
+                <textarea class="form-control" id="exampleTextarea1" rows="4" name="des"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary mr-2">Submit</button>
+              <button class="btn btn-dark">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          <%- include('../layouts/adminFooter.ejs') %>

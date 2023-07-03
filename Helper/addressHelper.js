@@ -6,13 +6,15 @@ const Address = require("../Model/adderssModel");
 // DISPLAY THE ADDRESSES OF THE USER
 getAddressDetails = async (userId) => {
   try {
-    const userAddress = await Address.findOne({ user_data: userId }).lean().exec();
+    const userAddress = await Address.findOne({ user_data: userId })
+    
 
+    console.log("userAddress",userAddress);
     if (userAddress) {
       const addressDetails = userAddress.address.map((address) => {
         return {
           name: address.name,
-          number: address.number,
+          number: address.number, 
           houseAddress: address.houseAddress,
           city: address.city,
           street: address.street,
@@ -20,6 +22,7 @@ getAddressDetails = async (userId) => {
           id: address._id
         };
       });
+      
 
       return addressDetails;
     }
@@ -66,7 +69,7 @@ addNewAddressHelper = async (newAddress,userId) => {
       user_data:userId,  
       address: [address]  
     });
-
+ 
     userData.save()
     console.log('user saved')
     }
