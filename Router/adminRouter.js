@@ -82,6 +82,12 @@ router.get('/reListProduct',productController.reListProduct)
 router.get('/order',adminController.orderManagement)
 router.get('/orderData',adminController.orderData)
 
+router.put('/orderStatus',adminController.changeStatus)
+
+router.put('/cancelStatus',adminController.cancelOrder)
+
+router.put('/returnOrder', adminController.returnOrder)
+
 
 router.get('/logout',adminController.logout)
 

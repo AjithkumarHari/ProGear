@@ -29,35 +29,51 @@
                                 <tbody>
                                 <% order.forEach(function(item) { %>
                                     <tr>
-                                        <td><span class="pl-2"><%= item.name %></span></td>
-                                        <td><%= item._id %></td>
-                                        <td>₹<%= item.totalPrice %></td>
-                                        <td><%= item.paymentMethod %></td>
-                                        <td><%= item.date %></td>
+                                        <td><span class="pl-2"><%= item.orders.name %></span></td>
+                                        <td><%= item.orders._id %></td>
+                                        <td>₹<%= item.orders.totalPrice %></td>
+                                        <td><%= item.orders.paymentMethod %></td>
+
+                                        <td><%= new Date(item.orders.createdAt).toLocaleDateString('en-US') %></td>
+                                       
                                         <td>
-                                            <% if (item.orderStatus === 'Placed') { %>
-                                                <div class="badge badge-outline-primary"><%= item.orderStatus %></div>
-                                            <% } else if (item.orderStatus === 'Shipped') { %>
-                                                <div class="badge badge-outline-info"><%= item.orderStatus %></div>
-                                            <% } else if (item.orderStatus === 'Cancel Requested') { %>
-                                                <div class="badge badge-outline-warning"><%= item.orderStatus %></div>
-                                            <% } else if (item.orderStatus === 'Delivered') { %>
-                                                <div class="badge badge-outline-success"><%= item.orderStatus %></div>
+                                            <% if (item.orders.orderStatus === 'Placed') { %>
+                                                <div class="badge badge-outline-primary"><%= item.orders.orderStatus %></div>
+
+                                            <% } else if (item.orders.orderStatus === 'Dispatched') { %>
+                                                <div class="badge badge-outline-info"><%= item.orders.orderStatus %></div>
+
+                                            <% } else if (item.orders.orderStatus === 'Cancel Requested') { %>
+                                                <div class="badge badge-outline-warning"><%= item.orders.orderStatus %></div>
+
+                                            <% } else if (item.orders.orderStatus === 'Return Requested') { %>
+                                                <div class="badge badge-outline-warning"><%= item.orders.orderStatus %></div>
+
+                                            <% } else if (item.orders.orderStatus === 'Delivered') { %>
+                                                <div class="badge badge-outline-success"><%= item.orders.orderStatus %></div>
+
+
+                                                <% } else if (item.orders.orderStatus === 'Return Declined') { %>
+                                                    <div class="badge badge-outline-secondary"><%= item.orders.orderStatus %></div>
+
+                                                    <% } else if (item.orders.orderStatus === 'Return Accepted') { %>
+                                                        <div class="badge badge-outline-secondary"><%= item.orders.orderStatus %></div>
+
                                             <% } else { %>
-                                                <div class="badge badge-outline-danger"><%= item.orderStatus %></div>
+                                                <div class="badge badge-outline-danger"><%= item.orders.orderStatus %></div>
                                             <% } %>
                                         </td>
                                        
                                         <td><a class="btn btn-light create-new-button" id="createbuttonDropdown" aria-expanded="false" href="/admin/orderData?id=<%= item._id %>">View</a></td>
                                         <td>
                                             <div class="input-group-prepend">
-                                                <% if (item.orderStatus === 'Cancelled' || item.orderStatus === 'Delivered') { %>
+                                                <% if (item.orders.orderStatus === 'Cancelled' || item.orders.orderStatus === 'Delivered') { %>
                                                     <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>Action</button>
                                                     <div class="dropdown-menu">
-                                                        <% if (item.orderStatus === 'Placed') { %>
+                                                        <% if (item.orders.orderStatus === 'Placed') { %>
                                                             <a class="dropdown-item" href="#">Cancel order</a>
                                                             <a class="dropdown-item" href="#">Dispatch</a>
-                                                        <% } else if (item.orderStatus === 'Shipped') { %>
+                                                        <% } else if (item.orders.orderStatus === 'Shipped') { %>
                                                             <a class="dropdown-item" href="#">Delivered</a>
                                                         <% } else if (item.orderStatus === 'Cancel Requested') { %>
                                                             <a class="dropdown-item" href="#">Accept</a>
@@ -69,16 +85,25 @@
                                                 <% } else { %>
                                                     <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                                                     <div class="dropdown-menu">
-                                                        <% if (item.orderStatus === 'Placed') { %>
-                                                            <a class="dropdown-item" href="#">Cancel order</a>
-                                                            <a class="dropdown-item" href="#">Dispatch</a>
-                                                        <% } else if (item.orderStatus === 'Shipped') { %>
-                                                            <a class="dropdown-item" href="#">Delivered</a>
-                                                        <% } else if (item.orderStatus === 'Cancel Requested') { %>
-                                                            <a class="dropdown-item" href="#">Accept</a>
-                                                            <a class="dropdown-item" href="#">Decline</a>
+
+                                                        <% if (item.orders.orderStatus === 'Placed') { %>
+                                                            <a class="dropdown-item" href="#" onclick="cancelStatus('<%=item.orders._id%>','Cancel')">Cancel order</a>
+                                                            <a class="dropdown-item" href="#" onclick="orderStatus('<%=item.orders._id%>','Dispatched')">Dispatch</a>
+
+                                                        <% } else if (item.orders.orderStatus === 'Dispatched') { %>
+                                                            <a class="dropdown-item" href="#" onclick="orderStatus('<%=item.orders._id%>','Delivered')">Delivered</a>
+
+                                                        <% } else if (item.orders.orderStatus === 'Cancel Requested') { %>
+                                                            <a class="dropdown-item" href="#" onclick="cancelStatus('<%=item.orders._id%>','Cancelled')">Accept</a>
+                                                            <a class="dropdown-item" href="#" onclick="cancelStatus('<%=item.orders._id%>','Cancel Declined')">Decline</a>
+
+                                                        <% } else if (item.orders.orderStatus === 'Return Requested') { %>
+                                                            <a class="dropdown-item" href="#" onclick="returnOrder('<%=item.orders._id%>','Return Accepted')">Accept</a>
+                                                            <a class="dropdown-item" href="#" onclick="returnOrder('<%=item.orders._id%>','Return Declined')">Decline</a>
+
                                                         <% } else { %>
                                                             <a class="dropdown-item" href="#">No Action</a>
+
                                                         <% } %>
                                                     </div>
                                                 <% } %>
@@ -89,6 +114,27 @@
                                     <% }) %>
                                 </tbody>
                             </table>
+                            <div class="pagination-area mt-15 mb-50" style="width: 50px;">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-start">
+                                        <% if (page > 1) { %>
+                                        <li class="page-item active"><a class="page-link" href="/admin/order?page=<%= page - 1 %>&limit=<%= limit %>" >Pre</a></li>
+                                        <% } %>
+                                        <!-- <li class="page-item">Page <%= page %> of <%= totalPages %></li> -->
+                                        <% for (let i = 1; i <= totalPages; i++) { %>
+                                            <% if (i === page) { %>
+                                                <li class="page-item active" ><span><%= i %> </span></li>
+                                            <% } else { %>
+                                              <li class="page-item active" ><a class="page-link" href="/admin/order?page=<%= i %>&limit=<%= limit %>"><%= i %></a></li>
+                                            <% } %>
+                                          <% } %>
+                                        <% if (page < totalPages) { %>
+                                        <li class="page-item active"><a class="page-link" href="/admin/order?page=<%= page + 1 %>&limit=<%= limit %>" style="width: 100px;">Next</i>
+                                        </a></li>
+                                        <% } %>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,23 +149,73 @@
 <%- include('../layouts/adminFooter.ejs') %>
 
 <script>
-    function cancelStatus(orderId, status)
+  
+  
+    function orderStatus(orderId, status)
+    {
+      console.log(orderId, status);
+      $.ajax({
+        url:'/admin/orderStatus',
+        method:'put',
+        data: {
+          orderId: orderId,
+          status: status
+        },
+        success:(response)=>
         {
-          console.log(orderId, status);
-          $.ajax({
-            url:'/admin/cancelOrder',
-            method:'put',
-            data: {
-              orderId: orderId,
-              status: status
-            },
-            success:(response)=>
-            {
-              if(response.update)
-              {
-                location.reload() 
-              }
-            }
-          })
-        }
+          if(response)
+          {
+            location.reload()
+          }
+        }
+      })
+    }
+    function cancelStatus(orderId, status)
+    {
+      console.log(orderId, status);
+      $.ajax({
+        url:'/admin/cancelStatus',
+        method:'put',
+        data: {
+          orderId: orderId,
+          status: status
+        },
+        success:(response)=>
+        {
+          if(response.status)
+          {
+            location.reload()
+          }
+        }
+      })
+    }
+    
+    function returnOrder(orderId, status)
+    {
+      console.log(orderId, status);
+      $.ajax({
+        url:'/admin/returnOrder',
+        method:'put',
+        data: {
+          orderId: orderId,
+          status: status
+        },
+        success:(response)=>
+        {
+          if(response)
+          {
+            location.reload()
+          }
+        }
+      })
+    }
+    
+    // $(document).ready(function () {
+    //   $('#dtOrderExample').DataTable({
+    //     "order": [[ 3, "desc" ]]
+    //   });
+    //     $('.dataTables_length').addClass('bs-select');
+    // });
+    
+       </script>
 </script>

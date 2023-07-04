@@ -458,6 +458,7 @@ module.exports.checkoutPage = async ( req, res ) => {
           
           
         const address = await addressData.findOne({ user_data: user.id }).lean().exec();
+
         console.log("address",address);
 
 
