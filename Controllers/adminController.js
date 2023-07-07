@@ -130,7 +130,7 @@ module.exports.orderManagement = async( req,res ) =>{
 
     try {
       const page = parseInt(req.query.page) || 1; // Current page number, default is 1
-      const limit = parseInt(req.query.limit) || 5; // Number of items per page, default is 10
+      const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
   
       const totalOrders = await orderData.aggregate([
         { $unwind: "$orders" },
@@ -138,7 +138,7 @@ module.exports.orderManagement = async( req,res ) =>{
       ]);
       const count = totalOrders.length > 0 ? totalOrders[0].count : 0;
       const totalPages = Math.ceil(count / limit);
-      console.log(totalPages);
+      // console.log(totalPages);
   
       const skip = (page - 1) * limit;
   
@@ -148,7 +148,7 @@ module.exports.orderManagement = async( req,res ) =>{
         { $skip: skip },
         { $limit: limit },
       ]);
-      console.log("order",order); 
+      // console.log("order",order); 
   
       res.render("orderManagement", { order, 
         totalPages, page,limit 
@@ -158,45 +158,25 @@ module.exports.orderManagement = async( req,res ) =>{
     }
   };
 
+  //--------------------------------------------ORDER DATA------------------------------------------------
 //GET
 module.exports.orderData = async (req,res) =>{ 
 
   try {
-      const user = res.locals.user.id
       const id = req.query.id
       console.log(id);
 
-      const order = await orderData.aggregate([
-        {
-            $match: {
-            "orders._id": new mongoose.Types.ObjectId(id),
-            user: new mongoose.Types.ObjectId(user),
-            },
-        },
-        { $unwind: "$orders" },
-      ])
-
-      console.log("order",order);
-
-      adminHelper.getOrderData(id, user).then((orders) => {
+      adminHelper.getOrderData(id).then((orders) => {
         
 
         const address = orders[0].shippingAddress
         const products = orders[0].productDetails
 
-        
-        orderDetails = orders.map(history =>{
-          let createdOnIST = moment(history.date)
-          .tz('Asia/kolkata')
-          .format('DD-MM-YYYY h:mm A' );   
+        console.log("orders",orders);
+        console.log("products",products);
 
-          return{...history, date:createdOnIST};
-      })
-        console.log("orderdata",orderDetails);
-        // console.log("products",products);
-
-
-        res.render('orderData',{orderDetails, address,products})
+ 
+        res.render('orderData',{orders, address,products})
       });    
   } catch (error) { 
       console.log(error);
@@ -221,47 +201,6 @@ module.exports.changeStatus = async(req,res)=>{
 
 }
 
-// const cancelOrder = async(req,res)=>{
-//   let orderId = req.body.orderId
-//   let status = req.body.status
-
-//   adminHelper.cancelOrder(orderId,status).then((response) => {
-//     res.send(response);
-//  });
-
-// }
-
-module.exports.cancelOrder = (req,res) => {
-  try {
-    console.log('cancel order');
-    const orderId=req.body.orderId
-    const status=req.body.status
-    return new Promise(async (resolve, reject) => {
-      orderData.findOne({ "orders._id": new mongoose.Types.ObjectId(orderId) }).then((orders) => {
-        const order = orders.orders.find((order) => order._id == orderId);
-
-        if (status == 'Cancelled' || status == 'Cancel Declined'  || status == 'Cancel') {
-          orderData.updateOne(
-            { "orders._id": new mongoose.Types.ObjectId(orderId) },
-            {
-              $set: {
-               
-                "orders.$.orderStatus": status,
-                "orders.$.paymentStatus": "No Refund"
-              }
-            }
-          ).then((response) => {
-            resolve(response);
-            
-          });
-        }
-      });
-    });
-  } catch (error) {
-    console.log(error.message);
-    }
-  };
-
 
 ///order details slip
 
@@ -282,11 +221,24 @@ module.exports.orderDetails = async (req,res)=>{
   
   }
 
-module.exports.returnOrder = async(req,res)=>{
+
+module.exports.cancelOrder = async(req,res)=>{
+  const userId = res.locals.user.id
   const orderId = req.body.orderId
   const status = req.body.status
 
-  adminHelper.returnOrder(orderId,status).then((response) => {
+  adminHelper.cancelOrderHelper(orderId,userId,status).then((response) => {
+    res.send(response);
+  });
+
+}
+
+module.exports.returnOrder = async(req,res)=>{
+  const orderId = req.body.orderId
+  const status = req.body.status
+  const userId = res.locals.user.id
+  // console.log("userId",userId);
+  adminHelper.returnOrderHelper(orderId,userId,status).then((response) => {
     res.send(response);
   });
 

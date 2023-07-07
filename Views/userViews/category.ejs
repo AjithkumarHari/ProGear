@@ -28,6 +28,11 @@
 	<link rel="stylesheet" href="css/nouislider.min.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/main.css">
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
 </head>
 
 <body id="category">
@@ -57,20 +62,20 @@
 			<div class="col-xl-9 col-lg-8 col-md-7">
 				<!-- Start Filter Bar -->
 				<div class="filter-bar d-flex flex-wrap align-items-center">
-					<div class="sorting">
+					<!-- <div class="sorting">
 						<select>
 							<option value="1">Default sorting</option>
 							<option value="1">Default sorting</option>
 							<option value="1">Default sorting</option>
 						</select>
-					</div>
-					<div class="sorting mr-auto">
+					</div> -->
+					<!-- <div class="sorting mr-auto">
 						<select>
 							<option value="1">Show 12</option>
 							<option value="1">Show 12</option>
 							<option value="1">Show 12</option>
 						</select>
-					</div>
+					</div> -->
 					<div class="pagination">
 						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
 						<a href="#" class="active">1</a>
@@ -97,7 +102,7 @@
 									</div>
 									<div class="prd-bottom">
 	
-										<a href="" class="social-info">
+										<a class="social-info" onclick="addtocart('<%= product._id %>','<%= product.price %>')">
 											<span class="ti-bag"></span>
 											<p class="hover-text">add to bag</p>
 										</a>
@@ -105,7 +110,7 @@
 											<span class="lnr lnr-heart"></span>
 											<p class="hover-text">Wishlist</p>
 										</a>
-										<a href="" class="social-info">
+										<a href="/product?productId=<%= product._id %>" class="social-info">
 											<span class="lnr lnr-move"></span>
 											<p class="hover-text">view more</p>
 										</a>
@@ -119,13 +124,13 @@
 				<!-- End Best Seller -->
 				<!-- Start Filter Bar -->
 				<div class="filter-bar d-flex flex-wrap align-items-center">
-					<div class="sorting mr-auto">
+					<!-- <div class="sorting mr-auto">
 						<select>
 							<option value="1">Show 12</option>
 							<option value="1">Show 12</option>
 							<option value="1">Show 12</option>
 						</select>
-					</div>
+					</div> -->
 					<div class="pagination">
 						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
 						<a href="#" class="active">1</a>
@@ -207,7 +212,7 @@
 
 									</div>
 									<div class="d-flex mt-20">
-										<a href="#" class="view-btn color-2"><span>Add to Cart</span></a>
+										<a href="#" class="view-btn color-2"  ><span>Add to Cart</span></a>
 										<a href="#" class="like-btn"><span class="lnr lnr-layers"></span></a>
 										<a href="#" class="like-btn"><span class="lnr lnr-heart"></span></a>
 									</div>
@@ -236,6 +241,39 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
+
+
+	<script>
+		function addtocart(proId,price) {
+		  $.ajax({
+			url: '/addToCart/' + proId + '/' + price,
+			method: 'POST',
+	  
+			success: (response) => {
+			  if (response.status) {
+				Swal.fire({
+					title: 'Added To Cart',
+					text: 'Your Product has been added to Cart',
+					icon: 'success',
+					timer: 5000,
+					confirmButtonColor: '#e47312',
+					showCancelButton: true,
+					cancelButtonColor: '#e47312',
+					confirmButtonText: 'View Cart',
+					cancelButtonText: 'Continue Shopping'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						location.href = '/cart';
+					} else {
+						Swal.close();
+					}
+					});
+				
+			  }
+			}
+		  })
+		}
+	</script>
 </body>
 
 </html>

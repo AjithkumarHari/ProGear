@@ -52,6 +52,14 @@
                 <label for="exampleTextarea1">Description</label>
                 <textarea class="form-control" id="exampleTextarea1" rows="4" name="description"></textarea>
               </div>
+              <% if (typeof message !== 'undefined') { %>
+								<center>
+								<div class="audun_warn">
+									<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+									<%= message %>
+								</div>
+								</center>
+							<% } %>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <button class="btn btn-dark">Cancel</button>
             </form>

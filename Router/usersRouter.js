@@ -82,9 +82,10 @@ router.get('/deleteAddress/',addressController.deleteAddress)
 
 //Get Checkout Page 
 router.get('/checkout',userController.checkoutPage)
-//Get Checkout Page 
+//Post Checkout Page 
 router.post('/checkout',orderController.checkout)
-
+//Post of Razorpay
+router.post('/verifyRazorpayPayment',orderController.verifyRazorpayPayment) 
 // ----------------------------------------------------------------ORDER------------------------------------------------------------------------------
 
 

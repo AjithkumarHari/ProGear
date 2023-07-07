@@ -111,8 +111,7 @@
 							<div class="col-lg-5 col-md-6">
 								<div class="banner-content">
 									<h1>SCUF New <br>Collection!</h1>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+									<p>Performance gaming gear for serious player. Change your game, beat levels and win more with SCUF</p>
 									<!-- {{!-- <div class="add-bag d-flex align-items-center">
 										<a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
 										<span class="add-text text-uppercase">Add to Bag</span>
@@ -221,9 +220,11 @@
 				<div class="col-lg-6 text-center">
 					<div class="section-title">
 						<h1>Latest Products</h1>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-							dolore
-							magna aliqua.</p>
+							<p>
+								Various gaming accessories enhance the gaming experience. These include gaming 
+								controllers, mechanical keyboards, gaming mice with customizable buttons and DPI
+								settings, high-quality gaming headsets for immersive audio,and streaming equipment for content creators.
+							</p>
 					</div>
 				</div>
 			</div>
@@ -318,11 +319,22 @@
 			success: (response) => {
 			  if (response.status) {
 				Swal.fire({
-				  title: 'Added To Cart',
-				  text: 'Your Product has been added to Cart',
-				  icon: 'success',
-				  timer: 5000
-				})
+					title: 'Added To Cart',
+					text: 'Your Product has been added to Cart',
+					icon: 'success',
+					timer: 5000,
+					confirmButtonColor: '#e47312',
+					showCancelButton: true,
+					cancelButtonColor: '#e47312',
+					confirmButtonText: 'View Cart',
+					cancelButtonText: 'Continue Shopping'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						location.href = '/cart';
+					} else {
+						Swal.close();
+					}
+					});
 				
 			  }
 			}

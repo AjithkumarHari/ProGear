@@ -199,7 +199,7 @@
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
 
-<script>
+	<script>
 		function addtocart(proId,price) {
 		  $.ajax({
 			url: '/addToCart/' + proId + '/' + price,
@@ -208,12 +208,22 @@
 			success: (response) => {
 			  if (response.status) {
 				Swal.fire({
-				  title: 'Added To Cart',
-				  text: 'Your Product has been added to Cart',
-				  icon: 'success',
-				  timer: 5000
-				})
-				
+					title: 'Added To Cart',
+					text: 'Your Product has been added to Cart',
+					icon: 'success',
+					timer: 5000,
+					confirmButtonColor: '#e47312',
+					showCancelButton: true,
+					cancelButtonColor: '#e47312',
+					confirmButtonText: 'View Cart',
+					cancelButtonText: 'Continue Shopping'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						location.href = '/cart';
+					} else {
+						Swal.close();
+					}
+					});
 			  }
 			}
 		  })

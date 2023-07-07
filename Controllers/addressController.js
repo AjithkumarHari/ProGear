@@ -35,7 +35,7 @@ module.exports.viewAddress = async (req, res) => {
 
 module.exports.addNewAddress = async (req, res) =>{
     try {
-        console.log('Add New Adderss');
+        // console.log('Add New Adderss');
         if(addressHelper.addNewAddressHelper(req.body,res.locals.user.id)){
             res.redirect('/userAddress')
         }
@@ -56,7 +56,7 @@ module.exports.addNewAddress = async (req, res) =>{
 
 module.exports.editAddress = async (req, res) =>{
   try {
-      console.log('Edit Adderss');
+      // console.log('Edit Adderss');
       // console.log('edit address',req.body);
       if(addressHelper.editAddressHelper(req.body,res.locals.user.id)){
         res.redirect('/userAddress')
@@ -75,8 +75,7 @@ module.exports.editAddress = async (req, res) =>{
 module.exports.deleteAddress = async (req, res) =>{
   try {
       const id = req.query
-      console.log('Delete Adderss',id);
-
+      // console.log('Delete Adderss',id);
 
       // console.log('edit address',req.body);
       if(addressHelper.deleteAddressHelper(id,res.locals.user.id)){
@@ -98,12 +97,12 @@ module.exports.changeDefaultAddress = async (req, res) =>{
   
   try {
     const userId=res.locals.user._id.toString()
-    console.log('userid',userId);
+    // console.log('userid',userId);
     const result = req.body.addressRadio;
 
     const user = await Address.findOne({user_data: userId });
-    console.log('user addresses',user);
-    console.log('user default address',user.address);
+    // console.log('user addresses',user);
+    // console.log('user default address',user.address);
 
 
     const addressIndex = user.address.findIndex((address) => address._id.equals(result));
@@ -111,15 +110,15 @@ module.exports.changeDefaultAddress = async (req, res) =>{
       throw new Error('Address not found');
     }
 
-    console.log(addressIndex);
+    // console.log(addressIndex);
 
     const removedAddress = user.address.splice(addressIndex, 1)[0];
     user.address.unshift(removedAddress);
-    console.log( user.address);
+    // console.log( user.address);
 
 
     const final=await Address.updateOne({user_data: userId }, { $set: { address: user.address } });
-    console.log(final);
+    // console.log(final);
     res.redirect('/checkout')
 
   } catch (error) {

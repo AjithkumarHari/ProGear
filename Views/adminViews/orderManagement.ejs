@@ -67,21 +67,9 @@
                                         <td><a class="btn btn-light create-new-button" id="createbuttonDropdown" aria-expanded="false" href="/admin/orderData?id=<%= item._id %>">View</a></td>
                                         <td>
                                             <div class="input-group-prepend">
-                                                <% if (item.orders.orderStatus === 'Cancelled' || item.orders.orderStatus === 'Delivered') { %>
+                                                <% if (item.orders.orderStatus === 'Cancelled' || item.orders.orderStatus === 'Delivered' || item.orders.orderStatus === 'Pending') { %>
                                                     <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>Action</button>
-                                                    <div class="dropdown-menu">
-                                                        <% if (item.orders.orderStatus === 'Placed') { %>
-                                                            <a class="dropdown-item" href="#">Cancel order</a>
-                                                            <a class="dropdown-item" href="#">Dispatch</a>
-                                                        <% } else if (item.orders.orderStatus === 'Shipped') { %>
-                                                            <a class="dropdown-item" href="#">Delivered</a>
-                                                        <% } else if (item.orderStatus === 'Cancel Requested') { %>
-                                                            <a class="dropdown-item" href="#">Accept</a>
-                                                            <a class="dropdown-item" href="#">Decline</a>
-                                                        <% } else { %>
-                                                            <a class="dropdown-item" href="#">No Action</a>
-                                                        <% } %>
-                                                    </div>
+                                                    
                                                 <% } else { %>
                                                     <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                                                     <div class="dropdown-menu">
@@ -123,13 +111,13 @@
                                         <!-- <li class="page-item">Page <%= page %> of <%= totalPages %></li> -->
                                         <% for (let i = 1; i <= totalPages; i++) { %>
                                             <% if (i === page) { %>
-                                                <li class="page-item active" ><span><%= i %> </span></li>
+                                                <li class="page-item active" style="padding-right: 12px; padding-left: 12px; color: dodgerblue;"><span><%= i %> </span></li>
                                             <% } else { %>
                                               <li class="page-item active" ><a class="page-link" href="/admin/order?page=<%= i %>&limit=<%= limit %>"><%= i %></a></li>
                                             <% } %>
                                           <% } %>
                                         <% if (page < totalPages) { %>
-                                        <li class="page-item active"><a class="page-link" href="/admin/order?page=<%= page + 1 %>&limit=<%= limit %>" style="width: 100px;">Next</i>
+                                        <li class="page-item active"><a class="page-link" href="/admin/order?page=<%= page + 1 %>&limit=<%= limit %>" style="width: 80px;">Next</i>
                                         </a></li>
                                         <% } %>
                                     </ul>

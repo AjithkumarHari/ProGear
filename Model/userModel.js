@@ -35,6 +35,10 @@ const details = new mongoose.Schema({
         required : true,
         default : false
     },
+    wallet : {
+        type : Number,
+        default : 0
+    }
     
 })
 

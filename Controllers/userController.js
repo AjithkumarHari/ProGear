@@ -13,6 +13,8 @@ const Category = require('../Model/categoryModel')
  
 const otpHelper = require("../Helper/otpHelper")
 const { default: mongoose } = require("mongoose")
+const { resolve } = require("path")
+const { response } = require("../app")
 // const addressHelper = require("../Helper/addressHelper")
 // const { request } = require("../Router/usersRouter")
 
@@ -46,12 +48,12 @@ module.exports.homePage = async ( req, res ) => {
 module.exports.productPage = async ( req, res ) => {
     try{
         const id = req.query.productId
-        console.log('id', id);
+        // console.log('id', id);
         const category = await Category.find({ })
         const token = res.locals.user
         const product = await productData.findOne({ _id : id }).populate('category')
 
-        product ? console.log(product) : console.log('No product found');
+        // product ? console.log(product) : console.log('No product found');
         
         res.render('product',{product : product,category:category, token:token})
     }
@@ -112,14 +114,17 @@ module.exports.loginVerify = async (req,res) =>{
                     else{
                         const product = await productData.find({ })
                         const token = res.locals.user
-                        res.render('landing', { product: product, token: token });
-
-                        console.log('show landing page');
-                    
+                        const category = await Category.find({ })
                         //Create Token and Sending it as cookie
                         const jwttoken = createToken(userDetails._id)
                         res.cookie('jwt',jwttoken, {httpOnly: true, maxAge : maxAge*1000 })
                         console.log('token created');
+                        
+                        res.render('landing', { product:product, token:token, category :category});
+                        // res.redirect('/')
+
+                        console.log('show landing page');
+                    
                     }
                 }
                 else{
@@ -421,7 +426,7 @@ module.exports.updateProfile = async (req , res) => {
 module.exports.checkoutPage = async ( req, res ) => {
     try{
         let subtotal=0
-        console.log('checkout page'); 
+        // console.log('checkout page'); 
         const user = res.locals.user
 
         
@@ -459,7 +464,7 @@ module.exports.checkoutPage = async ( req, res ) => {
           
         const address = await addressData.findOne({ user_data: user.id }).lean().exec();
 
-        console.log("address",address);
+        // console.log("address",address);
 
 
         try {
@@ -468,6 +473,7 @@ module.exports.checkoutPage = async ( req, res ) => {
                 subtotal = cart.reduce((acc, itemId) => acc + itemId.itemPrice, 0);
                 // console.log('subtotal', subtotal);
             } else {
+                res.redirect('/cart')
                 throw new Error('Cart is empty or invalid.');
             }
             // console.log('check out page subtotal', subtotal);
@@ -491,38 +497,6 @@ module.exports.checkoutPage = async ( req, res ) => {
     }
 }
 
-// POST
-module.exports.checkout = async (req,res) =>{
-    try{
-        const user = res.locals.user
-
-      const { name, number, houseadd, city, street, pin, paymentMethod } = req.body;
-
-       
-        // console.log("USER :",user);
-        const details = new ({
-            user_data: user.id, // Assuming you have a user_data field in req.body with the ObjectId value
-            address: [{ name, number, houseadd, city, street, pin, paymentMethod }]
-            });
-            
-            details.save()
-            .then(() => {
-             
-                    res.render('confirmation');
-        
-               
-            })
-            .catch((err) => {
-                console.error("Error adding product:", err);
-                res.status(500).send("Error adding product to the database");
-            });
-        // console.log(details);
-        // res.send('form submit')
-    } catch(error){
-        console.log(error);
-        res.send({ success: false, error: error.message });
-    }
-}
 
 
 //***************************************************************  CATEGORY PAGE  *******************************************************//
@@ -534,13 +508,13 @@ module.exports.categoryPage = async (req,res) =>{
 
     try{
         const  categoryId = req.query.id
-        console.log("categoryId",categoryId);
+        // console.log("categoryId",categoryId);
 
         const category = await Category.find({ })
          
         const products = await productData.find({ category:new mongoose.Types.ObjectId(categoryId)})
         // console.log("products",products);
-        console.log("categories",category);
+        // console.log("categories",category);
         res.render('category',{products , category, token:null})
     }
     catch(err){ 

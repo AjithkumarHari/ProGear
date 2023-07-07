@@ -30,12 +30,16 @@ module.exports.addCategory = async (req ,res) => {
 //POST
 module.exports.newCategory = async (req ,res) => {
     try {
-        const categoryName = req.body.name
+        const {categoryName , description} = req.body
         const categoryExist = await categoryData.findOne({name : categoryName})
         console.log(categoryExist);
         if(categoryExist){
             res.render('addCategory',{message : "Category Already Exist"})
         }
+        // else if(categoryName == null){
+        //     res.render('addCategory',{message : "Category mo"})
+
+        // }
         else{
             const category = new categoryData({name:req.body.name, description: req.body.des});
             const savedCategory = await category.save();

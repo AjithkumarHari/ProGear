@@ -2,8 +2,14 @@ const mongoose = require('mongoose')
 const Order = require('../Model/orderModel')
 const Cart = require('../Model/cartModel')
 const Address = require('../Model/adderssModel')
+const User = require('../Model/userModel')
 
+const Razorpay = require('razorpay')
 
+var instance = new Razorpay({
+  key_id: 'rzp_test_yeqkJtgBPsd4gA',
+  key_secret: 'j3lOSCIfBWaXkv60WGrG87qR',
+});
 
 checktoutHelper =async (data, user)=>{
     try {
@@ -64,6 +70,22 @@ checktoutHelper =async (data, user)=>{
             let status,orderStatus
             if(data.payment_method == 'COD'){
                     (status = "Success"), (orderStatus = "Placed");
+            }
+            else if (data.payment_method === "wallet") {
+                const userData = await User.findById({ _id:user._id });
+                if (userData.wallet < data.total) {
+                  flag = 1;
+                  reject(new Error("Insufficient wallet balance!"));
+                  return 
+                } else {
+                  userData.wallet -= data.total;
+      
+                  await userData.save();
+                  (status = "Success"), (orderStatus = "Placed");
+                }
+              }
+            else if(data.payment_method == 'RazorPay'){
+                    (status = "Failed"), (orderStatus = "Pending");
             }
 
             const orderData = {
@@ -167,6 +189,7 @@ const getOrderDetails  = (orderId, userId) => {
   const cancelOrderHelper = async(orderId,status)=>{
     try {
       return new Promise((resolve, reject) => {
+
         Order.updateOne(
           { "orders._id": new mongoose.Types.ObjectId(orderId) },
           {
@@ -183,11 +206,126 @@ const getOrderDetails  = (orderId, userId) => {
   }
   
 
+  const getOrderIdHelper= async(user) =>{
+    try{
 
 
+      const result = await Order.aggregate([
+        {
+          $match: {
+            "user": new mongoose.Types.ObjectId(user)
+          }
+        },
+        {
+          $project: {
+            lastOrder: {
+              $arrayElemAt: [
+                "$orders",
+                -1
+              ]
+            }
+          }
+        },
+        {
+          $project: {
+            lastOrderId: "$lastOrder._id"
+          }
+        }  
+      ])
+
+
+    return result[0].lastOrderId
+
+    }catch (error) {
+      console.log(error.message);
+    }
+
+  }
+
+
+
+  const generateRazorpay = async(orderId,total)=>{
+    totalAmount= total*100
+    try{
+      return new Promise((resolve,reject)=>{
+        var options = {
+          amount: totalAmount,  // amount in the smallest currency unit
+          currency: "INR",
+          receipt: orderId
+        };
+        instance.orders.create(options, function(err, order) {
+          console.log("New Order",order);
+          if (err) {
+            console.log('Order Creation Error from Razorpay: ' + err);
+        } else {
+          resolve(order)
+        }
+          
+
+        });
+      })
+
+
+    }catch (error) {
+      console.log(error.message);
+    }
+
+  }
+
+///findLastOredrTotal
+
+const findLastTotal=async(user)=>{
+  try {
+  
+    // console.log("haiii");
+    const total=await Order.aggregate([
+      { $match: { "user": new Object(user) } },
+      { $unwind: "$orders" },
+      { $sort: { "orders.createdAt": -1 } },
+      { $limit: 1 },
+      { $project: { _id: 0, totalPrice: "$orders.totalPrice" } }
+    ])
+  
+    // console.log(total);
+     return total[0].totalPrice
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+const verifyRazorpayPaymentHelper = async(details) =>{
+  try{
+    return new Promise ((resolve,reject)=>{
+      const crypto = require('crypto')
+      let hmac = crypto.createHmac('sha256', 'j3lOSCIfBWaXkv60WGrG87qR');
+
+      hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
+
+      hmac = hmac.digest('hex')
+      console.log(hmac);
+      if(hmac == details['payment[razorpay_signature]']){
+        resolve()
+      }
+      else{
+        reject()
+      }
+    })
+
+  }catch (error) {
+    console.log(error.message);
+  }
+}
 module.exports={
     checktoutHelper,
     getOrder,
     getOrderDetails,
-    cancelOrderHelper
+    cancelOrderHelper,
+    getOrderIdHelper,
+    generateRazorpay,
+    findLastTotal,
+    verifyRazorpayPaymentHelper,
+    // returnOrderHelper
+    
 }

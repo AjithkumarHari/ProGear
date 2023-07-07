@@ -41,31 +41,40 @@ module.exports.addProduct = async (req ,res) => {
 
 //POST   
 module.exports.newProduct = async (req, res) => {
+try{
 
     const { name, description, category, price , brand} = req.body;
 
+    if(price<0){
+        const category = await categoryData.find({})
+        res.render('addProduct',{ category: category },{message:"price must be above 0"})
+    }else{
+        const filesArray = Object.values(req.files).flat();
+        const image = filesArray.map((file) => file.filename);
+      
+        const newProduct = new productData({
+          name,
+          description,
+          image,
+          brand,
+          category,
+          price,
+        });
+      
+        newProduct
+          .save()
+          .then(() => {
+            res.redirect('/admin/product');
+          })
+        
+    }
+}
     // console.log(req.files);
-    const filesArray = Object.values(req.files).flat();
-    const image = filesArray.map((file) => file.filename);
-  
-    const newProduct = new productData({
-      name,
-      description,
-      image,
-      brand,
-      category,
-      price,
-    });
-  
-    newProduct
-      .save()
-      .then(() => {
-        res.redirect('/admin/product');
-      })
-      .catch((err) => {
+   
+      catch(err) {
         console.error("Error adding product:", err);
         res.status(500).send("Error adding product to the database");
-      });
+          }
 };
 
 //***************************************************************  UPDATE-PRODUCT PAGE  *******************************************************//
