@@ -45,7 +45,7 @@ module.exports.cartPage = async ( req, res ) => {
               
                     if (cart && cart.length > 0) {
                       subtotal = cart.reduce((acc, item) => acc + item.total, 0);
-                      console.log('subtotal', subtotal);
+
                     } else {
                       throw new Error('Cart is empty or invalid.');
                     }
@@ -54,10 +54,6 @@ module.exports.cartPage = async ( req, res ) => {
       catch (error) {
         console.error('Error:', error.message);
       }
-
-
-
-        console.log('cart page subtotal', subtotal);
 
         const category = await Category.find({ })
 
@@ -88,17 +84,15 @@ module.exports.cartPage = async ( req, res ) => {
 module.exports.addToCart = async (req , res) => {
     try{
   
-        // cartHelper.addCart(req.params.id,res.locals.user.id,)
         cartHelper.addCart(req.params.id,res.locals.user.id,req.params.price)
         .then((response)=>{
           res.send(response)
         }) 
+
     }catch (error) {
         console.log(error.message)
         res.status(500).json({ error: 'Failed to add product to cart ' });
     }
-
-
 }
 
 
@@ -108,15 +102,14 @@ module.exports.addToCart = async (req , res) => {
 
 module.exports.removeFromCart = async (req, res )=>{
   try{
-      console.log("remove form cart");
-      const id = req.query.id
-      console.log('removing id',id);
-      const result = await cartData.updateOne(
-        { user_id: res.locals.user.id }, // Match the user_id
-        { $pull: { product: { product_id: new mongoose.Types.ObjectId(id) } } } // Remove the matching product_id from the product array
-      );
-      // console.log(result);
-      res.redirect('/cart')
+
+      const user = res.locals.user.id
+
+      cartHelper.deleteProduct(req.body,user).then((response) => {
+      res.send(response);
+
+      });
+    
   }catch (error) {
         console.log(error.message)
         res.status(500).json({ error: 'Failed to remove product from cart' });
@@ -130,8 +123,7 @@ module.exports.removeFromCart = async (req, res )=>{
 module.exports.changeItemQuantity = async (req, res )=>{
   try{
       console.log(" called change item quantity");
-      // const id = req.query.id
-      // console.log("body :",req.body);
+
       cartHelper.changeProductQuantity(req.body)
         .then((response)=>{
           res.send(response)

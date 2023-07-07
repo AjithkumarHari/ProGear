@@ -13,12 +13,8 @@ const addressController =  require('../Controllers/addressController')
 const orderController = require('../Controllers/orderController')
 
 
-
-  router.set('view engine','ejs')
 router.set('views','./Views/userViews')
 
-
-router.use(express.json())
 router.use(express.urlencoded({ extended : false }))
 
 
@@ -28,6 +24,7 @@ router.use(session({
     saveUninitialized: true,
   }))
 router.use(cookieparser())
+
 
 router.all('*',validate.checkUser)
 
@@ -65,10 +62,10 @@ router.get('/category', userController.categoryPage)
 //Get Cart Page 
 router.get('/cart',validate.authenticate,cartController.cartPage)
 router.post('/addToCart/:id/:price', cartController.addToCart);
-router.get('/removeFromCart',cartController.removeFromCart)
+router.delete('/removeFromCart',cartController.removeFromCart)
 router.post('/changeItemQuantity',cartController.changeItemQuantity)
 
-router.get('/profile',userController.profilePage)
+router.get('/profile',validate.authenticate,userController.profilePage)
 router.get('/editProfile',userController.editProfilePage)
 router.post('/updateProfile',userController.updateProfile)
 router.get('/userAddress',addressController.viewAddress)
@@ -79,6 +76,7 @@ router.post('/editAddress',addressController.editAddress)
 router.post('/changeDefaultAddress',addressController.changeDefaultAddress)
 
 router.get('/deleteAddress/',addressController.deleteAddress)
+// ----------------------------------------------------------------CHECKOUT------------------------------------------------------------------------------
 
 //Get Checkout Page 
 router.get('/checkout',userController.checkoutPage)
@@ -94,8 +92,6 @@ router.get('/orderDetails',orderController.orderDetails)
 router.get('/order',orderController.orderList)
 
 router.put('/cancelOrder',orderController.cancelOrder)
-
-
 
 
 

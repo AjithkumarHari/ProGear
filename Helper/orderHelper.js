@@ -142,7 +142,15 @@ getOrder = async (userId) => {
     try {
         console.log('get order helper');
   
-        const order = await Order.findOne({ user: new mongoose.Types.ObjectId(userId) })
+        const order = await Order.aggregate([
+          {
+            $match:{ user: new mongoose.Types.ObjectId(userId)}
+          },
+          { $unwind: "$orders" },
+          { $sort: { "orders.createdAt": -1 } },
+        ])
+
+        
 
         return order
         
@@ -245,11 +253,10 @@ const getOrderDetails  = (orderId, userId) => {
 
 
   const generateRazorpay = async(orderId,total)=>{
-    totalAmount= total*100
     try{
       return new Promise((resolve,reject)=>{
         var options = {
-          amount: totalAmount,  // amount in the smallest currency unit
+          amount: total*100,  // amount in the smallest currency unit
           currency: "INR",
           receipt: orderId
         };
@@ -261,7 +268,6 @@ const getOrderDetails  = (orderId, userId) => {
           resolve(order)
         }
           
-
         });
       })
 
@@ -314,7 +320,7 @@ const verifyRazorpayPaymentHelper = async(details) =>{
     })
 
   }catch (error) {
-    console.log(error.message);
+    console.log(error.message); 
   }
 }
 module.exports={

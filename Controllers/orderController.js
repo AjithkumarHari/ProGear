@@ -37,9 +37,10 @@ module.exports.checkout = async (req,res) =>{
                 if(data.payment_method === "RazorPay"){
 
                     const result = await orderHelper.getOrderIdHelper(userId.id)
-                    console.log("result",result);
+                    // console.log("result",result);
                     const total= await orderHelper.findLastTotal(userId._id)
-                    console.log("total",total);
+                    // console.log("total",total);
+
                     const order=await orderHelper.generateRazorpay(result.toString(),total)
 
                         res.json({ order:order});
@@ -69,27 +70,27 @@ module.exports.orderList = async (req,res) =>{
     try{
         const order = await orderHelper.getOrder(res.locals.user.id)
         
-        const orderDetails = order.orders
+        const orderDetails = order
 
-        orderHistory = orderDetails.map(history =>{
-            let createdOnIST = moment(history.date)
-            .tz('Asia/kolkata')
-            .format('DD-MM-YYYY');
+        // orderHistory = orderDetails.map(history =>{
+        //     let createdOnIST = moment(history.date)
+        //     .tz('Asia/kolkata')
+        //     .format('DD-MM-YYYY');
 
-            return{...history, date:createdOnIST};
-        })
+        //     return{...history, date:createdOnIST};
+        // })
 
         // const orders = order.orders
-        // console.log('order : ',orderHistory);
+        console.log('order : ',orderDetails);
         const category = await Category.find({ })
 
-        res.render('orders',{ order : orderHistory, category , token:null})
+        res.render('orders',{ order : orderDetails, category , token:null})
 
     }catch(error){
         console.log(error);
         res.send({ success: false, error: error.message });
     }
-
+ 
 }
 
 
@@ -145,40 +146,31 @@ module.exports.cancelOrder = async(req,res)=>{
     }
 }
 
-// module.exports.returnOrder = async(req,res)=>{
-//     const orderId = req.body.orderId
-//     const status = req.body.status
-//     const userId = req.body.userId
-  
-//     adminHelper.returnOrderHelper(orderId,userId,status).then((response) => {
-//       res.send(response);
-//     });
-  
-//   }
 
 module.exports.verifyRazorpayPayment = async (req, res) =>{
     try{
-        console.log("verifyRazorpayPayment",req.body);
+        // console.log("verifyRazorpayPayment",req.body);
         orderHelper.verifyRazorpayPaymentHelper(req.body).then( async ()=>{
             const orderId = req.body['order[receipt]']
-            // console.log("orderId",orderId);
+
             await Order.updateOne(
                 {
                   "orders._id": new mongoose.Types.ObjectId(orderId)
                 },
                 {
                   $set: {
+                    "orders.$.paymentStatus": "Success",
                     "orders.$.orderStatus": "Placed",
                     "orders.$.status":"Success",
                   }
                 }
               );
-            console.log("payment succcessfull");
 
+            res.json({status:'Success'})
 
+        }).catch(()=>{
 
-            console.log("res",response);
-            res.json({status:true})
+            res.json({status:'Failed'})
 
         })
 

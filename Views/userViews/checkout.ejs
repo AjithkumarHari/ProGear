@@ -546,8 +546,7 @@
             } else if (response.order.status==="created") {
                 console.log("razorpayPayment1");
                 console.log("order response",response.order);
-                          
-
+                        
                 razorpayPayment(response.order)
             }
         }
@@ -556,7 +555,6 @@
     function razorpayPayment(order){
 
         console.log("rezorpayPayment 2");
-
 
         var options = {
         "key": "rzp_test_yeqkJtgBPsd4gA", // Enter the Key ID generated from the Dashboard

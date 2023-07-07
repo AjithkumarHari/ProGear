@@ -15,8 +15,6 @@ const categoryController = require("../Controllers/categoryController")
 
 const validate = require("../Authentication/adminAuthentication")
 
-
-router.set('view engine','ejs')
 router.set('views','./Views/adminViews')
 
 router.use(session({

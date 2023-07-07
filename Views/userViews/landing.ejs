@@ -63,7 +63,35 @@
         transition: all 0.3s ease 0s;
         z-index: 1; }
 
-      .single-product .product-details .prd-bottom .social-inf .hover-txt {
+
+
+  .social-inf {
+      position: relative;
+      display: inline-block;
+      width: 35px;
+      -webkit-transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -o-transition: all 0.3s ease 0s;
+      transition: all 0.3s ease 0s;
+      overflow: hidden; }
+
+	  .social-inf span {
+        position: relative;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        text-align: center;
+        background: #828bb2;
+        border-radius: 50%;
+        display: inline-block;
+        color: #fff;
+        -webkit-transition: all 0.3s ease 0s;
+        -moz-transition: all 0.3s ease 0s;
+        -o-transition: all 0.3s ease 0s;
+        transition: all 0.3s ease 0s;
+        z-index: 1; }
+
+		.social-inf .hover-txt {
         position: absolute;
         left: 0;
         top: 3px;
@@ -80,16 +108,7 @@
         transition: all 0.3s ease 0s;
         opacity: 0;
         visibility: hidden; }
-      .single-product .product-details .prd-bottom .social-inf:hover {
-        width: 150px; }
-        .single-product .product-details .prd-bottom .social-inf:hover span:after {
-          opacity: 1;
-          visibility: visible; }
-        .single-product .product-details .prd-bottom .social-inf:hover .hover-txt {
-          opacity: 1;
-          visibility: visible;
-          left: 50px; 
-        }
+
 
 	</style>
 </head>
@@ -148,54 +167,32 @@
 	</section>
 	<!-- End banner Area -->
 
-	<!-- start features Area -->
-	<section class="features-area section_gap">
-		<div class="container">
-			<div class="row features-inner">
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-features">
-						<div class="f-icon">
-							<img src="img/features/f-icon1.png" alt="">
-						</div>
-						<h6>Free Delivery</h6>
-						<p>Free Shipping on all order</p>
-					</div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-features">
-						<div class="f-icon">
-							<img src="img/features/f-icon2.png" alt="">
-						</div>
-						<h6>Return Policy</h6>
-						<p>Free Shipping on all order</p>
-					</div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-features">
-						<div class="f-icon">
-							<img src="img/features/f-icon3.png" alt="">
-						</div>
-						<h6>24/7 Support</h6>
-						<p>Free Shipping on all order</p>
-					</div>
-				</div>
-				<!-- single features -->
-				<div class="col-lg-3 col-md-6 col-sm-6">
-					<div class="single-features">
-						<div class="f-icon">
-							<img src="img/features/f-icon4.png" alt="">
-						</div>
-						<h6>Secure Payment</h6>
-						<p>Free Shipping on all order</p>
-					</div>
-				</div>
+	<section class="brand-area   section_gap	" style="width: 100%;">
+		<div class="container" >
+			<div class="row features-inner " style="padding-left: 30px; padding-right: 30px;" >
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="img/brand/1.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="img/brand/2.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="img/brand/3.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="img/brand/4.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="img/brand/5.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="img/brand/6.png" alt="">
+				</a>
 			</div>
 		</div>
 	</section>
-	<!-- end features Area -->
+
+	
 
 	<!-- Start category Area -->
 	<section class="category-area">
@@ -212,18 +209,18 @@
 	<!-- End category Area -->
 
 	<!-- start product Area -->
-	<section class="owl-carousel active-product-area section_gap">
+	<section class=" owl-stage-outer section_gap">
 	<!-- single product slide -->
-	<div class="single-product-slider">
-		<div class="container">
+	<div >
+		<div class="container" >
 			<div class="row justify-content-center">
-				<div class="col-lg-6 text-center">
+				<div class="col-lg-8 text-center">
 					<div class="section-title">
 						<h1>Latest Products</h1>
 							<p>
 								Various gaming accessories enhance the gaming experience. These include gaming 
 								controllers, mechanical keyboards, gaming mice with customizable buttons and DPI
-								settings, high-quality gaming headsets for immersive audio,and streaming equipment for content creators.
+								settings, high-quality gaming headsets for immersive audio.
 							</p>
 					</div>
 				</div>
@@ -259,35 +256,15 @@
 		</div>
 	</div>
 	<!-- single product slide -->
-	<div class="single-product-slider">
+	<!-- <div class="single-product-slider">
 		
-	</div>
+	</div> -->
 </section>
 
 	<!-- end product Area -->
 
 	<!-- Start brand Area -->
-	<section class="brand-area section_gap">
-		<div class="container">
-			<div class="row">
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/1.png" alt="">
-				</a>
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/2.png" alt="">
-				</a>
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/3.png" alt="">
-				</a>
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/4.png" alt="">
-				</a>
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/5.png" alt="">
-				</a>
-			</div>
-		</div>
-	</section>
+	
 	<!-- End brand Area -->
 
 	<!-- start footer Area -->

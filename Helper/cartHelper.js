@@ -1,5 +1,6 @@
 
 const Cart = require('../Model/cartModel')
+const Product = require('../Model/productModel')
 
 const mongoose = require('mongoose')
 
@@ -77,11 +78,6 @@ const changeProductQuantity = async (data) => {
       const cartFind = await Cart.findOne({ user_id: userId });
       const cartId = cartFind._id;
       const count = data.count;
-      // console.log(userId,"userId");
-      // console.log(productId,'productid');
-      // console.log(quantity,'quantity');
-      // console.log(cartId,'cartId');
-      // console.log(count,'count');
       
      
 // Find the cart for the given user and product
@@ -89,7 +85,8 @@ const changeProductQuantity = async (data) => {
       { user_id: userId, 'product.product_id': productId },
       { $inc: { 'product.$.quantity': count } },
       { new: true }
-      ).populate('product.product_id');
+      ).populate('product.product_id'
+      );
 
 
       // console.log('helper cart',cart);
@@ -98,7 +95,7 @@ const changeProductQuantity = async (data) => {
       // Update the total for the specific product in the cart
       const updatedProduct = cart.product.find(product => product.product_id._id.equals(productId));
       updatedProduct.total = updatedProduct.product_id.price * updatedProduct.quantity;
-      console.log('updateproduct',updatedProduct.total);
+      // console.log('updateproduct',updatedProduct.total);
       
       await cart.save();
 
@@ -116,18 +113,17 @@ const changeProductQuantity = async (data) => {
       const subtotal = cart.product.reduce((acc, product) => {
       return acc + product.total;
       }, 0);
-      console.log('subtotal after change quantity',subtotal);
-      // Prepare the response object
+      // console.log('subtotal after change quantity',subtotal);
+
       const response = {
           quantity: updatedProduct.quantity,
           total : updatedProduct.total,
           subtotal: subtotal
       };
-      console.log('res',response);
+      // console.log('response from change cart quantity ',response);
       return response
       } catch (error) {
           console.log(error);
-          // res.status(500).json({ error: error.message });
            }
           }
 
@@ -155,8 +151,34 @@ catch (error) {
 }
 }
 
+const deleteProduct =  async (data,user) => {
+
+  const proId = data.proId;
+  
+  return new Promise((resolve, reject) => {
+    try {
+      
+       Cart.updateOne( 
+       
+        { user_id: user }, 
+        { 
+          $pull: { product: { product_id: new mongoose.Types.ObjectId(proId) } } 
+         
+        }
+      )
+
+      .then(() => {
+        resolve({ status: true });
+      });
+    } catch (error) { 
+      throw error;
+   }
+  });
+}
+
 module.exports = {
   addCart,
   changeProductQuantity,
-  getCart
+  getCart,
+  deleteProduct
 }

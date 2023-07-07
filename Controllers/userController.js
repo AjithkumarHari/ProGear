@@ -112,16 +112,13 @@ module.exports.loginVerify = async (req,res) =>{
                         res.render('blocked')
                     }
                     else{
-                        const product = await productData.find({ })
-                        const token = res.locals.user
-                        const category = await Category.find({ })
+
                         //Create Token and Sending it as cookie
                         const jwttoken = createToken(userDetails._id)
                         res.cookie('jwt',jwttoken, {httpOnly: true, maxAge : maxAge*1000 })
                         console.log('token created');
                         
-                        res.render('landing', { product:product, token:token, category :category});
-                        // res.redirect('/')
+                        res.redirect('/')
 
                         console.log('show landing page');
                     
@@ -129,12 +126,10 @@ module.exports.loginVerify = async (req,res) =>{
                 }
                 else{
                     res.render('login',{message:'password incorrect'})
-                    console.log('password incorrect');
                 }
             }
             else{
                 res.render('login',{message : 'incorrect email Id'})
-                console.log('incorrect email Id');
             }
     }
     catch(error){
@@ -257,7 +252,7 @@ module.exports.signupAction = async (req,res) =>{
     
     const OTP = otpHelper.generateOtp()
     // await otpHelper.sendOtp(data.number,OTP)
-    console.log(OTP)
+    // console.log(OTP)
 
 
     req.session.otp = OTP
@@ -271,7 +266,7 @@ module.exports.signupAction = async (req,res) =>{
 //OTP POST
 module.exports.verifySignupOtp = async (req,res) =>{
     try{
-         const userOtp = req.body.otp
+        const userOtp = req.body.otp
         const newUser = req.session.userData;
     
         sessionOtp = req.session.otp
@@ -290,15 +285,13 @@ module.exports.verifySignupOtp = async (req,res) =>{
                 number:newUser.number
             })
             const userSave = await user.save()
-            console.log('user saved');
             if(userSave){
     
                 //creating sending token as a cookie
-                const usertoken = createToken(userData._id)
-                res.cookie('jwt',usertoken, {httpOnly: true, maxAge : maxAge*1000 })
-                const product = await productData.find({ })
-                const token = res.locals.user
-                res.render('landing', { product: product, token: token });
+                const jwttoken = createToken(user._id)
+                res.cookie('jwt',jwttoken, {httpOnly: true, maxAge : maxAge*1000 })
+
+                res.redirect('/')
             }
             else{
                 return console.log("Your OTP was Wrong")
@@ -344,7 +337,7 @@ module.exports.logout = async (req,res) =>{
 
     const product = await productData.find({ })
         const token = req.session.token
-        res.render('landing',{product : product, token})
+        res.redirect('/')
 }
 
 

@@ -92,7 +92,9 @@
                                     <h5 id="summary_<%= item.carted._id %>">₹<%= item.total %></h5>
                                 </td>
                                 <td>
-                                    <a href="/removeFromCart?id=<%= item.carted._id %>"><input type="submit" id="close-button" class="close text-dark" value="&times;" style="border:none; border-radius:7px; background-color: #ffce09 "></a>
+                                    <a>
+                                        <input type="button"  onclick="deleteProduct('<%=item.carted._id%>')" id="close-button" class="close text-dark" value="&times;" style="border:none; border-radius:7px; background-color: #ffce09 ">
+                                    </a>
                                 </td>
                             </tr>
                         <% }); %>
@@ -171,37 +173,105 @@
   
 <script>
     function changeQuantity(proId, userId, quantity,count) {
-   
 
-    $.ajax({
-      url: "/changeItemQuantity",
-      method: "post",
-      data: {
-        productId: proId,
-        userId: userId,
-        quantity: quantity,
-        count: count,
-      },
-      
-    success: (response) => {
-       if(response.deleteProduct){
-          location.reload(); // Reload the page
-       }else{
-             console.log(response,'ajax response')
-        const quantityInput = document.getElementById(`quantityInput_${proId}`);
-        quantityInput.value = response.quantity;
+        console.log(proId, userId, quantity,count);
 
-        const total = document.getElementById(`summary_${proId}`);
-        total.innerHTML =  `₹${response.total}`
+        const qty = document.getElementById(`quantityInput_${proId}`).value
+        console.log('qty',qty);
+        count = parseInt(count)
+        if (qty == 1 && count == -1) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e47312',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                timer: 3000
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/changeItemQuantity',
+                        method: 'post',
+                        data: {
+                            productId: proId,
+                            userId: userId,
+                            count: count,
+                            quantity: quantity
+                        },
+                        success: (response) => {
+                            console.log(response.status,'ll');
+                            if (response) {
+                                location.reload() 
+                            }
+                        }
+                    })
+                }
+            })
+        }
+        else{
+            $.ajax({
+                url: "/changeItemQuantity",
+                method: "post",
+                data: {
+                    productId: proId,
+                    userId: userId,
+                    quantity: quantity,
+                    count: count,
+                },
+                
+                success: (response) => {
+                    if(response.deleteProduct){
+                        location.reload(); // Reload the page
+                    }else{
+                            console.log(response,'ajax response')
+                        const quantityInput = document.getElementById(`quantityInput_${proId}`);
+                        quantityInput.value = response.quantity;
 
-        const subtotal = document.getElementById(`tsummary`);
-        subtotal.innerHTML = `₹${response.subtotal}`
+                        const total = document.getElementById(`summary_${proId}`);
+                        total.innerHTML =  `₹${response.total}`
 
-        
-       } 
-      }
-    })
-  }</script>
+                        const subtotal = document.getElementById(`tsummary`);
+                        subtotal.innerHTML = `₹${response.subtotal}`
+
+                        
+                    } 
+                }
+            })
+        }
+    }
+</script>
+<script>
+    function deleteProduct( proId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e47312',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            timer: 3000
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/removeFromCart',
+                    method: 'DELETE',
+                    data: {
+                        proId: proId,
+                    },
+                    success: (response) => {
+                        if (response.status) {
+                            location.reload()
+                        }
+                    }
+                })
+            }
+        })
+    }
+</script>
+
 
 </body>
 
