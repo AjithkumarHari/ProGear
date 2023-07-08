@@ -13,10 +13,12 @@ const Category = require('../Model/categoryModel')
  
 const otpHelper = require("../Helper/otpHelper")
 const { default: mongoose } = require("mongoose")
-const { resolve } = require("path")
-const { response } = require("../app")
+// const { resolve } = require("path")
+// const { response } = require("../app")
 // const addressHelper = require("../Helper/addressHelper")
 // const { request } = require("../Router/usersRouter")
+
+//***************************************************************  HOME PAGE  *******************************************************//
 
 
 module.exports.homePage = async ( req, res ) => {
@@ -24,9 +26,6 @@ module.exports.homePage = async ( req, res ) => {
         const product = await productData.find({ })
         const category = await Category.find({ })
         const token = res.locals.user
-        // console.log(res.locals.user);
-        // console.log("User :",token);
-        // console.log("product", product);
         res.render('landing',{
             layout:'userLayout',
             product : product, 
@@ -37,8 +36,6 @@ module.exports.homePage = async ( req, res ) => {
         console.log(error);
         res.send({ success: false, error: error.message });
     }
-    
-    
 }
 
 
@@ -48,7 +45,6 @@ module.exports.homePage = async ( req, res ) => {
 module.exports.productPage = async ( req, res ) => {
     try{
         const id = req.query.productId
-        // console.log('id', id);
         const category = await Category.find({ })
         const token = res.locals.user
         const product = await productData.findOne({ _id : id }).populate('category')
@@ -455,9 +451,15 @@ module.exports.checkoutPage = async ( req, res ) => {
         ]);
           
           
-        const address = await addressData.findOne({ user_data: user.id }).lean().exec();
+        const address = await addressData.aggregate([
+            { $match: { user_data: user.id } },
+            { $project: { _id: 0, address: 1 } },
+            { $unwind: "$address" },
+            { $limit: 1 }
+          ]).exec();
+          
 
-        // console.log("address",address);
+        console.log("address",address);
 
 
         try {
@@ -506,8 +508,7 @@ module.exports.categoryPage = async (req,res) =>{
         const category = await Category.find({ })
          
         const products = await productData.find({ category:new mongoose.Types.ObjectId(categoryId)})
-        // console.log("products",products);
-        // console.log("categories",category);
+
         res.render('category',{products , category, token:null})
     }
     catch(err){ 

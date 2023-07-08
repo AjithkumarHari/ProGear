@@ -84,6 +84,17 @@ router.get('/checkout',userController.checkoutPage)
 router.post('/checkout',orderController.checkout)
 //Post of Razorpay
 router.post('/verifyRazorpayPayment',orderController.verifyRazorpayPayment) 
+
+
+// ----------------------------------------------------------------CHECKOUT------------------------------------------------------------------------------
+
+
+
+router.post('/couponVerify',orderController.verifyCoupon)
+
+router.post('/applyCoupon',orderController.applyCoupon)
+
+
 // ----------------------------------------------------------------ORDER------------------------------------------------------------------------------
 
 

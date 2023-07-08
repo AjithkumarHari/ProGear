@@ -1,0 +1,61 @@
+<%- include('../layouts/adminHeader.ejs') %>
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title"> Banner Management </h3>
+      
+      <nav aria-label="breadcrumb">
+         <!-- {{!-- <input type="submit" class="btn btn-primary btn-fw" href="/admin/addProduct">Add Product</input> --}} -->
+         <a href="/admin/addBanner" class="btn btn-primary btn-fw">Add Banner</a>
+        <!-- {{!-- <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Tables</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+        </ol> --}} -->
+      </nav>
+    </div>
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
+<div class="card">
+<div class="card-body">
+<h4 class="card-title">Banner List</h4>
+<!-- {{!-- <p class="card-description"> Add class <code>.table-striped</code> --}}
+</p> -->
+<div class="table-responsive">
+  <table class="table table-bordered table-contextual">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% banners.forEach(function(banner) { %>
+        <tr>
+          <td style="width: 200px; height: 100px;">
+            <img src="/banner-images/<%= banner.image %>" alt="Banner Image" style="width: 200px; height: 100px; border-radius: 0;">
+          </td>
+          <td><%= banner.title %></td>
+          
+          
+          <td><%= banner.description %></td>
+          <td><i class="mdi mdi-pencil"></i></td>
+          <td><a href="/admin/deleteBanner?id=<%= banner._id %>"><i class="mdi mdi-delete"></i></a></td>
+        </tr>
+      <% }); %>
+  
+    </tbody>
+
+  </div>
+  </table>
+  
+</div>                 
+</div>
+</div>
+</div>
+</div>
+
+<%- include('../layouts/adminFooter.ejs') %>

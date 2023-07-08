@@ -1,6 +1,8 @@
 const orderHelper = require('../Helper/orderHelper')
-const moment = require("moment-timezone");
+const couponHelper = require('../Helper/couponHelper')
+// const moment = require("moment-timezone");
 const Order = require('../Model/orderModel');
+const Counpon = require('../Model/couponModel')
 
 const Category = require('../Model/categoryModel');
 const { response } = require('../app');
@@ -14,6 +16,8 @@ module.exports.checkout = async (req,res) =>{
         console.log('checkout post');
         const userId = res.locals.user
         const data = req.body
+
+        await couponHelper.addCouponToUser(req.body.couponcode, userId);
 
         try{ 
 
@@ -107,20 +111,20 @@ module.exports.orderDetails = async (req,res) =>{
           const address = orders[0].shippingAddress
           const products = orders[0].productDetails
           
-          orderDetails = orders.map(history =>{
-            let createdOnIST = moment(history.date)
-            .tz('Asia/kolkata')
-            .format('DD-MM-YYYY h:mm A' );
+        //   orderDetails = orders.map(history =>{
+        //     let createdOnIST = moment(history.date)
+        //     .tz('Asia/kolkata')
+        //     .format('DD-MM-YYYY h:mm A' );
 
-            return{...history, date:createdOnIST};
-        })
+        //     return{...history, date:createdOnIST};
+        // })
         //   console.log("orders user",orderDetails);
 
         //   console.log("products",products);
           
 
 
-          res.render('orderDetails',{orderDetails,address,products, category, token:null})
+          res.render('orderDetails',{orders,address,products, category, token:null})
         });  
     } catch (error) {
         console.log(error);
@@ -180,3 +184,29 @@ module.exports.verifyRazorpayPayment = async (req, res) =>{
         res.send({ success: false, error: error.message });
     }
 }
+
+
+module.exports.verifyCoupon = (req, res) => {
+    console.log("jnvkjnvjndfj");
+    
+    const couponCode = req.body.couponCode
+    const userId = res.locals.user._id
+    console.log('verifyCoupon',couponCode,userId);
+    couponHelper.verifyCoupon(userId, couponCode).then((response) => {
+        res.send(response)
+    })
+  }
+  
+module.exports.applyCoupon =  async (req, res) => {
+    console.log("applyCoupon",);
+    const couponCode = req.body.couponCode  
+    const total = req.body.total
+    const userId = res.locals.user._id
+    console.log(couponCode,total);
+    // const total = await orderHelper.totalCheckOutAmount(userId) 
+    console.log("totalhelper :"+total);
+    couponHelper.applyCoupon(couponCode, total).then((response) => {
+        console.log('res',response);
+        res.send(response)
+    }) 
+  }

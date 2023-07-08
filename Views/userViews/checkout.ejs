@@ -39,10 +39,7 @@
         body.no-scroll {
             overflow-y: hidden;
         }
-
-
         #btn {
-
             min-width: 160px;
             padding: 14px 25px;
             transition: all 300ms ease;
@@ -54,7 +51,6 @@
             border: 0;
             cursor: pointer;
         }
-
         #btn:hover {
             background-color: #e98a38;
         }
@@ -174,64 +170,61 @@
             <div class="billing_details">
                 <div class="row">
                     <div class="col-lg-8">
+
                         <div class="cupon_area ">
-                            <input type="text" placeholder="Enter coupon code">
-                            <a class="tp_btn" href="#">Apply Coupon</a>
+                            <input type="text" placeholder="Enter coupon code" id="couponCode">
+                            <a class="tp_btn" onclick="applyCoupon('<%=subtotal%>')">Apply Coupon</a>
+                            <span id="couponErr"></span>
                         </div>
+                        
+
                         <h3>Billing Details</h3>
     
                         <form class="row contact_form" action="/checkout" method="post" novalidate="novalidate"
                             id="checkOut-form">
     
-                            <% if (address.address[0]) { %>
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="fname"
-                                    value="<%= address.address[0].name %>">
-                            </div>
-    
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="primnumber" name="primnumber"
-                                    value="<%= user.number %>">
-                            </div>
-    
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="secnumber" name="secnumber"
-                                    value="<%= user.email %>">
-                            </div>
-    
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="email"
-                                    value="<%= address.address[0].number %>">
-                            </div>
-    
-                            <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="add2" name="add2"
-                                    value="<%= address.address[0].houseAddress %>">
-                            </div>
-    
-                            <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="add2" name="add2"
-                                    value="<%= address.address[0].street %>">
-                            </div>
-    
-                            <div class="col-md-12 form-group p_star">
-                                <input type="text" class="form-control" id="city" name="city "
-                                    value="<%= address.address[0].city %>">
-                            </div>
-    
-                            <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="pin" name="pin"
-                                    value="<%= address.address[0].pin %>">
-                            </div>
-    
-                            <div class="col-md-12 form-group">
-                                <input type="hidden" value="<%= address.address[0]._id %>" name="address">
-                            </div>
-                            <% } else { %>
-                            <div class="col-md-12 form-group p_star">
-                                <h1>Please Add An Address</h1>
-                            </div>
-                            <% } %>
+                            <% if (address[0]) { %>
+                                <div class="col-md-6 form-group p_star">
+                                  <input type="text" class="form-control" id="first" name="fname" value="<%= address[0].address.name %>">
+                                </div>
+                              
+                                <div class="col-md-6 form-group p_star">
+                                  <input type="text" class="form-control" id="primnumber" name="primnumber" value="<%= address[0].address.number %>">
+                                </div>
+                              
+                                <div class="col-md-6 form-group p_star">
+                                  <input type="text" class="form-control" id="secnumber" name="secnumber" value="<%= user.email %>">
+                                </div>
+                              
+                                <div class="col-md-6 form-group p_star">
+                                  <input type="text" class="form-control" id="email" name="email" value="<%= user.email %>">
+                                </div>
+                              
+                                <div class="col-md-12 form-group">
+                                  <input type="text" class="form-control" id="add2" name="add2" value="<%= address[0].address.houseAddress %>">
+                                </div>
+                              
+                                <div class="col-md-12 form-group">
+                                  <input type="text" class="form-control" id="add2" name="add2" value="<%= address[0].address.street %>">
+                                </div>
+                              
+                                <div class="col-md-12 form-group p_star">
+                                  <input type="text" class="form-control" id="city" name="city" value="<%= address[0].address.city %>">
+                                </div>
+                              
+                                <div class="col-md-12 form-group">
+                                  <input type="text" class="form-control" id="pin" name="pin" value="<%= address[0].address.pin %>">
+                                </div>
+                              
+                                <div class="col-md-12 form-group">
+                                  <input type="hidden" value="<%= address[0].address._id %>" name="address">
+                                </div>
+                              <% } else { %>
+                                <div class="col-md-12 form-group p_star">
+                                  <h1>Please Add an Address</h1>
+                                </div>
+                              <% } %>
+                              
     
                             <!--==============change address Form  ========================-->
     
@@ -276,14 +269,16 @@
                                         <span>₹<%= subtotal %></span>
                                     </a>
                                 </li>
-                                <li><a href="#">Shipping <span>Flat rate: ₹ 0.00</span></a></li>
-                                <li><a href="#">Total <span>₹<%= subtotal %></span></a></li>
+                                <li><a href="#">Shipping <span>Flat rate: ₹0.00</span></a></li>
+                                <li><a href="#">Discount <span id="couponOffer">0%</span></a></li>
+                                <li><a href="#"> Total <span id="total"> ₹<%= subtotal %>  </span></a></li>
                             </ul>
     
-                            <input type="hidden" value="<%= subtotal %>" name="total">
+                            <input type="hidden" id="totalVal" value="<%= subtotal %>" name="total">
                             <input type="hidden" name="productName" id="productName" value="<%= cart.itemName %>">
                             <input type="hidden" name="qty" id="qty" value="<%= cart.quantity %>">
                             <input type="hidden" name="price" id="price" value="<%= cart.itemPrice %>">
+                            <input type="hidden" name="couponcode" id="codes" value="">
     
                             <div class="payment_item">
                                 <div class="radion_btn">
@@ -314,7 +309,7 @@
                                     <label for="f-option4">I’ve read and accept the</label>
                                     <a href="#">terms & conditions*</a>
                                 </div>
-                                <% if (address.address[0]) { %>
+                                <% if (address[0]) { %>
                                 <input type="submit" class="primary-btn" style="width: 100%; border:none;"
                                     value="Confirm Order" onclick="proceedToPayment()">
                                 <% } else { %>
@@ -339,33 +334,42 @@
 
     <div class="pop-up-list">
         <button class="pop-up-button"><i class="fas fa-times"></i></button>
+        <% if (address[0]) { %>
         <div class="top-title-section">
             <p class="top-title special">Addresses</p>
         </div>
         <br>
         <div class="comment-list grid-view" style="height: 530px; overflow-y:scroll;">
             <form id="addressForm" action="/changeDefaultAddress" method="POST">
-                <% address.address.forEach((address, index) => { %>
-                <label for="address<%= index %>">Address</label>
-                <input type="radio" id="addressRadio<%= index %>" name="addressRadio" value="<%= address._id %>"
-                    onchange="this.form.submit()">
-                <br>
-                <div class="single-comment grid-item">
-                    <div class="user justify-content-between d-flex">
-                        <div class="desc">
-                            <h5>Name: <%= address.name %></h5>
-                            <h5>Number: <%= address.number %></h5>
-                            <h5>Address: <%= address.houseAddress %></h5>
-                            <h5>City: <%= address.city %></h5>
-                            <h5>Street: <%= address.street %></h5>
-                            <h5>Pin: <%= address.pin %></h5>
+               
+                    <% address.forEach((address, index) => { %>
+                    <label for="address<%= index %>">Address</label>
+                    <input type="radio" id="addressRadio<%= index %>" name="addressRadio" value="<%= address._id %>"
+                        onchange="this.form.submit()">
+                    <br>
+                    <div class="single-comment grid-item">
+                        <div class="user justify-content-between d-flex">
+                            <div class="desc">
+                                <h5>Name: <%= address.name %></h5>
+                                <h5>Number: <%= address.number %></h5>
+                                <h5>Address: <%= address.houseAddress %></h5>
+                                <h5>City: <%= address.city %></h5>
+                                <h5>Street: <%= address.street %></h5>
+                                <h5>Pin: <%= address.pin %></h5>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <br>
-                <% }); %>
+                    <br>
+                    <% }); %>
+                
             </form>
         </div>
+        <% } else { %>
+            
+            <div class="col-md-12 form-group p_star" style="margin-top: 250px;">
+                <h2>Please Add an Address</h2>
+            </div>
+        <% } %>
     </div>
     <div class="overlay-pop-up"></div>
     
@@ -409,6 +413,7 @@
     <script src="js/main.js"></script>
     <!-- Razorpay Link -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <!-- Change Default address pop up list -->
     <script>
 
@@ -434,6 +439,7 @@
 
         }
     </script>
+
     <script>
         function submitForm(addressId) {
             var form = document.getElementById('addressForm');
@@ -445,6 +451,7 @@
             form.submit();
         }
     </script>
+
     <!-- Add address pop up form -->
     <script>
         // Get references to the elements
@@ -503,7 +510,8 @@
             document.body.classList.toggle("no-scroll");
         }
     </script>
-    <!--Onsubmit pop up-->
+
+    <!--Onsubmit-->
     <script>
         function proceedToPayment() {
         event.preventDefault()
@@ -641,6 +649,62 @@
             }
         })
      }
+    </script>
+
+    <!-- Coupon -->
+    <script>
+        function applyCoupon(total) {
+        const couponCode = document.getElementById('couponCode').value
+        console.log('applyCoupon',couponCode);
+        $.ajax({
+        url: '/couponVerify',
+        method: 'post',
+        data:{
+            couponCode
+
+        },
+        success: (response) => {
+            if (response.status == true) {
+
+            $.ajax({
+                url: '/applyCoupon',
+                method: 'post',
+                data:{
+            couponCode,
+            total
+
+        },
+                success: (response) => {
+                console.log(response.discountAmount,'---');
+                if (response.status == true) {
+                    document.getElementById('couponErr').style.color = '#19ff11'
+                    document.getElementById('couponErr').innerText = "Coupon Applied SuccessFully"
+
+                    // document.getElementById('subTotal').innerText = total - response.discountAmount
+                   
+                    document.getElementById('total').innerText = '₹'+ (total - response.discountAmount)
+                    document.getElementById('totalVal').value = total - response.discountAmount
+
+                    document.getElementById('couponOffer').innerText = response.discount + '%'
+                    document.getElementById('codes').value = response.couponCode
+                } else {
+                    document.getElementById('couponErr').style.color = "#ff0707" 
+                    document.getElementById('couponErr').innerText = response.message
+                }
+
+                }
+            })
+            } else {
+            document.getElementById('couponErr').style.color = "#ff0707"
+            document.getElementById('couponErr').innerText = response.message
+
+            setTimeout(function() {
+                location.reload()
+            }, 5000)
+            }
+        }
+    })
+  }
     </script>
 </body>
 

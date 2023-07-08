@@ -38,8 +38,11 @@ const details = new mongoose.Schema({
     wallet : {
         type : Number,
         default : 0
-    }
-    
+    },
+    coupons : {
+        type : Array,
+    },
+
 })
 
 module.exports = mongoose.model('userData',details)

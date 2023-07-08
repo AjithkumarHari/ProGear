@@ -6020,7 +6020,7 @@ article {
   width: auto;
   height: auto;
   padding: 50px 0;
-  overflow: auto;
+  overflow:hidden;
 }
 
 article .profile-photo {
@@ -6029,19 +6029,19 @@ article .profile-photo {
   height: 130px;
   border-radius: 50%;
   background-color: white;
-  margin: 0 auto;
+  margin: 0 ;
   background-image: url('../img/userprofile.png');
   background-size: 230%;
   background-position: 80% 0%;
   background-repeat: no-repeat;
+  margin-left: 0;
 }
 
 article .profile-info {
   display: block;
-  width: 100%;
+  width: 500%;
   max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
+  text-align:start;
 }
 
 article .profile-info h1 {

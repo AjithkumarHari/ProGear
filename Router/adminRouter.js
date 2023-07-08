@@ -7,13 +7,16 @@ const session = require('express-session')
 
 const multer = require("multer");
 
-// const multer = require("../multer/multer");
+const multerr = require("../Config/multer");
 
 const adminController = require("../Controllers/adminController")
 const productController = require("../Controllers/productController")
 const categoryController = require("../Controllers/categoryController")
+const couponController = require("../Controllers/couponController")
+const bannerController = require("../Controllers/bannerController")
 
-const validate = require("../Authentication/adminAuthentication")
+const validate = require("../Authentication/adminAuthentication");
+const { route } = require('./usersRouter');
 
 router.set('views','./Views/adminViews')
 
@@ -86,6 +89,26 @@ router.put('/cancelStatus',adminController.cancelOrder)
 
 router.put('/returnOrder', adminController.returnOrder)
 
+
+//-------------------------------------------COUPON--------------------------------------------
+
+router.get('/coupon',couponController.couponList)
+
+router.get('/addCoupon',couponController.loadCouponAdd)
+
+router.post('/addCoupon',couponController.addCoupon)
+
+router.get('/generateCouponCode',couponController.generateCouponCode)
+
+//-------------------------------------------BANNER--------------------------------------------
+
+router.get('/banner',bannerController.bannerList)
+
+router.get('/addBanner',bannerController.addBannerGet)
+
+router.post('/addBanner',multerr.addBannerupload,bannerController.addBannerPost)
+
+router.get('/deleteBanner',bannerController.deleteBanner)
 
 router.get('/logout',adminController.logout)
 
