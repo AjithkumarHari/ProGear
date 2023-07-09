@@ -1,0 +1,185 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<%- include('../layouts/adminHeader.ejs') %>
+
+
+
+<!-- partial -->
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title"> Sales Report </h3>
+            
+
+            <div class="card">
+                <div class="card-body">
+              
+                    <div>
+                        <form action="/admin/salesReport" method="POST" id="salesReport">
+                            <center>
+                                <div>
+                                    <input type="date" name="startdate" id="startdate" placeholder="Start Date" class="flatpickr">
+                                </div>
+                                <span id="date-error1" style="display: none; color: red;">Invalid Start Date</span>
+                            
+                                <div>
+                                    <input type="date" name="enddate" id="enddate" placeholder="End Date" class="flatpickr">
+                                </div>
+
+                                <span id="date-error2" style="display: none; color: red;">Invalid End Date</span>
+                                <br>
+
+                                <div>
+                                    <button class="btn-sm btn-info" type="submit" id="submit-button">Submit</button>
+                                </div>
+                            
+                            </center>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-secondary btn_print m-3" value="Download as Pdf"><i class="fas fa-file-pdf"></i> Download as PDF</button>
+                <button type="button" class="btn btn-secondary btn_print m-3" onclick="export_data()" value="Export to excel"><i class="fas fa-file-excel"></i> Download as Excel</button>
+            </div>
+        </div>
+        <!--Order list-->
+        <div class="row ">
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                    <h4 class="card-title">Sales List</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">OrderId</th>
+                                        <th scope="col">User Name</th>
+                                        <th scope="col">Item Name</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Payment Mode</th>
+                                        <th scope="col">Delivered Date</th>
+                                      </tr>
+                                </thead>
+                                <tbody>
+                                    <% details.forEach((order) => { %>
+                                    <tr>
+                                      <td><%= order._id %></td>
+                                      <td><%= order.shippingAddress.item.name %> <%= order.shippingAddress.item.lname %></td>
+                                      <td><%= order.productDetails[0].productName %></td>
+                                      <td><%= order.productDetails[0].quantity %></td>
+                                      <td>₹<%= order.productDetails[0].productPrice %></td>
+                                      <td><%= order.paymentMethod %></td>
+                                      <td><%= getDate(order.createdAt) %></td>
+                                    </tr>
+                                    <% }) %>
+                                  </tbody>
+                                  
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Order list-->
+
+
+<!-- content-wrapper ends -->
+<!-- partial:../../partials/_footer.html -->
+<%- include('../layouts/adminFooter.ejs') %>
+
+
+
+
+<script>
+
+    //date customisation 
+    flatpickr(".flatpickr", {
+        dateFormat: "Y-m-d", // set the date format
+        minDate: "-20", // set the minimum date to today
+        // customize the appearance with a theme
+        theme: "material_blue",
+        // enable the time picker if needed
+        enableTime: false,
+        // customize the buttons labels
+        nextArrow: '<i class="fa fa-chevron-right"></i>',
+        prevArrow: '<i class="fa fa-chevron-left"></i>',
+      });
+    
+    
+      
+         let startDate = document.getElementById('startdate')
+         let endDate = document.getElementById('enddate')
+         let error1 = document.getElementById('date-error1')
+         let error2 = document.getElementById('date-error2')
+      
+         let submitButton = document.getElementById('submit-button');
+      
+      // Disable submit button on page load
+      submitButton.disabled = true;
+      
+      // Add event listeners to start date and end date inputs
+      startDate.addEventListener("input", validateDates);
+      endDate.addEventListener("input", validateDates);
+      
+      function validateDates() {
+        const selectedStartDate = new Date(startDate.value);
+        const selectedEndDate = new Date(endDate.value);
+        const today = new Date();
+      
+        if (selectedStartDate < today) {
+          error1.style.display = "none";
+        } else {
+          error1.style.display = "inline";
+        }
+      
+        if (selectedEndDate < today) {
+          error2.style.display = "none";
+        } else {
+          error2.style.display = "inline";
+        }
+      
+        // Check if either error is displayed or if end date is before start date
+        if (error1.style.display === "inline" || error2.style.display === "inline" || selectedEndDate < selectedStartDate) {
+          submitButton.disabled = true;
+        } else {
+          submitButton.disabled = false;
+        }
+      }
+      
+      
+      $(document).ready(function ($) {
+              $(document).on('click', '.btn_print', function (event) {
+                  event.preventDefault();
+                  var element = document.getElementById('container_content');
+                  let randomNumber = Math.floor(Math.random() * (10000000000 - 1)) + 1;
+                  var opt = {
+                      margin: 0,
+                      filename: 'SalesReport' + randomNumber + '.pdf',
+                      html2canvas: { scale: 10 },
+                      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                  };
+      
+                  html2pdf().set(opt).from(element).save();
+              });
+          });
+      
+      
+      
+      
+          function export_data() {
+              let data = document.getElementById('container_content');
+              var fp = XLSX.utils.table_to_book(data, { sheet: 'vishal' });
+              XLSX.write(fp, {
+                  bookType: 'xlsx',
+                  type: 'base64'
+              });
+              XLSX.writeFile(fp, 'test.xlsx');
+          }
+  </script>

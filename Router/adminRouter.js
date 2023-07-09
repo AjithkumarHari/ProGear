@@ -81,7 +81,8 @@ router.get('/reListProduct',productController.reListProduct)
 
 //-------------------------------------------ORDER--------------------------------------------
 router.get('/order',adminController.orderManagement)
-router.get('/orderData',adminController.orderData)
+
+router.get('/orderData',adminController.orderDetails)
 
 router.put('/orderStatus',adminController.changeStatus)
 
@@ -112,7 +113,10 @@ router.get('/deleteBanner',bannerController.deleteBanner)
 
 router.get('/logout',adminController.logout)
 
+//-------------------------------------------BANNER--------------------------------------------
+router.get('/salesReport',adminController.getSalesReport)
 
+router.post('/salesReport',adminController.postSalesReport)
 
 module.exports = router
 

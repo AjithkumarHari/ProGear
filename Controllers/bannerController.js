@@ -7,7 +7,7 @@ module.exports.bannerList = async(req,res)=>{
     try{
         bannerHelper.bannerListHelper().then((response)=> {
 
-            console.log('banners',response);
+            // console.log('banners',response);
 
             res.render('bannerManagement',{banners:response})
 
@@ -31,7 +31,7 @@ module.exports.addBannerGet = async(req,res)=>{
 module.exports.addBannerPost = async(req,res)=>{
     console.log("addBannerPost");
     bannerHelper.addBannerHelper(req.body, req.file.filename).then(( response) => {
-        console.log('res',response);
+        // console.log('res',response);
         if (response) {
             res.redirect("/admin/banner");
         } else {

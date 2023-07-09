@@ -3,7 +3,6 @@ const Banner = require('../Model/bannerModel')
 
 const addBannerHelper=async(texts, Image) => {
     return new Promise(async (resolve, reject) => {
-        console.log(texts, Image);
         const banner = new Banner({
             title: texts.title,
             description: texts.description,

@@ -9,6 +9,7 @@ const Category = require('../Model/categoryModel')
 module.exports.cartPage = async ( req, res ) => {
 
       try {
+        const token = res.locals.user
         console.log('cart page loaded');
         const user = res.locals.user;
       
@@ -58,11 +59,11 @@ module.exports.cartPage = async ( req, res ) => {
         const category = await Category.find({ })
 
         if(cart==null){
-        res.render('cart', { cart:[], subtotal, category , token:null});
+        res.render('cart', { cart:[], subtotal, category , token});
           
         }
         else{
-        res.render('cart', { cart, subtotal, category , token:null});
+        res.render('cart', { cart, subtotal, category , token });
 
         }
       }
@@ -74,9 +75,6 @@ module.exports.cartPage = async ( req, res ) => {
       }
       
 }
-
-
-  
 
 
 

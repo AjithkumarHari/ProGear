@@ -5,7 +5,7 @@ const Coupon = require('../Model/couponModel')
 module.exports.couponList = async(req,res)=>{
     try {
         const couponList = await Coupon.find()
-        console.log("couponList",couponList);
+        // console.log("couponList",couponList);
         res.render('couponManagement',{couponList})
     } catch (error) {
         
@@ -42,7 +42,7 @@ module.exports.addCoupon =  (req, res) => {
             maxDiscountValue,
             description,
           };
-          console.log("data",data);
+        //   console.log("data",data);
 
           couponHelper.addCoupon(data).then((response) => {
             res.redirect('/admin/coupon')

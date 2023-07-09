@@ -80,20 +80,20 @@
                   <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
                     <div class="text-md-center text-xl-left">
                       <h6 class="mb-2">Order Details</h6>
-                      <p class="text-muted mb-0"><span style="color: aliceblue;">ID :</span> <%= orderDetails[0]._id %></p>
-                      <p class="text-muted mb-0"><span style="color: aliceblue;">Payment Method :</span> <%= orderDetails[0].paymentMethod %></p>
-                      <p class="text-muted mb-0"><span style="color: aliceblue;">Order Status :</span> <%= orderDetails[0].orderStatus %></p>
-                      <p class="text-muted mb-0"><span style="color: aliceblue;">Date of order :</span> <%= orderDetails[0].date %></p>
+                      <p class="text-muted mb-0"><span style="color: aliceblue;">ID :</span> <%= orders._id %></p>
+                      <p class="text-muted mb-0"><span style="color: aliceblue;">Payment Method :</span> <%= orders.paymentMethod %></p>
+                      <p class="text-muted mb-0"><span style="color: aliceblue;">Order Status :</span> <%= orders.orderStatus %></p>
+                      <p class="text-muted mb-0"><span style="color: aliceblue;">Date of order :</span> <%= orders.date %></p>
                       <br>
                       <h6 class="mb-2">Billing Details</h6>
-                      <p class="text-muted mb-0"><span style="color: aliceblue;">Name :</span> <%= orderDetails[0].name %></p>
+                      <p class="text-muted mb-0"><span style="color: aliceblue;">Name :</span> <%= orders.name %></p>
                       <p class="text-muted mb-0"><span style="color: aliceblue;">House address :</span> <%= address.item.houseAddress %></p>
                       <p class="text-muted mb-0"><span style="color: aliceblue;">Street :</span> <%= address.item.street %></p>
                       <p class="text-muted mb-0"><span style="color: aliceblue;">City :</span> <%= address.item.city %></p>
                       <p class="text-muted mb-0"><span style="color: aliceblue;">Postcode :</span> <%= address.item.pin %></p>
                     </div>
                     <div class=" flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                      <h6 class="font-weight-bold mb-0">₹<%= orderDetails[0].totalPrice %></h6>
+                      <h6 class="font-weight-bold mb-0">₹<%= orders.totalPrice %></h6>
                     </div>
                   </div>
                 </div>

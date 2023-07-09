@@ -9,10 +9,7 @@ const jwt = require('jsonwebtoken')
 // const moment = require("moment-timezone")
 const mongoose = require('mongoose')
 
-
-
 const adminHelper = require('../Helper/adminHelper')
-const { log } = require("console")
 
 
 const maxAge = 3* 24* 60 * 60
@@ -45,12 +42,12 @@ module.exports.verifyLogin = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
   
-    console.log(email);
-    console.log(password)
+    // console.log(email);
+    // console.log(password)
   
     const data = await adminData.findOne({ });
   
-    console.log(data);
+    // console.log(data);
     console.log(data.password);
     if (data) {
       if (data.password === password) {
@@ -163,6 +160,7 @@ module.exports.orderManagement = async( req,res ) =>{
 module.exports.orderData = async (req,res) =>{ 
 
   try {
+    console.log('orderData');
       const id = req.query.id
       console.log(id);
 
@@ -190,7 +188,7 @@ module.exports.orderData = async (req,res) =>{
 
 
 module.exports.changeStatus = async(req,res)=>{
-  console.log("haiii");
+  // console.log("haiii");
   let orderId = req.body.orderId
   let status = req.body.status
   console.log(orderId)
@@ -207,11 +205,15 @@ module.exports.changeStatus = async(req,res)=>{
 module.exports.orderDetails = async (req,res)=>{
     try {
       const id = req.query.id
+      const user= res.locals.user.id
       console.log(id);
-      adminHelper.findOrder(id).then((orders) => {
-        const address = orders[0].shippingAddress
-        const products = orders[0].productDetails 
-        res.render('orderSlip',{orders,address,products}) 
+      adminHelper.findOrder(id,user).then((orders) => {
+        const address = orders.shippingAddress
+        const products = orders.productDetails 
+        console.log('orders',orders);
+        console.log('address',address);
+        console.log('products',products);
+        res.render('orderData',{orders,address ,products}) 
       });
       console.log(orders);
         
@@ -243,3 +245,61 @@ module.exports.returnOrder = async(req,res)=>{
   });
 
 }
+
+
+
+
+// get sales report page
+module.exports.getSalesReport=async (req, res) => {
+  const  admin = req.session.admin;
+  const report = await adminHelper.getSalesReport();
+  const details = [];
+  const getDate = (date) => {
+    const orderDate = new Date(date);
+    const day = orderDate.getDate();
+    const month = orderDate.getMonth() + 1;
+    const year = orderDate.getFullYear();
+    return `${isNaN(day) ? "00" : day} - ${isNaN(month) ? "00" : month} - ${
+      isNaN(year) ? "0000" : year
+    }`;
+  };
+
+  report.forEach((orders) => {
+    details.push(orders.orders);
+  });
+
+// console.log('details',details);
+
+  res.render("salesReport", {
+    admin,
+    details,
+    getDate,
+  });
+}
+
+module.exports.postSalesReport=async (req, res) => {
+  const admin = req.session.admin;
+  const details = [];
+  const getDate = (date) => {
+    const orderDate = new Date(date);
+    const day = orderDate.getDate();
+    const month = orderDate.getMonth() + 1;
+    const year = orderDate.getFullYear();
+    return `${isNaN(day) ? "00" : day} - ${isNaN(month) ? "00" : month} - ${
+      isNaN(year) ? "0000" : year
+    }`;
+  };
+
+  adminHelper.postReport(req.body).then((orderData) => {
+    // console.log(orderData, "orderData");
+    orderData.forEach((orders) => {
+      details.push(orders.orders);
+    });
+    // console.log(details, "details");
+    res.render("salesReport", {
+      admin,
+      details,
+      getDate,
+    });
+    });
+  }

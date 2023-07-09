@@ -39,6 +39,57 @@ const getOrderData  = (orderId) => {
 }
 
 
+const findOrder  = (orderId,user) => {
+  try {
+    console.log('orderId',orderId);
+    console.log('user',user);
+    return new Promise(async(resolve, reject) => {
+      const orderId = "64a80da28b127146d01c3f66"; // Replace with the desired orderId
+
+      const result =
+       await Order.aggregate([
+        {
+          $match: {
+            "orders._id": new mongoose.Types.ObjectId(orderId)
+          }
+        },
+        // {
+        //   $unwind: "$orders"
+        // },
+        // {
+        //   $match: {
+        //     "orders._id": new mongoose.Types.ObjectId(orderId)
+        //   }
+        // },
+        // {
+        //   $project: {
+        //     "orders":1
+        //   }
+        // }
+      ])
+      
+      console.log('result', result);
+      
+      // .then((response) => {
+      //   console.log('response',response);
+      //   let orders = response
+      //     .filter((element) => {
+      //       if (element.orders._id == orderId) {
+      //         return true;
+      //       }
+      //       return false;
+      //     })
+      //     .map((element) => element.orders);
+
+      //   resolve(orders);
+      // }); 
+    });
+  } catch (error) { 
+    console.log(error.message);
+    }
+  }
+
+
 
 const changeOrderStatus = (orderId, status) => {
     try {
@@ -202,10 +253,71 @@ const returnOrderHelper = (orderId,userId, status) => {
     }
   };
 
+
+const getSalesReport= () => {
+  try {
+    return new Promise((resolve, reject)  => {
+       Order.aggregate([
+        {
+          $unwind: "$orders",
+        },
+        {
+          $match: {
+            "orders.orderStatus": "Delivered",
+          },
+        },
+      ]).then((response) => {
+        resolve(response);
+      });
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+const postReport = (date) => {
+  console.log(date, "date+++++");
+  try {
+    const start = new Date(date.startdate);
+    const end = new Date(date.enddate);
+    return new Promise((resolve, reject) => {
+       Order.aggregate([
+        {
+          $unwind: "$orders",
+        },
+        {
+          $match: {
+            $and: [
+              { "orders.orderStatus": "Delivered" },
+              {
+                "orders.createdAt": {
+                  $gte: start,
+                  $lte: new Date(end.getTime() + 86400000),
+                },
+              },
+            ],
+          },
+        },
+      ])
+        .exec()
+        .then((response) => {
+          // console.log(response, "response---");
+          resolve(response);
+        });
+    });
+  } catch (error) {
+    console.log(error.message);
+    }
+  }
+
+
  module.exports =  {
     getOrderData,
     changeOrderStatus,
     returnOrderHelper,
-    cancelOrderHelper
+    cancelOrderHelper,
+    findOrder,
+    getSalesReport,
+    postReport
 
 }

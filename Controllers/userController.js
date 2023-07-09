@@ -10,6 +10,7 @@ const productData = require("../Model/productModel")
 const cartData = require("../Model/cartModel")
 const addressData = require('../Model/adderssModel')
 const Category = require('../Model/categoryModel')
+const Banner = require('../Model/bannerModel')
  
 const otpHelper = require("../Helper/otpHelper")
 const { default: mongoose } = require("mongoose")
@@ -25,12 +26,15 @@ module.exports.homePage = async ( req, res ) => {
     try{
         const product = await productData.find({ })
         const category = await Category.find({ })
+        const banner = await Banner.find({ })
         const token = res.locals.user
         res.render('landing',{
             layout:'userLayout',
             product : product, 
             token : token , 
-            category:category })
+            category:category,
+            banners : banner
+         })
     }
     catch(error){
         console.log(error);
@@ -343,12 +347,13 @@ module.exports.logout = async (req,res) =>{
 module.exports.profilePage = async (req,res) => {
     try{
         const user = res.locals.user
+        const token = res.locals.user
         console.log('user profile', user._id);
         const category = await Category.find({ })
 
         // const useraddress = await addressData.findOne({ user_id : new mongoose.Types.String(user._id) });
         // console.log(useraddress);
-        res.render('profile',{user : user, category, token:null})
+        res.render('profile',{user, category, token})
     }
     catch(error){
         console.log(error);
@@ -414,6 +419,7 @@ module.exports.updateProfile = async (req , res) => {
 //GET
 module.exports.checkoutPage = async ( req, res ) => {
     try{
+        const token = res.locals.user
         let subtotal=0
         // console.log('checkout page'); 
         const user = res.locals.user
@@ -481,9 +487,9 @@ module.exports.checkoutPage = async ( req, res ) => {
             const category = await Category.find({ })
         if(address)
         {
-            res.render('checkout',{cart , user  , address , subtotal, category, token:null })
+            res.render('checkout',{cart , user  , address , subtotal, category, token })
         }else{
-            res.render('checkout',{cart : cart ,address:[], user : user, category,token:null,subtotal : null})
+            res.render('checkout',{cart : cart ,address:[], user : user, category,token,subtotal : null})
         }
     }
     catch(error){
@@ -503,13 +509,14 @@ module.exports.categoryPage = async (req,res) =>{
 
     try{
         const  categoryId = req.query.id
+        const token = res.locals.user
         // console.log("categoryId",categoryId);
 
         const category = await Category.find({ })
          
         const products = await productData.find({ category:new mongoose.Types.ObjectId(categoryId)})
 
-        res.render('category',{products , category, token:null})
+        res.render('category',{products , category, token})
     }
     catch(err){ 
         console.log('category page error',err);

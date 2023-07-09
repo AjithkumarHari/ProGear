@@ -644,7 +644,11 @@
                         text: response.error,
                         icon: 'error',
                         timer: 5000
-                    })
+                    }).then((result) => {
+                            
+                        location.href = '/';
+                        
+                    });
                 }
             }
         })

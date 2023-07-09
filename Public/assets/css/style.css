@@ -11430,7 +11430,8 @@ input[type="button"].btn-block {
 .card-body {
   flex: 1 1 auto;
   min-height: 1px;
-  padding: 1.25rem; }
+  padding: 1.25rem;
+  }
 
 .card-title {
   margin-bottom: 0.75rem; }
@@ -16579,7 +16580,8 @@ code {
 .card {
   border-radius: 0.25rem; }
   .card .card-body {
-    padding: 1.75rem 1.5625rem; }
+    padding: -1.25rem 1.5625rem;
+    }
     .card .card-body + .card-body {
       padding-top: 1rem; }
   .card .card-title {
