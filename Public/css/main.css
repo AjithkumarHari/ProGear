@@ -4797,14 +4797,7 @@ label {
       .login_box_area .login_box_img .hover .primary-btn:hover:before {
         left: 260px; }
 
-.login_form_inner {
-
-  box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.9);
-  height: 100%;
-  text-align: center;
-  padding-top: 115px; 
-  justify-content: center;
-  align-items: center;}
+.login_form_inner {box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.9);height: 100%;text-align: center;padding-top: 75px;justify-content: center;align-items: center;}
   .login_form_inner h3 {
     color: #fff;
     text-transform: uppercase;

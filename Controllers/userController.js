@@ -348,11 +348,8 @@ module.exports.profilePage = async (req,res) => {
     try{
         const user = res.locals.user
         const token = res.locals.user
-        console.log('user profile', user._id);
         const category = await Category.find({ })
 
-        // const useraddress = await addressData.findOne({ user_id : new mongoose.Types.String(user._id) });
-        // console.log(useraddress);
         res.render('profile',{user, category, token})
     }
     catch(error){
@@ -369,7 +366,7 @@ module.exports.editProfilePage = async (req,res) => {
     try{
         const user = res.locals.user
         const userdata = await userData.findOne({_id : user.id})
-        console.log(userdata);
+        // console.log(userdata);
         res.render('editProfile',{userdata : userdata})
     }
     catch(error){
@@ -382,7 +379,7 @@ module.exports.editProfilePage = async (req,res) => {
 //POST
 module.exports.updateProfile = async (req , res) => {
     try{
-        console.log(req.body);
+        // console.log(req.body);
         const user = res.locals.user
 
         const data = {
@@ -393,7 +390,7 @@ module.exports.updateProfile = async (req , res) => {
          }
             
         const newData = await userData.updateOne({ _id : user.id },{$set:{ fname: data.fname,lname : data.lname,email:data.email,number:data.number}})
-        console.log(newData);
+        // console.log(newData);
 
         res.redirect('/profile');
     }catch(error){
@@ -465,19 +462,15 @@ module.exports.checkoutPage = async ( req, res ) => {
           ]).exec();
           
 
-        console.log("address",address);
-
 
         try {
             
             if (cart && cart.length > 0) {
                 subtotal = cart.reduce((acc, itemId) => acc + itemId.itemPrice, 0);
-                // console.log('subtotal', subtotal);
             } else {
                 res.redirect('/cart')
                 throw new Error('Cart is empty or invalid.');
             }
-            // console.log('check out page subtotal', subtotal);
 
             }   
             catch (error) {
@@ -510,7 +503,6 @@ module.exports.categoryPage = async (req,res) =>{
     try{
         const  categoryId = req.query.id
         const token = res.locals.user
-        // console.log("categoryId",categoryId);
 
         const category = await Category.find({ })
          

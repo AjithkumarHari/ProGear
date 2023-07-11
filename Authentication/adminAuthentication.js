@@ -12,7 +12,7 @@ const authenticate = (req,res,next)=>{
                 res.redirect('/admin')
             }
             else{
-                console.log(decodedToken);
+                // console.log(decodedToken);
                 next()
             }
         })
@@ -35,7 +35,7 @@ const checkUser =  (req,res,next) =>{
                 next()
             }
             else{
-                console.log(decodedToken);
+                // console.log(decodedToken);
                 let user = await adminData.findById(decodedToken.id)
                 res.locals.user = user
                 next()

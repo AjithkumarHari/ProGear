@@ -138,9 +138,8 @@ checktoutHelper =async (data, user)=>{
 
 
 
-getOrder = async (userId) => {
+const getOrder = async (userId) => {
     try {
-        console.log('get order helper');
   
         const order = await Order.aggregate([
           {
@@ -149,8 +148,6 @@ getOrder = async (userId) => {
           { $unwind: "$orders" },
           { $sort: { "orders.createdAt": -1 } },
         ])
-
-        
 
         return order
         
@@ -167,26 +164,51 @@ getOrder = async (userId) => {
 const getOrderDetails  = (orderId, userId) => {
     try {
       // console.log("userId",userId);
-      return new Promise((resolve, reject) => {
-        Order.aggregate([
-          {
-            $match: {
-              "orders._id": new mongoose.Types.ObjectId(orderId),
-              user: new mongoose.Types.ObjectId(userId),
+      return new Promise(async(resolve, reject) => {
+
+          // const result = 
+          await Order.aggregate([
+            {
+              $unwind: "$orders"
             },
-          },
-          { $unwind: "$orders" },
-        ]).then((response) => {
-          let orders = response
-            .filter((element) => {
-              if (element.orders._id == orderId) {
-                return true;
+            {
+              $match: {
+                "orders._id": new mongoose.Types.ObjectId(orderId)
               }
-              return false;
-            })
-            .map((element) => element.orders);
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "orders.productDetails.productId",
+                foreignField: "_id",
+                as: "productData"
+              }
+            },
+            { $unwind: "$productData" },
+            {
+              $project: {
+                _id: 0,
+                user: 1,
+                orders: 1,
+                productData: "$productData.image",
+              }
+            }
+          ])
+        
+          // console.log('result', result);
+    
+        
+        .then((response) => {
+          // let orders = response
+          //   .filter((element) => {
+          //     if (element.orders._id == orderId) {
+          //       return true;
+          //     }
+          //     return false;
+          //   })
+          //   .map((element) => element.orders);
   
-          resolve(orders);
+          resolve(response);
         });
       });
     } catch (error) {
@@ -204,7 +226,7 @@ const getOrderDetails  = (orderId, userId) => {
             $set: { "orders.$.orderStatus": status },
           }
         ).then((response) => {
-          console.log(response, "$$$$$$$$$$$$$$");
+
           resolve(response);
         });
       });
@@ -261,7 +283,7 @@ const getOrderDetails  = (orderId, userId) => {
           receipt: orderId
         };
         instance.orders.create(options, function(err, order) {
-          console.log("New Order",order);
+          // console.log("New Order",order);
           if (err) {
             console.log('Order Creation Error from Razorpay: ' + err);
         } else {

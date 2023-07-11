@@ -1,6 +1,6 @@
-const { response } = require('express')
+
 const bannerHelper = require('../Helper/bannerHelper')
-const Banner = require('../Model/bannerModel')
+
 
 module.exports.bannerList = async(req,res)=>{
 
@@ -48,7 +48,29 @@ module.exports.deleteBanner = async(req,res)=>{
 
 module.exports.editBanner=(req, res) => {
 
-    adminHelper.editBannerHelper(req.query.banner).then((response) => {
-        res.render("/admin/editBanner",{banner:response});
+    bannerHelper.editBannerHelper(req.query.id).then((response) => {
+        res.render("updateBanner",{banner:response});
     });
+}
+
+
+///update product list
+
+module.exports.updateBanner = async (req, res) => {
+    try {
+
+    
+    
+    bannerHelper.updateBannerHelper(req.body, req?.file?.filename).then(( response) => {
+        // console.log('res',response);
+        if (response) {
+            res.redirect("/admin/banner");
+        } else {
+            res.status(505);
+        }
+    });}
+  catch (error) {
+    console.log(error.message);
+  }
+
 }

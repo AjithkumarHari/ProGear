@@ -27,7 +27,7 @@
 	<link rel="stylesheet" href="css/nice-select.css">
 	<link rel="stylesheet" href="css/nouislider.min.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/main.css"> 
 </head>
 
 <body>
@@ -46,10 +46,10 @@
 				<div class="details_item">
 					<h4>Order Info</h4>
 					<ul class="list">
-						<li><a href="#"><span>Order number</span> : <%= orderDetails[0]._id %></a></li>
-						<li><a href="#"><span>Date</span> : <%= orderDetails[0].date %></a></li>
-						<li><a href="#"><span>Total</span> :  ₹<%= orderDetails[0].totalPrice %></a></li>
-						<li><a href="#"><span>Payment method</span> : <%= orderDetails[0].paymentMethod %></a></li>
+						<li><a href="#"><span>Order number</span> : <%=  orders[0].orders._id %></a></li>
+						<li><a href="#"><span>Date</span> : <%= new Date(orders[0].orders.createdAt).toLocaleDateString('en-US')   %></a></li>
+						<li><a href="#"><span>Total</span> :  ₹<%=orders[0].orders.totalPrice %></a></li>
+						<li><a href="#"><span>Payment method</span> : <%=orders[0].orders.paymentMethod %></a></li>
 					</ul>
 				</div>
 			</div>
@@ -73,24 +73,29 @@
 					<thead>
 						<tr>
 							<th scope="col">Product</th>
+							<th scope="col">Name</th>
 							<th scope="col">Quantity</th>
 							<th scope="col">Total</th>
 						</tr>
 					</thead>
 					<tbody>
-						<% products.forEach((product) => { %>
+						<% for (let i = 0; i < products.length; i++) { %>
 						<tr>
 							<td>
-								<p><%= product.productName %></p>
+								<img src="/product-images/<%= orders[i].productData[0] %>" alt="" style="height: 100px; width: 100px;">
 							</td>
 							<td>
-								<h5>x <%= product.quantity %></h5>
+								<p><%= products[i].productName %></p>
 							</td>
 							<td>
-								<p>₹<%= product.productPrice %></p>
+								<h5>x <%= products[i].quantity %></h5>
+							</td>
+				
+							<td>
+								<p>₹<%= products[i].productPrice %></p>
 							</td>
 						</tr>
-						<% }); %>
+						<% }; %>
 
 						<tr>
 							<td>
@@ -99,8 +104,9 @@
 							<td>
 								<h5></h5>
 							</td>
+							<td></td>
 							<td>
-								<p> ₹<%= orderDetails[0].totalPrice %></p>
+								<p> ₹<%=orders[0].orders.totalPrice %></p>
 							</td>
 						</tr>
 						<tr>
@@ -110,6 +116,7 @@
 							<td>
 								<h5></h5>
 							</td>
+							<td></td>
 							<td>
 								<p>₹0.00</p>
 							</td>
@@ -121,8 +128,9 @@
 							<td>
 								<h5></h5>
 							</td>
+							<td></td>
 							<td>
-								<p> ₹<%= orderDetails[0].totalPrice %></p>
+								<p> ₹<%=orders[0].orders.totalPrice %></p>
 							</td>
 						</tr>
 						<tr>
@@ -136,13 +144,13 @@
 				</table>
 				
 			</div>
-			<% if(orderDetails[0].orderStatus === 'Placed') { %>
+			<% if(orders[0].orders.orderStatus === 'Placed') { %>
 				<div style="margin-left: 410px;">
-					<a id="btn" onclick="cancelOrder('<%= orderDetails[0]._id %>', 'Cancel Requested')"> CANCEL ORDER</a>
+					<a id="btn" onclick="cancelOrder('<%= orders[0].orders._id %>', 'Cancel Requested')"> CANCEL ORDER</a>
 				</div>	
-			<% } else if (orderDetails[0].orderStatus === 'Delivered') { %>
+			<% } else if (orders[0].orders.orderStatus === 'Delivered') { %>
 				<div style="margin-left: 410px;">
-					<a id="btn" onclick="cancelOrder('<%= orderDetails[0]._id %>', 'Return Requested')"> RETURN</a>
+					<a id="btn" onclick="cancelOrder('<%= orders[0].orders._id %>', 'Return Requested')"> RETURN</a>
 				</div>	
 			<% } %>
 		</div>

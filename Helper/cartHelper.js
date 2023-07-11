@@ -19,7 +19,6 @@ const addCart = async (productId, userId, price) => {
   try { 
     return new Promise((resolve, reject) => {
         
-      console.log('cart helper');
 
       Cart.findOne({ user_id: userId }).then(async (cart) => {
         if (cart) {
@@ -71,7 +70,7 @@ const addCart = async (productId, userId, price) => {
 
 const changeProductQuantity = async (data) => {
   try {
-    console.log('cpq helper');
+
       const userId = data.userId
       const productId = new mongoose.Types.ObjectId(data.productId);
       const quantity = data.quantity;
@@ -136,8 +135,6 @@ const getCart = async(userId)=>{
     const cart = await Cart.findOne({ user_id : userId })
     .lean().exec()
 
-    console.log('cart',cart);
-  
         if(cart){
           return cart
         }

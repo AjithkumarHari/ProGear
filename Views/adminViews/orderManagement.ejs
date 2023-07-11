@@ -64,7 +64,7 @@
                                             <% } %>
                                         </td>
                                        
-                                        <td><a class="btn btn-light create-new-button" id="createbuttonDropdown" aria-expanded="false" href="/admin/orderData?id=<%= item._id %>">View</a></td>
+                                        <td><a class="btn btn-light create-new-button" id="createbuttonDropdown" aria-expanded="false" href="/admin/orderData?id=<%= item.orders._id %>">View</a></td>
                                         <td>
                                             <div class="input-group-prepend">
                                                 <% if (item.orders.orderStatus === 'Cancelled' || item.orders.orderStatus === 'Delivered' || item.orders.orderStatus === 'Pending') { %>

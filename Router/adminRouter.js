@@ -43,7 +43,7 @@ const multipleUpload = upload.fields([{ name: 'image1', maxCount: 1 }, { name:"i
 router.get('/', adminController.adminLogin)
 router.post('/login', adminController.verifyLogin)
 
-router.get('/landing', validate.authenticate,adminController.adminDashboard)
+router.get('/landing', validate.authenticate,adminController.loadDashboard)
 
 router.get('/user',validate.authenticate, adminController.userManagement)
 
@@ -61,22 +61,23 @@ router.post('/addProduct',multipleUpload,productController.newProduct)
 router.get('/updateProduct',productController.updateProduct)
 router.post('/updateProduct',multipleUpload,productController.editProduct)
 
+router.get('/unlistProduct',productController.unlistProduct)
+
+router.get('/reListProduct',productController.reListProduct)
+
 
 //                                                   CATEGORY
 router.get('/category',categoryController.categoryManagement)
 
 router.get('/addCategory',categoryController.addCategory)
+
 router.post('/addCategory',categoryController.newCategory)
 
 router.get('/updateCategory',categoryController.updateCategory)
+
 router.post('/updateCategory',categoryController.editCategory)
 
 router.get('/changeStatus', categoryController.changeStatus)
-
-router.get('/unlistProduct',productController.unlistProduct)
-
-router.get('/reListProduct',productController.reListProduct)
-
 
 
 //-------------------------------------------ORDER--------------------------------------------
@@ -109,14 +110,21 @@ router.get('/addBanner',bannerController.addBannerGet)
 
 router.post('/addBanner',multerr.addBannerupload,bannerController.addBannerPost)
 
+router.get('/updateBannerGet',bannerController.editBanner)
+
+router.post('/updateBannerPost',multerr.editBannerupload,bannerController.updateBanner)
+
 router.get('/deleteBanner',bannerController.deleteBanner)
 
+
+
+//-------------------------------------------sALES REPORT--------------------------------------------
+router.get('/salesReportGet',adminController.getSalesReport)
+
+router.post('/salesReportPost',adminController.postSalesReport)
+
+
 router.get('/logout',adminController.logout)
-
-//-------------------------------------------BANNER--------------------------------------------
-router.get('/salesReport',adminController.getSalesReport)
-
-router.post('/salesReport',adminController.postSalesReport)
 
 module.exports = router
 

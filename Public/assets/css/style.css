@@ -8486,7 +8486,8 @@ pre {
     max-width: 25%; }
   .col-xl-4 {
     flex: 0 0 33.33333%;
-    max-width: 33.33333%; }
+    max-width: 161.33333%;
+    }
   .col-xl-5 {
     flex: 0 0 41.66667%;
     max-width: 41.66667%; }
@@ -11428,7 +11429,6 @@ input[type="button"].btn-block {
     border-top: 0; }
 
 .card-body {
-  flex: 1 1 auto;
   min-height: 1px;
   padding: 1.25rem;
   }
@@ -15127,7 +15127,7 @@ button.bg-dark:focus {
   .text-lg-center {
     text-align: center !important; } }
 
-@media (min-width: 1200px) {
+@media (min-width: 0) {
   .text-xl-left {
     text-align: left !important; }
   .text-xl-right {

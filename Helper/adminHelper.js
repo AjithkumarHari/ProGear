@@ -2,87 +2,41 @@ const Order = require('../Model/orderModel')
 const mongoose = require('mongoose')
 const User = require('../Model/userModel');
 
-const getOrderData  = (orderId) => {
-    try {
-      console.log("orderId",orderId);
-        return new Promise(async (resolve, reject) => {
-           const orders = await Order.aggregate([
-            {
-                $match: {
-                "orders._id": new mongoose.Types.ObjectId(orderId),
-                },
-            },
-            // { $unwind: "$orders" },
-
-        ])
-        console.log(orders,"orders")
-            // .then((response) => {
-                
-            // let orders = response
-            //     .filter((element) => {
-            //     if (element.orders._id == orderId) {
-                    
-            //         return true;
-            //     } 
-            //     return false;
-            //     })
-            //     .map((element) => element.orders);
-            //     console.log(orders,"orders")
-            // resolve(orders);
-            // });
-           
-        });
-
-    } catch (error) {
-        console.log(error.message);
-      }
-}
-
-
 const findOrder  = (orderId,user) => {
   try {
-    console.log('orderId',orderId);
-    console.log('user',user);
     return new Promise(async(resolve, reject) => {
-      const orderId = "64a80da28b127146d01c3f66"; // Replace with the desired orderId
 
-      const result =
        await Order.aggregate([
+        { $unwind: "$orders" },
+        
         {
           $match: {
             "orders._id": new mongoose.Types.ObjectId(orderId)
+       },
+        },
+         {
+          $lookup: {
+            from: "products",
+            localField: "orders.productDetails.productId",
+            foreignField: "_id",
+            as: "productData"
           }
         },
-        // {
-        //   $unwind: "$orders"
-        // },
-        // {
-        //   $match: {
-        //     "orders._id": new mongoose.Types.ObjectId(orderId)
-        //   }
-        // },
-        // {
-        //   $project: {
-        //     "orders":1
-        //   }
-        // }
+        { $unwind: "$productData" },
+        {
+          $project: {
+            _id: 0,
+            user: 1,
+            orders: 1,
+            productData: "$productData.image",
+          }
+        }   
+
       ])
       
-      console.log('result', result);
-      
-      // .then((response) => {
-      //   console.log('response',response);
-      //   let orders = response
-      //     .filter((element) => {
-      //       if (element.orders._id == orderId) {
-      //         return true;
-      //       }
-      //       return false;
-      //     })
-      //     .map((element) => element.orders);
-
-      //   resolve(orders);
-      // }); 
+      .then((response) => {
+        resolve(response); 
+      });  
     });
   } catch (error) { 
     console.log(error.message);
@@ -214,7 +168,7 @@ const returnOrderHelper = (orderId,userId, status) => {
               resolve(response);
             });
           }
-        }else if(order.paymentMethod=='wallet'){
+        }else if(order.paymentMethod=='wallet' || order.paymentMethod == 'RazorPay'){
 
           if(status == 'Cancelled'){
             Order.updateOne(
@@ -242,7 +196,7 @@ const returnOrderHelper = (orderId,userId, status) => {
                 }
               }
             ).then((response) => {
-              resolve(response);
+              resolve(response); 
             });
           }
         }
@@ -254,10 +208,15 @@ const returnOrderHelper = (orderId,userId, status) => {
   };
 
 
-const getSalesReport= () => {
+const getSalesReport = () => {
   try {
+
+    console.log('getSalesReport  helper');
+
     return new Promise((resolve, reject)  => {
-       Order.aggregate([
+       
+      // const result = 
+      Order.aggregate([
         {
           $unwind: "$orders",
         },
@@ -266,7 +225,10 @@ const getSalesReport= () => {
             "orders.orderStatus": "Delivered",
           },
         },
-      ]).then((response) => {
+      ])
+      // console.log('result',result);
+
+      .then((response) => {
         resolve(response);
       });
     });
@@ -311,13 +273,40 @@ const postReport = (date) => {
   }
 
 
+const getOnlineCount =  () => {
+  return new Promise(async (resolve, reject) => {
+    let response = await Order.aggregate([
+      {
+        $unwind: "$orders",
+      },
+      {
+        $match: {
+          "orders.paymentMethod": "RazorPay",
+        },
+      },
+      {
+        $group:{
+          _id: null,
+        totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+        count: { $sum: 1 }
+
+        }
+
+      }
+
+    ]);
+    resolve(response);
+  });
+}
+
  module.exports =  {
-    getOrderData,
+    // getOrderData,
     changeOrderStatus,
     returnOrderHelper,
     cancelOrderHelper,
     findOrder,
     getSalesReport,
-    postReport
+    postReport,
+    getOnlineCount
 
 }

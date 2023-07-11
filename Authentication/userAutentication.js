@@ -4,7 +4,6 @@ const userData = require('../Model/userModel')
 
 const authenticate = (req,res,next)=>{
     const token = req.cookies.jwt
-    console.log('user authenticate');
     if(token){
         jwt.verify(token, 'secret_key',(err, decodedToken)=>{
             if(err){
