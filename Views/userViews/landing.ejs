@@ -120,12 +120,12 @@
 	<!-- End Header Area -->
 
 	<!-- start banner Area -->
-	<section class="banner-area">
+	  <section class="banner-area">
 		<div class="container">
-		  <div class="row fullscreen align-items-center justify-content-start">
-			<div class="col-lg-12">
-			  <div class="active-banner-slider owl-carousel">
-				<% banners.forEach((banner) => { %>
+		  <div id="bannerSlider" class="carousel slide row fullscreen align-items-center justify-content-start" data-ride="carousel">
+			<div class="carousel-inner">
+			  <% banners.forEach((banner, index) => { %>
+			  <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
 				<div class="row align-items-center d-flex">
 				  <div class="col-lg-5 col-md-6">
 					<div class="banner-content">
@@ -140,9 +140,17 @@
 					</div>
 				  </div>
 				</div>
-				<% }) %>
 			  </div>
+			  <% }) %>
 			</div>
+			<a class="carousel-control-prev" href="#bannerSlider" role="button" data-slide="prev" style="align-items:end; margin-bottom: 10px;" >
+				<img src="img/banner/prev.png">
+				<span class="sr-only">Previous</span>
+			  </a>
+			  <a class="carousel-control-next" href="#bannerSlider" role="button" data-slide="next" style="align-items:end;margin-bottom: 10px;">
+				<img src="img/banner/next.png">
+				<span class="sr-only">Next</span>
+			  </a>
 		  </div>
 		</div>
 	  </section>
@@ -300,6 +308,22 @@
 		  })
 		}
 	</script>
+
+<script>
+	// Set the interval time (in milliseconds)
+	const intervalTime = 5000; // Change this value to adjust the scrolling speed
+  
+	// Get the banner slider element
+	const bannerSlider = document.querySelector('#bannerSlider');
+  
+	// Function to scroll the slider
+	const scrollSlider = () => {
+	  $('.carousel').carousel('next');
+	};
+  
+	// Start the interval to scroll the slider
+	setInterval(scrollSlider, intervalTime);
+  </script>
 </body> 
 
 </html>

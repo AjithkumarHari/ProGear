@@ -76,13 +76,13 @@ module.exports.orderList = async (req,res) =>{
         const order = await orderHelper.getOrder(res.locals.user.id)    
         const token = res.locals.user
 
-        const category = await Category.find({ })
+        const category = await Category.find({ is_listed: true });
 
         res.render('orders',{ order : order, category , token})
 
     }catch(error){
         console.log(error);
-        res.send({ success: false, error: error.message });
+        res.render('block500')
     }
   
 }
@@ -96,7 +96,7 @@ module.exports.orderDetails = async (req,res) =>{
         const user = res.locals.user
         const token = res.locals.user
         const id = req.query.id
-        const category = await Category.find({ })
+        const category = await Category.find({ is_listed: true });
         orderHelper.getOrderDetails(id, user._id).then((orders) => {
             const address = orders[0].orders.shippingAddress
             const products = orders[0].orders.productDetails 
@@ -114,7 +114,7 @@ module.exports.orderDetails = async (req,res) =>{
         });  
     } catch (error) {
         console.log(error);
-        res.send({ success: false, error: error.message });
+        res.render('block500')
     }
 }
 
@@ -132,7 +132,7 @@ module.exports.cancelOrder = async(req,res)=>{
     }
     catch (error) {
         console.log(error);
-        res.send({ success: false, error: error.message });
+        res.render('block500')
     }
 }
 
@@ -167,7 +167,7 @@ module.exports.verifyRazorpayPayment = async (req, res) =>{
     }
     catch (error) {
         console.log(error);
-        res.send({ success: false, error: error.message });
+        res.render('block500')
     }
 }
 

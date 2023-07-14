@@ -4196,7 +4196,8 @@ label {
     padding-right: 30px; }
     .cart_inner .table tbody tr td .media .d-flex img {
       border: 1px solid #eeeeee;
-      border-radius: 3px; }
+      border-radius: 3px;
+      }
   .cart_inner .table tbody tr td .media .media-body {
     vertical-align: middle;
     align-self: center; }

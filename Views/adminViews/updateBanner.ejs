@@ -1,5 +1,18 @@
 <%- include('../layouts/adminHeader.ejs') %>
 
+<style>
+  .image{
+    width: 200px;
+    height: 200px;
+    border: 2px solid;
+    border-radius: 4px;
+    margin-right: 50px;
+    margin-left: 50px;
+
+
+  }
+</style>
+
 <!-- partial -->
 <div class="main-panel">
 <div class="content-wrapper">
@@ -20,6 +33,11 @@
     <h4 class="card-title">Edit the details of the existing banner</h4>
     <form class="forms-sample" action="/admin/updateBannerPost" method="POST">
       <div class="form-group">
+        <center>
+          <img class="image" src="/banner-images/<%= banner[0].image %>" alt="Product Image">
+        </center>
+      </div>
+      <div class="form-group">
         <label for="exampleInputName1">Title</label>
         <input type="text" class="form-control" id="exampleInputName1" name="title" value="<%= banner[0].title %>">
       </div>
@@ -27,6 +45,7 @@
         <label for="exampleTextarea1">Description</label>
         <textarea class="form-control" id="exampleTextarea1" rows="4" name="description"> <%= banner[0].description %></textarea>
       </div>
+      
 
       <div class="form-group">
         <label for="productImage">Banner Image:</label>

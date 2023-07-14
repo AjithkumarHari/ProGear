@@ -43,7 +43,7 @@ addNewAddressHelper = async (newAddress,userId) => {
       const user =({
         name: newAddress.name,
         number: newAddress.number,
-        houseAddress: newAddress.houseadd,
+        houseAddress: newAddress.houseAddress,
         city: newAddress.city,
         street: newAddress.street,
         pin: newAddress.pin,
@@ -59,7 +59,7 @@ addNewAddressHelper = async (newAddress,userId) => {
       const address = ({
         name: newAddress.name,
         number: newAddress.number,
-        houseAddress: newAddress.houseadd,
+        houseAddress: newAddress.houseAddress,
         city: newAddress.city,
         street: newAddress.street,
         pin: newAddress.pin,
@@ -84,27 +84,30 @@ addNewAddressHelper = async (newAddress,userId) => {
 editAddressHelper = async (newAddress, userId) => {
   try{
     // console.log('edit Address helper');
-    const user =({
+    const user ={
+      id:newAddress.id, 
       name: newAddress.name,
       number: newAddress.number,
-      houseAddress: newAddress.houseadd,
+      houseAddress: newAddress.houseAddress,
       city: newAddress.city,
-      street: newAddress.street,
+      street: newAddress.street, 
       pin: newAddress.pin,
-    })
-    const index = newAddress.index
-    // console.log('index',index);
+    }
+    const index = newAddress.id
+    console.log('index',index);
+    console.log('user',user)
     const result = await Address.updateOne(
       {
-        "user_data": userId
+        "address._id": new mongoose.Types.ObjectId(index)
       },
       {
-        "$set": {
-          [`address.${index}`]: user
+        $push: {
+          "address.$.address": user
         }
       }
     );
-    // console.log(result);
+    console.log(result);
+    
       return true
   }catch(error){
     throw new Error(error.message)
@@ -129,4 +132,4 @@ module.exports={
     addNewAddressHelper,
     editAddressHelper,
     deleteAddressHelper
-}
+} 

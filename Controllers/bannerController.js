@@ -58,9 +58,7 @@ module.exports.editBanner=(req, res) => {
 
 module.exports.updateBanner = async (req, res) => {
     try {
-
-    
-    
+        
     bannerHelper.updateBannerHelper(req.body, req?.file?.filename).then(( response) => {
         // console.log('res',response);
         if (response) {

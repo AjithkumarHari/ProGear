@@ -1,11 +1,7 @@
 const productData = require("../Model/productModel")
 const categoryData = require("../Model/categoryModel")
 
-// const multer = require("../multer/multer");
-
-const multer = require("multer")
-const path = require('path');
-const { log } = require("console");
+const adminHelper = require('../Helper/adminHelper')
 
 
 //***************************************************************  PRODUCT-MANAGEMENT PAGE  *******************************************************//
@@ -44,11 +40,29 @@ module.exports.newProduct = async (req, res) => {
 try{
 
     const { name, description, category, price , brand} = req.body;
+    const categories = await categoryData.find({})
 
     if(price<0){
-        const category = await categoryData.find({})
-        res.render('addProduct',{ category: category },{message:"price must be above 0"})
-    }else{
+        res.render('addProduct',{ category: categories },{message:"price must be above 0"})
+    }
+
+    else if (!name || name.trim().length === 0) {
+        return res.render("addProduct",{ category: categories , message: "Product Name is required" });
+    }
+
+    else if (!description || description.trim().length === 0) {
+        return res.render("addProduct", { category: categories , message: "Description is required" });
+    }
+     
+    else if (!price || price.trim().length === 0) {
+        return res.render("addProduct", { category: categories , message: "Price is required" });
+    }
+
+    else if (!brand || brand.trim().length === 0) {
+        return res.render("addProduct",{ category: categories , message: "Brand is required" });
+    }
+    
+    else{
         const filesArray = Object.values(req.files).flat();
         const image = filesArray.map((file) => file.filename);
       
@@ -69,7 +83,7 @@ try{
         
     }
 }
-    // console.log(req.files);
+
    
       catch(err) {
         console.error("Error adding product:", err);
@@ -79,7 +93,7 @@ try{
 
 //***************************************************************  UPDATE-PRODUCT PAGE  *******************************************************//
 
-//GET
+//GET 
 module.exports.updateProduct = async (req ,res) => {
     try {
         id = req.query.userid
@@ -96,22 +110,22 @@ module.exports.updateProduct = async (req ,res) => {
 
 //POST 
 module.exports.editProduct = async (req, res) => {
-    try{
-        const id = req.body.id
-        // console.log('id',id);
 
-        const filesArray = Object.values(req.files).flat();
-        const image = filesArray.map((file) => file.filename);
+    try {
+        
+            adminHelper.updateProductHelper(req.body, req?.file?.filename).then(( response) => {
 
-        const result = await productData.updateOne({_id : id}, {$set:{name : req.body.name , description : req.body.des, brand : req.body.brand, image : image , price : req.body.price}})
-        // console.log(result);
-    
-        res.redirect('/admin/product');
-    
-    }catch (error) {
-        res.send("error")
+                if (response) {
+                    res.redirect("/admin/product");
+                } else {
+                    res.status(505);
+                }
+            });}
+
+
+      catch (error) {
         console.log(error.message);
-    }
+      }
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//

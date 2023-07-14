@@ -63,9 +63,8 @@ module.exports.verifyLogin = async (req, res) => {
 
 module.exports.userManagement = async (req ,res) => {
     try {
-        const find = await userData.find({})
-        res.render('userManagement', { defaultLayout: null, find: find })
-        console.log("user managment loaded")
+        const find = await userData.find({ })
+        res.render('userManagement', { find: find })
     } catch (error) {
         res.send("error")
         console.log(error.message);
@@ -77,20 +76,20 @@ module.exports.userManagement = async (req ,res) => {
 
 //8888888888888888888888888888888888888888888888888888---BLOCK/UNBLOCK USER--8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
-module.exports.changeStatus = async (req, res) => {
+module.exports.changeUserStatus = async (req, res) => {
+
     try {
+
       const id = req.query.userid;
-      console.log('id',id);
-      const userdata = await userData.findOne({ _id: id });
-      console.log('userdata',userdata);
   
+      const userdata = await userData.findOne({ _id: id });
+
       if (userdata) {
         // Toggle the value of is_blocked
         const newStatus = !userdata.is_blocked; 
-        console.log('ns',newStatus);
          
         result = await userData.updateOne({ _id: id }, { $set: { is_blocked: newStatus } });
-        console.log(result);
+        
         res.redirect('/admin/user');
   
         // res.send({ success: true, is_blocked: newStatus }); // Sending the updated status as the response
@@ -233,8 +232,6 @@ module.exports.returnOrder = async(req,res)=>{
 // get sales report page
 module.exports.getSalesReport=async (req, res) => {
 
-  console.log('ncjnjkcnwdkjncwjn');
-  console.log('myir');
   const report = await adminHelper.getSalesReport();
   let details = [];
   const getDate = (date) => {

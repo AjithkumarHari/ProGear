@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const userData = require('../Model/userModel')
 
 
+require('dotenv').config();
+
 const authenticate = (req,res,next)=>{
     const token = req.cookies.jwt
     if(token){
@@ -49,7 +51,31 @@ const checkUser =  (req,res,next) =>{
     }
 }
 
+
+
+
+
+
+const checkBlocked =  (req,res,next)=> {
+    const token = req.cookies.jwt;
+    if(token){
+        jwt.verify(token,'secret_key', async (err, decodedToken) => {
+            const user = await userData.findById(decodedToken.id);
+            if (user.is_blocked==true){
+              res.clearCookie('jwt')
+              res.render('blocked')
+          }else{
+              next()
+          }
+        });
+    }else{
+        next()
+    }
+}
+
+
 module.exports = {
     authenticate,
-    checkUser
+    checkUser,
+    checkBlocked
 }

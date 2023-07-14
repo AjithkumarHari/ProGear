@@ -28,7 +28,7 @@ router.use(cookieparser())
 
 router.all('*',validate.checkUser)
 
-router.get('/',userController.homePage)
+router.get('/',validate.checkBlocked,userController.homePage)
 
 router.get('/login',userController.loginPage)
 router.post('/login',userController.loginVerify)
@@ -44,6 +44,7 @@ router.get('/setNewPassword',userController.setNewPasswordGet)
 
 router.get('/signup',userController.signupPage)
 router.post('/signup',userController.signupAction)
+router.get('/signupOtp',userController.signupOtp)
 
 router.post('/signupOtpVerify',userController.verifySignupOtp)
 
@@ -60,12 +61,12 @@ router.get('/product',userController.productPage)
 router.get('/category', userController.categoryPage)
 
 //Get Cart Page 
-router.get('/cart',validate.authenticate,cartController.cartPage)
+router.get('/cart',validate.authenticate,validate.checkBlocked,cartController.cartPage)
 router.post('/addToCart/:id/:price', cartController.addToCart);
 router.delete('/removeFromCart',cartController.removeFromCart)
 router.post('/changeItemQuantity',cartController.changeItemQuantity)
 
-router.get('/profile',validate.authenticate,userController.profilePage)
+router.get('/profile',validate.authenticate,validate.checkBlocked,userController.profilePage)
 router.get('/editProfile',userController.editProfilePage)
 router.post('/updateProfile',userController.updateProfile)
 router.get('/userAddress',addressController.viewAddress)

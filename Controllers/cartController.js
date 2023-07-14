@@ -56,7 +56,7 @@ module.exports.cartPage = async ( req, res ) => {
         console.error('Error:', error.message);
       }
 
-        const category = await Category.find({ })
+      const category = await Category.find({ is_listed: true });
 
         if(cart==null){
         res.render('cart', { cart:[], subtotal, category , token});

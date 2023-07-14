@@ -48,7 +48,7 @@ router.get('/landing', validate.authenticate,adminController.loadDashboard)
 router.get('/user',validate.authenticate, adminController.userManagement)
 
 
-router.get('/block',adminController.changeStatus)
+router.get('/block',adminController.changeUserStatus)
 
 
 //                                                   PRODUCT
@@ -59,7 +59,7 @@ router.get('/addProduct',productController.addProduct)
 router.post('/addProduct',multipleUpload,productController.newProduct)
 
 router.get('/updateProduct',productController.updateProduct)
-router.post('/updateProduct',multipleUpload,productController.editProduct)
+router.post('/updateProduct',multerr.editProduct,productController.editProduct)
 
 router.get('/unlistProduct',productController.unlistProduct)
 

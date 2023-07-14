@@ -1,6 +1,7 @@
 const Order = require('../Model/orderModel')
 const mongoose = require('mongoose')
 const User = require('../Model/userModel');
+const Product = require('../Model/productModel') 
 
 const findOrder  = (orderId,user) => {
   try {
@@ -299,6 +300,27 @@ const getOnlineCount =  () => {
   });
 }
 
+
+const updateProductHelper=async(texts, Image) => {
+  return new Promise(async (resolve, reject) => {
+       const id = texts.id
+       console.log('updateProductHelper',id);
+      let response = await Product.updateOne(
+        { _id: new mongoose.Types.ObjectId(id) },
+        {
+          $set: {
+            name : texts.name ,
+            description : texts.des,
+            brand : texts.brand, 
+            image : Image , 
+            price : texts.price
+          },
+        }
+      );
+      resolve(response);
+    });
+}
+
  module.exports =  {
     // getOrderData,
     changeOrderStatus,
@@ -307,6 +329,7 @@ const getOnlineCount =  () => {
     findOrder,
     getSalesReport,
     postReport,
-    getOnlineCount
+    getOnlineCount,
+    updateProductHelper
 
 }

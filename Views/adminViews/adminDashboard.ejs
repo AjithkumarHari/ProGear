@@ -16,6 +16,21 @@
         <link href="../admin-assets/css/main.css" rel="stylesheet" type="text/css" />
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+        <style>
+          td{
+            background-color: #181b23;
+          }
+          .card-body{
+            color:aliceblue;
+          }
+    
+        </style>
+
     </head>
 
     <div class="main-panel">
@@ -128,7 +143,7 @@
                   <div class="card-body">
                     <h4 class="card-title">Latest Orders</h4>
                     <div class="table-responsive">
-                      <table class="table">
+                      <table class="table" id="myTable">
                         <thead>
                           <tr>
                             <th>#ID</th>
@@ -148,15 +163,17 @@
                               <% if (order.orders.orderStatus == 'Placed') { %>
                                   <div class="badge badge-outline-primary"><%= order.orders.orderStatus %></div>
                               <% } else if (order.orders.orderStatus == 'Dispatched') { %>
-                                  <div class="badge rounded-pill alert-info"><%= order.orders.orderStatus %></div>
+                                  <div class="badge badge-outline-info"><%= order.orders.orderStatus %></div>
                               <% } else if (order.orders.orderStatus == 'Cancel Requested' ) { %>
-                                  <div class="badge rounded-pill alert-warning"><%= order.orders.orderStatus %></div>
+                                  <div class="badge badge-outline-warning"><%= order.orders.orderStatus %></div>
+                              <% } else if (order.orders.orderStatus == 'Pending' ) { %>
+                                <div class="badge badge-outline-warning"><%= order.orders.orderStatus %></div>
                               <% } else if (order.orders.orderStatus == 'Delivered') { %>
                                   <div class="badge badge-outline-success"><%= order.orders.orderStatus %></div>
                               <% } else if (order.orders.orderStatus == 'Return Requested' ) { %>
-                                  <div class="badge rounded-pill alert-warning"><%= order.orders.orderStatus %></div>
+                                  <div class="badge badge-outline--warning"><%= order.orders.orderStatus %></div>
                               <% } else { %>
-                                  <div class="badge rounded-pill alert-danger"><%= order.orders.orderStatus %></div>
+                                  <div class="badge badge-outline-danger"><%= order.orders.orderStatus %></div>
                               <% } %>
                               </td>
                             <td><%=order.orders.createdAt.toLocaleString()%></td>
@@ -190,9 +207,24 @@
           datasets: [{
             label: 'Daily Sales',
             data: dailySales,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
+            backgroundColor:  [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+            borderColor:[
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+            borderWidth: 1,
+            fill: false
           }]
         },
         options: {
@@ -200,7 +232,7 @@
           scales: {
             y: {
               beginAtZero: true
-            }
+            }, 
           }
         }
       });
@@ -220,8 +252,22 @@
   datasets: [{
     label: 'Orders per Date',
     data: orderCounts,
-    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-    borderColor: 'rgba(75, 192, 192, 1)',
+    backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
     borderWidth: 1
   }]
   },
@@ -238,6 +284,18 @@
   }
   });
       
+  </script>
+
+  <script>
+    $(document).ready(function() {
+    $.noConflict();
+      $('#myTable').DataTable({
+        "paging": true,          // Enable pagination
+        "pageLength": 10,        // Number of rows per page
+        "lengthMenu": [10, 25, 50, 75, 100],  // Dropdown options for rows per page
+
+      });
+    });
   </script>
 
         <script src="../admin-assets/js/vendors/jquery-3.6.0.min.js"></script>

@@ -200,9 +200,9 @@
                                   <input type="text" class="form-control" id="email" name="email" value="<%= user.email %>">
                                 </div>
                               
-                                <div class="col-md-12 form-group">
+                                <!-- <div class="col-md-12 form-group">
                                   <input type="text" class="form-control" id="add2" name="add2" value="<%= address[0].address.houseAddress %>">
-                                </div>
+                                </div> -->
                               
                                 <div class="col-md-12 form-group">
                                   <input type="text" class="form-control" id="add2" name="add2" value="<%= address[0].address.street %>">
@@ -334,7 +334,7 @@
 
     <div class="pop-up-list">
         <button class="pop-up-button"><i class="fas fa-times"></i></button>
-        <% if (address[0]) { %>
+        <% if (address) { %>
         <div class="top-title-section">
             <p class="top-title special">Addresses</p>
         </div>
@@ -344,18 +344,18 @@
                
                     <% address.forEach((address, index) => { %>
                     <label for="address<%= index %>">Address</label>
-                    <input type="radio" id="addressRadio<%= index %>" name="addressRadio" value="<%= address._id %>"
+                    <input type="radio" id="addressRadio<%= index %>" name="addressRadio" value="<%= address.address._id %>"
                         onchange="this.form.submit()">
                     <br>
                     <div class="single-comment grid-item">
                         <div class="user justify-content-between d-flex">
                             <div class="desc">
-                                <h5>Name: <%= address.name %></h5>
-                                <h5>Number: <%= address.number %></h5>
-                                <h5>Address: <%= address.houseAddress %></h5>
-                                <h5>City: <%= address.city %></h5>
-                                <h5>Street: <%= address.street %></h5>
-                                <h5>Pin: <%= address.pin %></h5>
+                                <h5>Name: <%= address.address.name %></h5>
+                                <h5>Number: <%= address.address.number %></h5>
+                                <h5>Address: <%= address.address.houseAddress %></h5>
+                                <h5>City: <%= address.address.city %></h5>
+                                <h5>Street: <%= address.address.street %></h5>
+                                <h5>Pin: <%= address.address.pin %></h5>
                             </div>
                         </div>
                     </div>
@@ -379,14 +379,14 @@
     <div class="popup-wrapper">
         <div class="popup">
             <button class="close-button"></button>
-            <form class="popup-form" action="/addNewAddress" method="POST">
+            <form class="popup-form" onsubmit="saveAddressedit(event)">
                 <h2 class="popup-form__title">Add Address</h2>
-                <input type="text" class="popup-form__input" placeholder="Name" name="name">
-                <input type="number" class="popup-form__input" placeholder="Mobile Number" name="number">
-                <textarea class="popup-form__input" placeholder="House Address" name="houseadd"></textarea>
-                <input type="text" class="popup-form__input" placeholder="City" name="city">
-                <input type="text" class="popup-form__input" placeholder="Street" name="street">
-                <input type="number" class="popup-form__input" placeholder="PostalCode/PIN" name="pin">
+                <input type="text" class="popup-form__input" placeholder="Name" name="name" id="nameInput">
+                <input type="number" class="popup-form__input" placeholder="Mobile Number" name="number" id="mobileNumberInput">
+                <textarea class="popup-form__input" placeholder="House Address" name="houseadd" id="addressInput"></textarea>
+                <input type="text" class="popup-form__input" placeholder="City" name="city" id="cityInput">
+                <input type="text" class="popup-form__input" placeholder="Street" name="street" id="localityInput">
+                <input type="number" class="popup-form__input" placeholder="PostalCode/PIN" name="pin" id="pincodeInput">
                 <button type="submit" id="btn" class="popup-form__submit">ADD</button>
             </form>
         </div>
@@ -686,8 +686,8 @@
 
                     // document.getElementById('subTotal').innerText = total - response.discountAmount
                    
-                    document.getElementById('total').innerText = '₹'+ (total - response.discountAmount)
-                    document.getElementById('totalVal').value = total - response.discountAmount
+                    document.getElementById('total').innerText = '₹'+ Math.floor(total - response.discountAmount)
+                    document.getElementById('totalVal').value = Math.floor(total - response.discountAmount)
 
                     document.getElementById('couponOffer').innerText = response.discount + '%'
                     document.getElementById('codes').value = response.couponCode
@@ -709,6 +709,107 @@
         }
     })
   }
+    </script>
+
+    <!-- address from validation -->
+    <script>
+        function saveAddressedit(event) {
+        event.preventDefault(); // Prevent form submission and page refresh
+        // Get references to the input fields
+        const nameInput = document.getElementById('nameInput');
+        const mobileNumberInput = document.getElementById('mobileNumberInput');
+        const addressInput = document.getElementById('addressInput');
+        const cityInput = document.getElementById('cityInput');
+        const localityInput = document.getElementById('localityInput');
+        const pincodeInput = document.getElementById('pincodeInput');
+
+        // Get the values from the input fields
+        const name = nameInput.value.trim();
+        const mobileNumber = mobileNumberInput.value.trim();
+        const address = addressInput.value.trim();
+        const city = cityInput.value.trim();
+        const locality = localityInput.value.trim();
+        const pincode = pincodeInput.value.trim();
+
+        function validate(name, mobileNumber, address, city, locality, pincode) {
+            // Perform validation
+            if (name === '') {
+            alert('Please enter a name.');
+            return false;
+            }
+
+            if (mobileNumber === '') {
+            alert('Please enter a mobile number.');
+            return false;
+            }
+
+            if (address === '') {
+            alert('Please enter a house address.');
+            return false;
+            }
+
+            if (city === '') {
+            alert('Please enter a city.');
+            return false;
+            }
+
+            if (locality === '') {
+            alert('Please enter a street.');
+            return false;
+            }
+
+            if (pincode === '') {
+            alert('Please enter a postal code/PIN.');
+            return false;
+            }
+
+            // If all fields pass validation, you can submit the form
+            // Here, you can add code to handle form submission to the server
+            // For example, using AJAX to send the form data
+
+            return true;
+        }
+
+        if (validate(name, mobileNumber, address, city, locality, pincode)) {
+            // Create an object with the form data
+            const formData = {
+            name: name,
+            number: mobileNumber,
+            houseAddress: address,
+            city: city,
+            street: locality,
+            pin: pincode
+            };
+
+            // Send the form data to the server using AJAX
+            fetch('/addNewAddress', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+            })
+            //   .then(response => response.json())
+            .then((response)=>{
+                response.json()
+                location.reload()
+                
+
+            })
+            .then(data => {
+                // Handle the server response
+                // ...
+            })
+            .catch(error => {
+                // Handle any error that occurred during the request
+                console.error('Error:', error);
+            });
+            
+
+            // Prevent the default form submission
+            return false;
+        }
+        }
     </script>
 </body>
 

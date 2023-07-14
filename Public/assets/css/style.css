@@ -7626,7 +7626,9 @@ th {
 
 label {
   display: inline-block;
-  margin-bottom: 0.5rem; }
+  margin-bottom: 0.5rem;
+  color: #6c7293;
+  }
 
 button {
   border-radius: 0; }
@@ -11409,7 +11411,9 @@ input[type="button"].btn-block {
   background-color: #191c24;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem; }
+  border-radius: 0.25rem;
+  color: blue;
+  }
   .card > hr {
     margin-right: 0;
     margin-left: 0; }
@@ -11431,6 +11435,7 @@ input[type="button"].btn-block {
 .card-body {
   min-height: 1px;
   padding: 1.25rem;
+  color: #6c7293;
   }
 
 .card-title {
@@ -15486,7 +15491,8 @@ textarea:hover,
 textarea:visited {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  box-shadow: none; }
+  box-shadow: none;
+  }
 
 .btn.active.focus, .fc button.active.focus, .ajax-upload-dragdrop .active.focus.ajax-file-upload, .swal2-modal .swal2-buttonswrapper .active.focus.swal2-styled, .wizard > .actions a.active.focus,
 .btn.active:focus,
@@ -18499,7 +18505,9 @@ body.avgrund-active {
   .dataTables_wrapper .dataTables_paginate {
     margin-top: 20px; }
   .dataTables_wrapper .dataTables_info {
-    font-size: 0.875rem; }
+    font-size: 0.875rem;
+    color: #ededed;
+    }
 
 /* Datepicker */
 .datepicker.datepicker-dropdown,

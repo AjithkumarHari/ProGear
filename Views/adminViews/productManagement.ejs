@@ -1,4 +1,14 @@
-	<%- include('../layouts/adminHeader.ejs') %>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+  <style>
+    td{
+      background-color: #181b23;
+    }
+  </style>
+  <%- include('../layouts/adminHeader.ejs') %>
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
@@ -22,7 +32,7 @@
         <!-- {{!-- <p class="card-description"> Add class <code>.table-striped</code> --}}
         </p> -->
         <div class="table-responsive">
-          <table class="table table-bordered table-contextual">
+          <table class="table table-bordered table-contextual" id="myTable" >
             <thead>
               <tr>
                 <th>Image</th>
@@ -35,7 +45,7 @@
                 <th>Unlist</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               <% find.forEach((product) => { %>
               <tr>
                 <td style="height: 200px; width:200px">
@@ -65,3 +75,15 @@
 </div>
 
 <%- include('../layouts/adminFooter.ejs') %>
+
+<script>
+  $(document).ready(function() {
+  $.noConflict();
+    $('#myTable').DataTable({
+      "paging": true,          // Enable pagination
+      "pageLength": 10,        // Number of rows per page
+      "lengthMenu": [10, 25, 50, 75, 100],  // Dropdown options for rows per page
+
+    });
+  });
+    </script>

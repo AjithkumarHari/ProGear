@@ -10,7 +10,7 @@ module.exports.viewAddress = async (req, res) => {
       const userId = res.locals.user.id;
       // console.log(userId);
       const addressDetails = await addressHelper.getAddressDetails(userId);
-      const category = await Category.find({ })
+      const category = await Category.find({ is_listed: true });
 
       // console.log("addressDetails",addressDetails);
 
@@ -56,8 +56,8 @@ module.exports.addNewAddress = async (req, res) =>{
 
 module.exports.editAddress = async (req, res) =>{
   try {
-      // console.log('Edit Adderss');
-      // console.log('edit address',req.body);
+      console.log('Edit Adderss');
+      console.log('edit address',req.body.id);
       if(addressHelper.editAddressHelper(req.body,res.locals.user.id)){
         res.redirect('/userAddress')
     }
