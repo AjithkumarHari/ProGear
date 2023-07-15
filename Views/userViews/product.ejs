@@ -176,7 +176,7 @@
 	</section>
 	<!--================End Product Description Area =================-->
 
-	<!-- Start related-product Area -->
+	<!-- Star t related-product Area -->
 	
 	<!-- End related-product Area -->
 
@@ -225,7 +225,10 @@
 					}
 					});
 			  }
-			}
+			},
+			error: () => {
+					location.href = '/login';
+				}
 		  })
 		}
 	</script>

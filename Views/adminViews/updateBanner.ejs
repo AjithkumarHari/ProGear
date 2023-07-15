@@ -39,17 +39,17 @@
       </div>
       <div class="form-group">
         <label for="exampleInputName1">Title</label>
-        <input type="text" class="form-control" id="exampleInputName1" name="title" value="<%= banner[0].title %>">
+        <input type="text" class="form-control" id="exampleInputName1" name="title" value="<%= banner[0].title %>" required>
       </div>
       <div class="form-group">
         <label for="exampleTextarea1">Description</label>
-        <textarea class="form-control" id="exampleTextarea1" rows="4" name="description"> <%= banner[0].description %></textarea>
+        <textarea class="form-control" id="exampleTextarea1" rows="4" name="description" required > <%= banner[0].description %></textarea>
       </div>
       
 
       <div class="form-group">
         <label for="productImage">Banner Image:</label>
-        <input type="file" class="form-control" name="image" id="image"> 
+        <input type="file" class="form-control" name="image" id="image" required> 
       </div>
 
       <input type="hidden" name="id" value="<%= banner[0]._id %>">

@@ -63,7 +63,7 @@ const checkBlocked =  (req,res,next)=> {
             const user = await userData.findById(decodedToken.id);
             if (user.is_blocked==true){
               res.clearCookie('jwt')
-              res.render('blocked')
+              res.redirect("/error-403");
           }else{
               next()
           }

@@ -4,10 +4,10 @@ const productData = require("../Model/productModel")
 const categoryData = require("../Model/categoryModel")
 const orderData = require('../Model/orderModel')
 
-const path = require("path")
+// const path = require("path")
 const jwt = require('jsonwebtoken')
 // const moment = require("moment-timezone")
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 
 const adminHelper = require('../Helper/adminHelper')
 
@@ -171,12 +171,12 @@ module.exports.orderData = async (req,res) =>{
 
 
 module.exports.changeStatus = async(req,res)=>{
-  // console.log("haiii");
-  let orderId = req.body.orderId
-  let status = req.body.status
-  console.log(orderId)
+
+  const orderId = req.body.orderId
+  const status = req.body.status
+
   adminHelper.changeOrderStatus(orderId, status).then((response) => {
-    console.log(response);
+
     res.send(response);
   });
 

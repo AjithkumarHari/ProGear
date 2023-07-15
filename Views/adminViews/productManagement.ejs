@@ -41,8 +41,8 @@
                 <th>Category</th>
                 <th>Price</th>
                 <th>Edit</th>
-                <th>List</th>
-                <th>Unlist</th>
+                <th>List/Unlist</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody >
@@ -59,12 +59,15 @@
                 <td><%= product.category.name %></td>
                 <td>&#8377; <%= product.price %></td>
                 <td><a href="/admin/updateProduct?userid=<%= product._id %>"><i class="mdi mdi-border-color"></i></a></td>
-                <td><a href="/admin/unlistProduct?id=<%= product._id %>"><i class="mdi mdi-delete">relist</i></a></td>
-                <td><a href="/admin/reListProduct?id=<%= product._id %>"><i class="mdi mdi-delete">unlist</i></a></td>
+                <td><a href="/admin/unlistProduct?id=<%= product._id %>"><center><i class="mdi mdi-delete"></i></center></a></td>
+                <% if (product.is_product_listed) { %>
+                  <td><label class="badge badge-success">Listed</label></td>
+                <% } else { %>
+                  <td><label class="badge badge-danger">Unlisted</label></td>
+                <% } %>
               </tr>
               <% }); %>
             </tbody>
-
           </div>
           </table>
           

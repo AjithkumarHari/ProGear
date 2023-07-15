@@ -10,12 +10,10 @@ const adminHelper = require('../Helper/adminHelper')
 module.exports.productManagement = async (req ,res) => {
     try {
         const find = await productData.find({}).populate('category')
-  
         res.render('productManagement', { find: find })
-        console.log("product Management loaded")
     } catch (error) {
-        res.send("error")
-        console.log(error.message);
+        console.log("Error from productManagement", error);
+        res.redirect("/error-500");
     }
 }
 
@@ -25,13 +23,12 @@ module.exports.productManagement = async (req ,res) => {
 //GET
 module.exports.addProduct = async (req ,res) => {
     try {
-        console.log('addproduct');
         const category = await categoryData.find({})
         res.render('addProduct',{ category: category })
         }
     catch (error) {
-        res.send("error")
-        console.log(error.message);
+        console.log("Error from addProduct", error);
+        res.redirect("/error-500");
     }
 }
 
@@ -96,8 +93,7 @@ try{
 //GET 
 module.exports.updateProduct = async (req ,res) => {
     try {
-        id = req.query.userid
-        console.log('updateproduct');
+        const id = req.query.userid
         const product = await productData.findOne({_id : id })
         const category = await categoryData.find({ })
         res.render('updateProduct',{ product: product , category : category})
@@ -128,41 +124,22 @@ module.exports.editProduct = async (req, res) => {
       }
 }
 
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//
-
-
-
 module.exports.unlistProduct = async(req,res)=>{
     try {
-    //   await productHelper.unListProduct(req.query.id)
-      const id = req.query.id;
-      const categorylisted = await productData.findOne({ _id: id }).populate('category');
-      
-      if (categorylisted.category.is_listed === true) {
-        const result = await productData.updateOne({ _id: id }, {$set:{ is_product_listed: true }});
-        console.log(result);
-      } else {
-        console.log('Cannot Relist');
-
-      }
-
-        res.redirect('/admin/product')
-        
-    } catch (error) {
-        console.log(error.message);
-    }
-  }
-
-module.exports.reListProduct = async(req,res)=>{
-    try {
-
-        // await productHelper.reListProduct(req.query.id)
         const id = req.query.id;
-        const result = await productData.updateOne({ _id: id }, {$set:{ is_product_listed: false }})
-        console.log(result);
-
-        res.redirect('/admin/product')
+        const categorylisted = await productData.findOne({ _id: id }).populate('category');
+        const userData = categorylisted.is_product_listed
+        if (categorylisted.category.is_listed === true) {
+            if(categorylisted){
+                const newStatus = !userData;
+                await productData.updateOne({ _id: id }, {$set:{ is_product_listed: newStatus }});
+            }
+        } 
+            res.redirect('/admin/product') 
     } catch (error) {
-        console.log(error.message);
-    }
-  }
+        console.log("Error from productManagement", error);
+        res.redirect("/error-500");
+    }
+}
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//

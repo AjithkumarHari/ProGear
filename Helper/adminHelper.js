@@ -105,7 +105,7 @@ const returnOrderHelper = (orderId,userId, status) => {
             }
 
           }
-          else if(order.paymentMethod == 'wallet'){
+          else if(order.paymentMethod == 'wallet' || order.paymentMethod == 'RazorPay'){
             if(status == 'Return Accepted'){
               Order.updateOne(
                 { "orders._id": new mongoose.Types.ObjectId(orderId) },

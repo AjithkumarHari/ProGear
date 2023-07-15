@@ -30,13 +30,14 @@
                                 <% order.forEach(function(item) { %>
                                     <tr>
                                         <td><span class="pl-2"><%= item.orders.name %></span></td>
-                                        <td><%= item.orders._id %></td>
-                                        <td>₹<%= item.orders.totalPrice %></td>
+                                        <td style="padding:0"><%= item.orders._id %></td>
+                                        <td >₹<%= item.orders.totalPrice %></td>
                                         <td><%= item.orders.paymentMethod %></td>
 
                                         <td><%= new Date(item.orders.createdAt).toLocaleDateString('en-US') %></td>
                                        
-                                        <td>
+                                        <td     >
+                                            <center>
                                             <% if (item.orders.orderStatus === 'Placed') { %>
                                                 <div class="badge badge-outline-primary"><%= item.orders.orderStatus %></div>
 
@@ -62,10 +63,11 @@
                                             <% } else { %>
                                                 <div class="badge badge-outline-danger"><%= item.orders.orderStatus %></div>
                                             <% } %>
+                                        </center>
                                         </td>
                                        
-                                        <td><a class="btn btn-light create-new-button" id="createbuttonDropdown" aria-expanded="false" href="/admin/orderData?id=<%= item.orders._id %>">View</a></td>
-                                        <td>
+                                        <td style="padding:0"><a class="btn btn-light create-new-button" id="createbuttonDropdown" aria-expanded="false" href="/admin/orderData?id=<%= item.orders._id %>">View</a></td>
+                                        <td style="padding:0">
                                             <div class="input-group-prepend">
                                                 <% if (item.orders.orderStatus === 'Cancelled' || item.orders.orderStatus === 'Delivered' || item.orders.orderStatus === 'Pending') { %>
                                                     <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>Action</button>

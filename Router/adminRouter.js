@@ -1,4 +1,3 @@
-// const router = require('express').Router()
 const express = require('express')
 const router = express()
 const path = require('path');
@@ -7,7 +6,7 @@ const session = require('express-session')
 
 const multer = require("multer");
 
-const multerr = require("../Config/multer");
+const multerr = require("../Multer/multer");
 
 const adminController = require("../Controllers/adminController")
 const productController = require("../Controllers/productController")
@@ -16,7 +15,6 @@ const couponController = require("../Controllers/couponController")
 const bannerController = require("../Controllers/bannerController")
 
 const validate = require("../Authentication/adminAuthentication");
-const { route } = require('./usersRouter');
 
 router.set('views','./Views/adminViews')
 
@@ -41,33 +39,36 @@ const multipleUpload = upload.fields([{ name: 'image1', maxCount: 1 }, { name:"i
 
 
 router.get('/', adminController.adminLogin)
+
 router.post('/login', adminController.verifyLogin)
 
 router.get('/landing', validate.authenticate,adminController.loadDashboard)
 
-router.get('/user',validate.authenticate, adminController.userManagement)
+router.get('/logout',adminController.logout)
 
+//-------------------------------------------USER--------------------------------------------
+
+router.get('/user',validate.authenticate, adminController.userManagement)
 
 router.get('/block',adminController.changeUserStatus)
 
-
-//                                                   PRODUCT
+//-------------------------------------------PRODUCT--------------------------------------------
 
 router.get('/product',validate.authenticate,productController.productManagement)
 
 router.get('/addProduct',productController.addProduct)
+
 router.post('/addProduct',multipleUpload,productController.newProduct)
 
 router.get('/updateProduct',productController.updateProduct)
+
 router.post('/updateProduct',multerr.editProduct,productController.editProduct)
 
 router.get('/unlistProduct',productController.unlistProduct)
 
-router.get('/reListProduct',productController.reListProduct)
+//-------------------------------------------CATAGORY--------------------------------------------
 
-
-//                                                   CATEGORY
-router.get('/category',categoryController.categoryManagement)
+router.get('/category',validate.authenticate,categoryController.categoryManagement)
 
 router.get('/addCategory',categoryController.addCategory)
 
@@ -79,9 +80,9 @@ router.post('/updateCategory',categoryController.editCategory)
 
 router.get('/changeStatus', categoryController.changeStatus)
 
-
 //-------------------------------------------ORDER--------------------------------------------
-router.get('/order',adminController.orderManagement)
+
+router.get('/order',validate.authenticate,adminController.orderManagement)
 
 router.get('/orderData',adminController.orderDetails)
 
@@ -91,10 +92,9 @@ router.put('/cancelStatus',adminController.cancelOrder)
 
 router.put('/returnOrder', adminController.returnOrder)
 
-
 //-------------------------------------------COUPON--------------------------------------------
 
-router.get('/coupon',couponController.couponList)
+router.get('/coupon',validate.authenticate,couponController.couponList)
 
 router.get('/addCoupon',couponController.loadCouponAdd)
 
@@ -104,7 +104,7 @@ router.get('/generateCouponCode',couponController.generateCouponCode)
 
 //-------------------------------------------BANNER--------------------------------------------
 
-router.get('/banner',bannerController.bannerList)
+router.get('/banner',validate.authenticate,bannerController.bannerList)
 
 router.get('/addBanner',bannerController.addBannerGet)
 
@@ -116,18 +116,10 @@ router.post('/updateBannerPost',multerr.editBannerupload,bannerController.update
 
 router.get('/deleteBanner',bannerController.deleteBanner)
 
-
-
-//-------------------------------------------sALES REPORT--------------------------------------------
-router.get('/salesReportGet',adminController.getSalesReport)
+//-------------------------------------------SALES REPORT--------------------------------------------
+router.get('/salesReportGet',validate.authenticate,adminController.getSalesReport)
 
 router.post('/salesReportPost',adminController.postSalesReport)
 
 
-router.get('/logout',adminController.logout)
-
 module.exports = router
-
-
-
-

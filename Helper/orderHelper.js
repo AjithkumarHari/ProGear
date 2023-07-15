@@ -7,8 +7,8 @@ const User = require('../Model/userModel')
 const Razorpay = require('razorpay')
 
 var instance = new Razorpay({
-  key_id: 'rzp_test_yeqkJtgBPsd4gA',
-  key_secret: 'j3lOSCIfBWaXkv60WGrG87qR',
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 checktoutHelper =async (data, user)=>{
@@ -195,18 +195,7 @@ const getOrderDetails  = (orderId, userId) => {
             }
           ])
         
-          // console.log('result', result);
-    
-        
         .then((response) => {
-          // let orders = response
-          //   .filter((element) => {
-          //     if (element.orders._id == orderId) {
-          //       return true;
-          //     }
-          //     return false;
-          //   })
-          //   .map((element) => element.orders);
   
           resolve(response);
         });
@@ -283,7 +272,7 @@ const getOrderDetails  = (orderId, userId) => {
           receipt: orderId
         };
         instance.orders.create(options, function(err, order) {
-          // console.log("New Order",order);
+
           if (err) {
             console.log('Order Creation Error from Razorpay: ' + err);
         } else {
@@ -327,7 +316,7 @@ const verifyRazorpayPaymentHelper = async(details) =>{
   try{
     return new Promise ((resolve,reject)=>{
       const crypto = require('crypto')
-      let hmac = crypto.createHmac('sha256', 'j3lOSCIfBWaXkv60WGrG87qR');
+      let hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET);
 
       hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
 
