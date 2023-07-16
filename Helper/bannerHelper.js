@@ -1,5 +1,6 @@
 const Banner = require('../Model/bannerModel')
 const mongoose = require('mongoose')
+
 const addBannerHelper=async(texts, Image) => {
     return new Promise(async (resolve, reject) => {
         const banner = new Banner({
@@ -12,6 +13,7 @@ const addBannerHelper=async(texts, Image) => {
         });
     });
 }
+
 const bannerListHelper = async()=>{
     return new Promise(async (resolve, reject) => {
         await Banner.find().then((response) => {
@@ -55,12 +57,13 @@ const editBannerHelper = async(bannerId) =>{
       } 
 }
 
-
 const updateBannerHelper=async(texts, Image) => {
     return new Promise(async (resolve, reject) => {
          const bannerId = texts.id
-         console.log('bannerId',bannerId);
-        let response = await Banner.updateOne(
+        //  console.log('bannerId',bannerId);
+        //  console.log('texts',texts);
+        //  console.log('Image',Image);
+        const response = await Banner.updateOne(
           { _id: new mongoose.Types.ObjectId(bannerId) },
           {
             $set: {

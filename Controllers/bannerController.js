@@ -27,6 +27,9 @@ module.exports.addBannerGet = async(req,res)=>{
 module.exports.addBannerPost = async(req,res)=>{
     console.log("addBannerPost");
     try{ 
+
+        console.log('addBannerPost body',req.body);
+        console.log('addBannerPost file',req.file);
         bannerHelper.addBannerHelper(req.body, req.file.filename).then(( response) => {
             if (response) {
                 res.redirect("/admin/banner");
@@ -67,6 +70,8 @@ module.exports.editBanner=(req, res) => {
 //POST
 module.exports.updateBanner = async (req, res) => {
     try {
+        console.log('updateBanner body ',req.body);
+        console.log('updateBanner file',req.file);
         bannerHelper.updateBannerHelper(req.body, req?.file?.filename).then(( response) => {
             if (response) {
                 res.redirect("/admin/banner");

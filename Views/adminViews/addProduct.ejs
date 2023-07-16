@@ -18,40 +18,48 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Enter the details of the new product</h4>
-            <form class="forms-sample" action="/admin/addProduct" method="POST" enctype="multipart/form-data">
+            <form class="forms-sample" action="/admin/addProduct" method="POST" enctype="multipart/form-data" id="myform">
               <div class="form-group">
                 <label for="exampleInputName1">Name</label>
-                <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" name="name" required>
+                <input type="text" class="form-control" id="name" placeholder="Name" name="name" onkeyup="nameValidation()">
+                <span id="name-error" class="validation-label"></span>
               </div>
+
               <div class="form-group">
                 <label for="exampleInputEmail3">Brand</label>
-                <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Brand" name="brand"required>
+                <input type="text" class="form-control" id="brand" placeholder="Brand" name="brand" onkeyup="brandValidation()" >
+                <span id="brand-error" class="validation-label"></span>
               </div>
+
               <div class="form-group">
                 <label for="exampleSelectGender">Category</label>
-                <select class="form-control" id="exampleSelectGender" name="category" required>
+                <select class="form-control" id="exampleSelectGender" name="category"  >
                   <% category.forEach(function(item) { %>
                     <option value="<%= item._id %>"><%= item.name %></option>
                   <% }); %>
                 </select>
               </div>
+
               <div class="form-group">
                 <label for="exampleInputEmail3">Price</label>
-                <input type="number" class="form-control" id="exampleInputEmail3" placeholder="Price" name="price" required>
+                <input type="number" class="form-control" id="price" placeholder="Price" name="price" onkeyup="priceValidation()" >
+                <span id="price-error" class="validation-label"></span>
               </div>
-              <br>
+
               <div class="form-group">
                 <label for="productImage">Product Main Image:</label>
-                <input type="file" class="form-control" name="image1" id="image" required>
+                <input type="file" class="form-control" name="image1" id="image" required >
               </div>
-              <br>
+
               <div class="form-group">
                 <label for="productImage">Product Sub Images:</label>
-                <input type="file" class="form-control"  multiple name="image2" id="image" required>
+                <input type="file" class="form-control"  multiple name="image2" id="image" required >
               </div>
+
               <div class="form-group">
                 <label for="exampleTextarea1">Description</label>
-                <textarea class="form-control" id="exampleTextarea1" rows="4" name="description" required></textarea>
+                <textarea class="form-control" id="description" rows="4" name="description" onkeyup="descriptionValidation()"></textarea>
+                <span id="description-error" class="validation-label"></span>
               </div>
               <% if (typeof message !== 'undefined') { %>
 								<center>
@@ -75,3 +83,109 @@
           <!-- partial:../../partials/_footer.html -->
           <%- include('../layouts/adminFooter.ejs') %>
   
+
+<script>
+  const regex = /^(?!\s*$).+/;
+  const priceRegex = /^\d+(\.\d{1,2})?$/;
+
+  const nameError = document.getElementById("name-error");
+  const brandError = document.getElementById("brand-error");
+  const priceError = document.getElementById("price-error");
+  const descriptionError = document.getElementById("description-error");
+
+  const myform = document.getElementById("myform");
+
+  function nameValidation() {
+    const name = document.getElementById("name").value;
+    const nameInput = document.getElementById("name");
+    if (name.length == 0) {
+      nameError.innerHTML = "Name is required";
+      nameError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      nameError.innerHTML = "Write valid Name";
+      nameError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    nameError.innerHTML = "";
+    nameError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  function brandValidation() {
+    const name = document.getElementById("brand").value;
+    const nameInput = document.getElementById("brand");
+    if (name.length == 0) {
+      brandError.innerHTML = "Must not be Empty";
+      brandError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      brandError.innerHTML = "Must be Valid";
+      brandError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    brandError.innerHTML = "";
+    brandError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  function priceValidation() {
+    const name = document.getElementById("price").value;
+    const nameInput = document.getElementById("price");
+    if (name.length == 0) {
+      priceError.innerHTML = "Must not be Empty";
+      priceError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(priceRegex)) {
+      priceError.innerHTML = "Must be a Valid Number";
+      priceError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    
+    priceError.innerHTML = "";
+    priceError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  function descriptionValidation() {
+    const name = document.getElementById("description").value;
+    const nameInput = document.getElementById("description");
+    if (name.length == 0) {
+      descriptionError.innerHTML = "Description is required";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      descriptionError.innerHTML = "Write valid Description";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    descriptionError.innerHTML = "";
+    descriptionError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  myform.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!nameValidation() || !brandValidation() || !priceValidation() || !descriptionValidation()) {
+      return false;
+    } else {
+      myform.submit();
+    }
+  });
+</script>

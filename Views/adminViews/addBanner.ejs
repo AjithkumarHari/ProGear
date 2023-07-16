@@ -18,18 +18,19 @@
 <div class="card">
   <div class="card-body">
     <h4 class="card-title">Enter the details of the new category</h4>
-    <form class="forms-sample" action="/admin/addBanner" method="POST"  enctype="multipart/form-data"
-    id="myform">
+    <form class="forms-sample" action="/admin/addBanner" method="POST"  enctype="multipart/form-data" id="myform">
       <div class="form-group">
         <label for="exampleInputName1">Title</label>
-        <input type="text" class="form-control" id="name" name="title" required>
-        <p id="error1" class="text-danger"></p>
+        <input type="text" class="form-control" id="name" name="title" onkeyup="titleValidation()">
+        <span id="title-error" class="validation-label"></span>
       </div>
+
       <div class="form-group">
         <label for="exampleTextarea1">Description</label>
-        <textarea class="form-control" id="description" rows="4" name="description" required></textarea>
-        <p id="error3" class="text-danger"></p>
+        <textarea class="form-control" id="description" rows="4" name="description" onkeyup="descriptionValidation()"></textarea>
+        <span id="description-error" class="validation-label"></span>
       </div>
+
       <div class="form-group">
         <label for="productImage">Image:</label>
         <input type="file" class="form-control" name="image" id="image" required>
@@ -57,3 +58,67 @@
   <!-- content-wrapper ends -->
   <!-- partial:../../partials/_footer.html -->
   <%- include('../layouts/adminFooter.ejs') %>
+
+  <script>
+    let regex = /^(?!\s*$).+/;
+  
+    let description = document.getElementById("description");
+    let link = document.getElementById("link");
+  
+    let titleError = document.getElementById("title-error");
+    let descriptionError = document.getElementById("description-error");
+    let linkError = document.getElementById("link-error");
+  
+    let myform = document.getElementById("myform");
+  
+    function titleValidation() {
+      let name = document.getElementById("name").value;
+      let nameInput = document.getElementById("name");
+      if (name.length == 0) {
+        titleError.innerHTML = "Title is required";
+        titleError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      if (!name.match(regex)) {
+        titleError.innerHTML = "Write valid Title";
+        titleError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      titleError.innerHTML = "";
+      titleError.style.color = "green";
+      nameInput.style.border = "solid 2px green";
+      return true;
+    }
+  
+    function descriptionValidation() {
+      let name = document.getElementById("description").value;
+      let nameInput = document.getElementById("description");
+      if (name.length == 0) {
+        descriptionError.innerHTML = "Description is required";
+        descriptionError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      if (!name.match(regex)) {
+        descriptionError.innerHTML = "Write valid Description";
+        descriptionError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      descriptionError.innerHTML = "";
+      descriptionError.style.color = "green";
+      nameInput.style.border = "solid 2px green";
+      return true;
+    }
+  
+    myform.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!titleValidation() || !descriptionValidation()) {
+        return false;
+      } else {
+        myform.submit();
+      }
+    });
+  </script>
