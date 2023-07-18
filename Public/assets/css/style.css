@@ -19658,7 +19658,8 @@ body.avgrund-active {
     font-weight: 500;
     color: #ffffff;
     font-weight: initial;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    }
   .swal2-modal .swal2-icon,
   .swal2-modal .swal2-success-ring {
     margin-top: 0;

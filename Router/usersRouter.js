@@ -10,6 +10,8 @@ const config = require('../Config/isProductListed')
 const cartController = require('../Controllers/cartController')
 const addressController =  require('../Controllers/addressController')
 const orderController = require('../Controllers/orderController')
+const wishlistController = require("../Controllers/wishlistController")
+const { route } = require('./adminRouter')
 
 router.set('views','./Views/userViews')
 
@@ -50,12 +52,12 @@ router.get('/product',validate.checkBlocked,userController.productPage)
 //Get category page
 router.get('/category',validate.authenticate,validate.checkBlocked, userController.categoryPage)
 
-// ----------------------------------------------------------------PROFILE------------------------------------------------------------------------------
+// ----------------------------------------------------------------CART------------------------------------------------------------------------------
 
 //Get Cart Page 
 router.get('/cart',validate.authenticate,validate.checkBlocked,cartController.cartPage)
 
-router.post('/addToCart/:id/:price',config.productConfig, cartController.addToCart);
+router.post('/addToCart',config.productConfig, cartController.addToCart);
 
 router.delete('/removeFromCart',cartController.removeFromCart)
 
@@ -86,7 +88,7 @@ router.get('/checkout',validate.authenticate,validate.checkBlocked,userControlle
 router.post('/checkout',orderController.checkout)
 //Post of Razorpay
 router.post('/verifyRazorpayPayment',orderController.verifyRazorpayPayment) 
-// ----------------------------------------------------------------CHECKOUT------------------------------------------------------------------------------
+// ----------------------------------------------------------------COUPON------------------------------------------------------------------------------
 
 router.post('/couponVerify',orderController.verifyCoupon)
 
@@ -94,11 +96,18 @@ router.post('/applyCoupon',orderController.applyCoupon)
 // ----------------------------------------------------------------ORDER------------------------------------------------------------------------------
 
 
-router.get('/orderDetails',orderController.orderDetails)
+router.get('/orderDetails',validate.authenticate,validate.checkBlocked,orderController.orderDetails)
 
-router.get('/order',orderController.orderList)
+router.get('/order',validate.authenticate,validate.checkBlocked,orderController.orderList)
 
 router.put('/cancelOrder',orderController.cancelOrder)
+// ----------------------------------------------------------------ORDER------------------------------------------------------------------------------
+
+router.get('/wishlist',validate.authenticate,validate.checkBlocked,wishlistController.getWishList)
+
+router.post('/addToWishlist',config.productConfig,wishlistController.addWishList)
+
+router.delete('/removefromwishlist',wishlistController.removeProductWishlist)
 // ----------------------------------------------------------------ERROR------------------------------------------------------------------------------
 
 router.get('/error-500',userController.error_500)

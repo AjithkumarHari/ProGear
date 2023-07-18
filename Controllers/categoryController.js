@@ -69,7 +69,7 @@ module.exports.editCategory = async (req, res) =>{
 //POST
 module.exports.changeStatus = async (req, res) =>{
     try{
-        const id = req.query.userid;
+        const id = req.body.userid;
         const userData = await categoryData.findOne({ _id: id });
         if (userData) {
             const newStatus = !userData.is_listed;

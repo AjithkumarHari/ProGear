@@ -18,7 +18,7 @@
 <div class="card">
   <div class="card-body">
     <h4 class="card-title">Enter the details of the new coupon</h4>
-    <form class="forms-sample" action="/admin/addCoupon" method="POST">
+    <form class="forms-sample" action="/admin/addCoupon" method="POST" id="myform">
 
       <div class="form-group">
         <label for="exampleInputName1">Coupon Code</label>
@@ -27,6 +27,7 @@
             <div class="input-group-append">
                 <button class="btn btn-sm btn-primary" type="button" onclick="generateCoupon()">Generate Code</button>
             </div>
+            <span id="couponName-error" class="validation-label"></span>
         </div>
       </div>
 
@@ -36,11 +37,12 @@
           <div class="input-group-prepend">
             <span class="input-group-text bg-primary text-white">₹</span>
           </div>
-          <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="minPurchase" required>
+          <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="minPurchase" id="minPurchase" onkeyup="minPurchaseValidation()">
           <div class="input-group-append">
             <span class="input-group-text">.00</span>
           </div>
         </div>
+        <span id="minPurchase-error" class="validation-label"></span>
       </div>
 
       <div class="form-group">
@@ -49,33 +51,34 @@
           <div class="input-group-prepend">
             <span class="input-group-text bg-primary text-white">₹</span>
           </div>
-          <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="maxDiscountValue" required>
+          <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="maxDiscountValue" id="maxDiscount" onkeyup="maxDiscountValidation()">
           <div class="input-group-append">
             <span class="input-group-text">.00</span>
           </div>
         </div>
+        <span id="maxDiscount-error" class="validation-label"></span>
       </div>
 
       <div class="form-group">
         <label for="exampleInputName1">Discount</label>
         <div class="input-group">
-          <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="minDiscountPercentage" required>
+          <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="minDiscountPercentage" id="discountPercentage" onkeyup="discountPercentageValidation()">
           <div class="input-group-append">
             <span class="input-group-text">%</span>
           </div>
         </div>
+        <span id="discountPercentage-error" class="validation-label"></span>
       </div>
 
       <div class="form-group">
         <label for="exampleInputName1">Validity</label>
         <input type="date" class="form-control" name="validity" required>
-        <p id="error1" class="text-danger"></p>
       </div>
       
       <div class="form-group">
         <label for="exampleTextarea1">Description</label>
-        <textarea class="form-control" rows="4" name="description" required></textarea>
-        <p id="error3" class="text-danger"></p>
+        <textarea class="form-control" rows="4" name="description" id="description"  onkeyup="descriptionValidation()"></textarea>
+        <span id="description-error" class="validation-label"></span>
       </div>
       <% if (typeof message !== 'undefined') { %>
                         <center>
@@ -112,3 +115,151 @@
       })
     }
   </script>
+
+<script>
+  let regex = /^(?!\s*$).+/;
+  const discountRegex = /^\d+(\.\d{1,2})?$/;
+  const amountRegex = /^\d+$/;
+
+  const titleError = document.getElementById("couponName-error");
+  const minPurchaseError = document.getElementById("minPurchase-error");
+  const maxDiscountError = document.getElementById("maxDiscount-error");
+  const discountPercentageError = document.getElementById("discountPercentage-error");
+  const descriptionError = document.getElementById("description-error");
+  
+  const myform = document.getElementById("myform");
+
+  function minPurchaseValidation() {
+    const name = document.getElementById("minPurchase").value;
+    const nameInput = document.getElementById("minPurchase");
+    if (name.length == 0) {
+      minPurchaseError.innerHTML = "Amount is required";
+      minPurchaseError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      minPurchaseError.innerHTML = "Write valid Amount";
+      minPurchaseError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(amountRegex)) {
+      minPurchaseError.innerHTML = "Must be number and should not contain any decimal";
+      minPurchaseError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (name.length>5) {
+      minPurchaseError.innerHTML = "Amount must be less than 1 lakh";
+      minPurchaseError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    minPurchaseError.innerHTML = "";
+    minPurchaseError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  function maxDiscountValidation() {
+    const name = document.getElementById("maxDiscount").value;
+    const nameInput = document.getElementById("maxDiscount");
+    if (name.length == 0) {
+      maxDiscountError.innerHTML = "Amount is required";
+      maxDiscountError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      maxDiscountError.innerHTML = "Write valid Amount";
+      maxDiscountError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(amountRegex)) {
+      maxDiscountError.innerHTML = "Amount must not contain any decimal";
+      maxDiscountError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (name.length>5) {
+      maxDiscountError.innerHTML = "Amount must be less than 1 lakh";
+      maxDiscountError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    maxDiscountError.innerHTML = "";
+    maxDiscountError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  function discountPercentageValidation() {
+    const name = document.getElementById("discountPercentage").value;
+    const nameInput = document.getElementById("discountPercentage");
+    if (name.length == 0) {
+      discountPercentageError.innerHTML = "Must not be Empty";
+      discountPercentageError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    else if (!name.match(regex)) {
+      discountPercentageError.innerHTML = "Write valid Discount Percentage";
+      discountPercentageError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    else if (!name.match(discountRegex)) {
+      discountPercentageError.innerHTML = "Must be a number, not contain more than two decimal or decimal dot without decimals";
+      discountPercentageError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    else if (name>90) {
+      discountPercentageError.innerHTML = "Discount must be less than 90%";
+      discountPercentageError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    else{
+      discountPercentageError.innerHTML = "";
+    discountPercentageError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+
+    }
+   
+  }
+
+  function descriptionValidation() {
+    const name = document.getElementById("description").value;
+    const nameInput = document.getElementById("description");
+      if (name.length == 0) {
+        descriptionError.innerHTML = "Description is required";
+        descriptionError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      if (!name.match(regex)) {
+        descriptionError.innerHTML = "Write valid Description";
+        descriptionError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      descriptionError.innerHTML = "";
+      descriptionError.style.color = "green";
+      nameInput.style.border = "solid 2px green";
+      return true;
+    }
+
+
+  myform.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if ( !minPurchaseValidation() || !maxDiscountValidation() || !discountPercentageValidation() || !descriptionValidation()) {
+      return false;
+    } else {
+      myform.submit();
+    }
+  });
+</script>

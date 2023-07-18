@@ -13,7 +13,7 @@
     <!-- meta character set -->
     <meta charset="UTF-8">
     <!-- Site Title -->
-    <title>Karma Shop</title>
+    <title>ProGear</title>
     <!--CSS============================================= -->
     <link rel="stylesheet" href="css/linearicons.css">
     <link rel="stylesheet" href="css/owl.carousel.css">
@@ -36,21 +36,26 @@
                 <div class="col-lg-6" style="padding: 0%;">
                     <div class="login_form_inner">
                         <h3>Signup on the website</h3>
-                        <form class="row login_form" action="/signup" method="POST" id="contactForm" novalidate="novalidate">
+                        <form class="row login_form" action="/signup" method="POST" id="myform">
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'">
+                                <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"  onkeyup="fnameValidation()">
+                                <span id="fname-error" class="validation-label"></span>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'">
+                                <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" onkeyup="lnameValidation()">
+                                <span id="lname-error" class="validation-label"></span>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" onfocus="this.placeholder = ''" onblur="this.placeholder = 'E-mail'">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" onfocus="this.placeholder = ''" onblur="this.placeholder = 'E-mail'" onkeyup="emailValidation()">
+                                <span id="email-error" class="validation-label"></span>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" onkeyup="newPasswordValidation()">
+                                <span id="newPassword-error" class="validation-label"></span>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="number" class="form-control" id="number" name="number" placeholder="Phone Number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'">
+                                <input type="number" class="form-control" id="number" name="number" placeholder="Phone Number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'" onkeyup="numberValidation()">
+                                <span id="number-error" class="validation-label"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <% if (typeof message !== 'undefined') { %>
@@ -83,10 +88,6 @@
     </section>
     <!--================End Login Box Area =================-->
 
-    <!-- start footer Area -->
-    <%- include('../layouts/userFooter.ejs') %>
-    <!-- End footer Area -->
-
     <script src="js/vendor/jquery-2.2.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
      crossorigin="anonymous"></script>
@@ -102,139 +103,160 @@
     <script src="js/gmaps.min.js"></script>
     <script src="js/main.js"></script>
 
-    <!-- <script>
-        // Create an object to store the form data
-        const formData = {};
-
-        function validateForm() {
-            // Get references to the input fields
-            const fnameInput = document.getElementById('fname');
-            const lnameInput = document.getElementById('lname');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const numberInput = document.getElementById('number');
-
-            // Get the values from the input fields
-            formData.fname = fnameInput.value.trim();
-            formData.lname = lnameInput.value.trim();
-            formData.email = emailInput.value.trim();
-            formData.password = passwordInput.value.trim();
-            formData.number = numberInput.value.trim();
-
-            // Regular expressions for validation
-            const nameRegex = /^[a-zA-Z\s]+$/;
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-            const numberRegex = /^\d+$/;
-
-            // Track if the form is valid or not
-            let isValid = true;
-
-            // Remove existing error messages
-            const errorElements = document.getElementsByClassName('error-message');
-            while (errorElements[0]) {
-                errorElements[0].parentNode.removeChild(errorElements[0]);
-            }
-
-            // Validate first name
-            if (formData.fname === '') {
-                displayErrorMessage(fnameInput, 'Please enter your first name.');
-                isValid = false;
-            } else if (!nameRegex.test(formData.fname)) {
-                displayErrorMessage(fnameInput, 'Please enter a valid first name.');
-                isValid = false;
-            }
-
-            // Validate last name
-            if (formData.lname === '') {
-                displayErrorMessage(lnameInput, 'Please enter your last name.');
-                isValid = false;
-            } else if (!nameRegex.test(formData.lname)) {
-                displayErrorMessage(lnameInput, 'Please enter a valid last name.');
-                isValid = false;
-            }
-
-            // Validate email
-            if (formData.email === '') {
-                displayErrorMessage(emailInput, 'Please enter your email address.');
-                isValid = false;
-            } else if (!emailRegex.test(formData.email)) {
-                displayErrorMessage(emailInput, 'Please enter a valid email address.');
-                isValid = false;
-            }
-
-            // Validate password
-            if (formData.password === '') {
-                displayErrorMessage(passwordInput, 'Please enter your password.');
-                isValid = false;
-            } else if (!passwordRegex.test(formData.password)) {
-                displayErrorMessage(
-                    passwordInput,
-                    'Password must contain at least 6 characters, including at least one digit, one lowercase letter, and one uppercase letter.'
-                );
-                isValid = false;
-            }
-
-            // Validate phone number
-            if (formData.number === '') {
-                displayErrorMessage(numberInput, 'Please enter your phone number.');
-                isValid = false;
-            } else if (!numberRegex.test(formData.number)) {
-                displayErrorMessage(numberInput, 'Please enter a valid phone number.');
-                isValid = false;
-            }
-
-            return isValid;
+    <script>
+        const regex = /^(?!\s*$).+/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const digitRegex = /^\d{10}$/
+		const passwordRegex =/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+      
+        const fnameError = document.getElementById("fname-error");
+        const lnameError = document.getElementById("lname-error");
+        const emailError = document.getElementById("email-error");
+        const newPasswordError = document.getElementById("newPassword-error");
+        const numberError = document.getElementById("number-error");
+      
+        const myform = document.getElementById("myform");
+      
+        function fnameValidation() {
+          const name = document.getElementById("fname").value;
+          const nameInput = document.getElementById("fname");
+          if (name.length == 0) {
+            fnameError.innerHTML = "First Name is required";
+            fnameError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (!name.match(regex)) {
+            fnameError.innerHTML = "Write valid First Name";
+            fnameError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (name.length>30) {
+            fnameError.innerHTML = "First Name must be less than 50 characters";
+            fnameError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          fnameError.innerHTML = "";
+          fnameError.style.color = "green";
+          nameInput.style.border = "solid 2px green";
+          return true;
         }
-
-        function displayErrorMessage(inputElement, message) {
-            const errorMessage = document.createElement('div');
-            errorMessage.classList.add('error-message');
-            errorMessage.textContent = message;
-
-            const parentElement = inputElement.parentNode;
-            parentElement.appendChild(errorMessage);
+        function lnameValidation() {
+          const name = document.getElementById("lname").value;
+          const nameInput = document.getElementById("lname");
+          if (name.length == 0) {
+            lnameError.innerHTML = "Last Name is required";
+            lnameError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (!name.match(regex)) {
+            lnameError.innerHTML = "Write valid Last Name";
+            lnameError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (name.length>30) {
+            fnameError.innerHTML = "Last Name must be less than 50 characters";
+            fnameError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          lnameError.innerHTML = "";
+          lnameError.style.color = "green";
+          nameInput.style.border = "solid 2px green";
+          return true;
         }
-
-		document.getElementById('contactForm').addEventListener('submit', function (event) {
-  event.preventDefault(); // Prevent form submission
-
-  if (validateForm()) {
-    const xhr = new XMLHttpRequest(); // Create a new XMLHttpRequest object
-
-    xhr.open('POST', '/signup', true); // Specify the POST request details
-    xhr.setRequestHeader('Content-Type', 'application/json'); // Set the request header
-
-    // Get the form data
-    const formData = {
-      fname: document.getElementById('fname').value.trim(),
-      lname: document.getElementById('lname').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      password: document.getElementById('password').value.trim(),
-      number: document.getElementById('number').value.trim()
-    };
-
-    // Convert the form data to JSON
-    const jsonData = JSON.stringify(formData);
-
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        // Handle the successful response
-        console.log('Form submitted successfully');
-      } else {
-        // Handle the error response
-        console.error('Error:', xhr.status);
-      }
-    };
-
-    xhr.onerror = function () {
-      // Handle any network errors
-      console.error('Network Error');
-    };
-
-    xhr.send(jsonData); // Send the request with the form data as JSON
-  }
-});
-    </script> -->
+        function emailValidation() {
+          const name = document.getElementById("email").value;
+          const nameInput = document.getElementById("email");
+          if (name.length == 0) {
+            emailError.innerHTML = "e-mail is required";
+            emailError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (!name.match(emailRegex)) {
+            emailError.innerHTML = "Write valid e-mail";
+            emailError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          emailError.innerHTML = "";
+          emailError.style.color = "green";
+          nameInput.style.border = "solid 2px green";
+          return true;
+        }
+        function newPasswordValidation() {
+		  const name = document.getElementById("password").value;
+		  const nameInput = document.getElementById("password");
+		  if (name.length == 0) {
+			newPasswordError.innerHTML = "Must not be Empty";
+			newPasswordError.style.color = "red";
+			nameInput.style.border = "solid 2px red";
+			return false;
+		  }
+		  if (!name.match(regex)) {
+			newPasswordError.innerHTML = "Must be Valid";
+			newPasswordError.style.color = "red";
+			nameInput.style.border = "solid 2px red";
+			return false;
+		  }
+		  if (name.length>50) {
+			newPasswordError.innerHTML = "Password must be less than 50 characters";
+			newPasswordError.style.color = "red";
+			nameInput.style.border = "solid 2px red";
+			return false;
+		  }
+		  if (!name.match(passwordRegex)) {
+			newPasswordError.innerHTML = "Password Should Contain atleast 8 characters,one number and a special character";
+			newPasswordError.style.color = "red";
+			nameInput.style.border = "solid 2px red";
+			return false;
+		  }
+		  newPasswordError.innerHTML = "";
+		  newPasswordError.style.color = "green";
+		  nameInput.style.border = "solid 2px green";
+		  return true;
+		}
+  
+        function numberValidation() {
+          const name = document.getElementById("number").value;
+          const nameInput = document.getElementById("number");
+          if (name.length == 0) {
+            numberError.innerHTML = "Number is required";
+            numberError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (!name.match(regex)) {
+            numberError.innerHTML = "Write valid Number";
+            numberError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (!name.match(digitRegex)) {
+            numberError.innerHTML = "Mobile Number should have 10 digit";
+            numberError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          numberError.innerHTML = "";
+          numberError.style.color = "green";
+          nameInput.style.border = "solid 2px green";
+          return true;
+        }
+      
+        myform.addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!fnameValidation() || !lnameValidation() || !emailValidation() || !newPasswordValidation() || !numberValidation()) {
+            return false;
+          } else {
+            myform.submit();
+          }
+        });
+      </script>
 </body>
 </html>

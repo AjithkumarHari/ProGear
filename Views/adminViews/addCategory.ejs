@@ -18,16 +18,16 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Enter the details of the new category</h4>
-            <form class="forms-sample" action="/admin/addCategory" method="POST">
+            <form class="forms-sample" action="/admin/addCategory" method="POST" id="myform">
               <div class="form-group">
                 <label for="exampleInputName1">Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-                <p id="error1" class="text-danger"></p>
+                <input type="text" class="form-control" id="name" name="name" onkeyup="nameValidation()">
+                <span id="name-error" class="validation-label"></span>
               </div>
               <div class="form-group">
                 <label for="exampleTextarea1">Description</label>
-                <textarea class="form-control" id="description" rows="4" name="des" required></textarea>
-                <p id="error3" class="text-danger"></p>
+                <textarea class="form-control" id="description" rows="4" name="des" onkeyup="descriptionValidation()"></textarea>
+                <span id="description-error" class="validation-label"></span>
               </div>
               <% if (typeof message !== 'undefined') { %>
 								<center>
@@ -50,77 +50,65 @@
 
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
-          <%- include('../layouts/adminFooter.ejs') %>
+<%- include('../layouts/adminFooter.ejs') %>
 
 
 <script>
-  function validate() {
+  let regex = /^(?!\s*$).+/;
 
-const name = document.getElementById('name')
-const brand = document.getElementById('brand')
-const description = document.getElementById('description')
-const price = document.getElementById('price')
-const quantity = document.getElementById('quantity')
-const category = document.getElementById('category')
-const subCategory = document.getElementById('sub_category')
+  let nameError = document.getElementById("name-error");
+  let descriptionError = document.getElementById("description-error");
 
-const nameValue = name.value.trim()
-const brandValue = brand.value.trim()
-const descriptionValue = description.value.trim()
-const priceValue = price.value.trim()
-const quantityValue = quantity.value.trim()
-const categoryValue = category.value.trim()
-const subCategoryValue = subCategory.value.trim()
+  let myform = document.getElementById("myform");
 
-const error1 = name.parentElement.querySelector('p')
-const error2 = brand.parentElement.querySelector('p')
-const error3 = description.parentElement.querySelector('p')
-const error4 = price.parentElement.querySelector('p')
-const error5 = quantity.parentElement.querySelector('p')
-const error6 = category.parentElement.querySelector('p')
-const error7 = subCategory.parentElement.querySelector('p')
+  function nameValidation() {
+    let name = document.getElementById("name").value;
+    let nameInput = document.getElementById("name");
+    if (name.length == 0) {
+      nameError.innerHTML = "Name is required";
+      nameError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      nameError.innerHTML = "Write valid Name";
+      nameError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    nameError.innerHTML = "";
+    nameError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
 
-error1.innerText = ''
-error2.innerText = ''
-error3.innerText = ''
-error4.innerText = ''
-error5.innerText = ''
-error6.innerText = ''
-error7.innerText = ''
+  function descriptionValidation() {
+    let name = document.getElementById("description").value;
+    let nameInput = document.getElementById("description");
+    if (name.length == 0) {
+      descriptionError.innerHTML = "Description is required";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      descriptionError.innerHTML = "Write valid Description";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    descriptionError.innerHTML = "";
+    descriptionError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
 
-let flag = 1
-
-if (nameValue == '') {
-  error1.innerText = "Product Name is required"
-  flag = 2
-}
-if (brandValue == '') {
-  error2.innerText = "Brand Name is required"
-  flag = 2
-}
-if (descriptionValue == '') {
-  error3.innerText = "Description is required"
-  flag = 2
-}
-if (priceValue == '') {
-  error4.innerText = "Price is required"
-  flag = 2
-}
-if (quantityValue == '') {
-  error5.innerText = "Quantity is required"
-  flag = 2
-}
-if (categoryValue == '') {
-  error6.innerText = "Category is required"
-  flag = 2
-}
-if(subCategoryValue == ''){
-  error7.innerText = 'Sub Category is required'
-  flag = 2
-}
-
-if (flag == 1) {
-  document.getElementById('myForm').submit()
-    }
-  }
+  myform.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!nameValidation() || !descriptionValidation()) {
+      return false;
+    } else {
+      myform.submit();
+    }
+  });
 </script>

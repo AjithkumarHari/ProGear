@@ -37,47 +37,42 @@ const deleteBannerHelper =async(deleteId)=>{
 const editBannerHelper = async(bannerId) =>{
     try {
         return new Promise((resolve, reject) => {
-        Banner.aggregate([
-            {
-                $match:{_id:new mongoose.Types.ObjectId(bannerId) }
-            },{
-                $project:{
-                    title:1,
-                    image:1,
-                    description:1
+            Banner.aggregate([
+                {
+                    $match:{_id:new mongoose.Types.ObjectId(bannerId) }
+                },{
+                    $project:{
+                        title:1,
+                        image:1,
+                        description:1
+                    }
                 }
-            }
-        ])
-        .then((response) => {
-            resolve(response);
-          });
+            ])
+            .then((response) => {
+                resolve(response);
+            });
         });
-      } catch (error) {
+    } catch (error) {
         console.log(error.message);
-      } 
+    } 
 }
 
 const updateBannerHelper=async(texts, Image) => {
     return new Promise(async (resolve, reject) => {
-         const bannerId = texts.id
-        //  console.log('bannerId',bannerId);
-        //  console.log('texts',texts);
-        //  console.log('Image',Image);
+        const bannerId = texts.id
         const response = await Banner.updateOne(
-          { _id: new mongoose.Types.ObjectId(bannerId) },
-          {
-            $set: {
-              title: texts.title,
-              description: texts.description,
-              image: Image,
-            },
-          }
+            { _id: new mongoose.Types.ObjectId(bannerId) },
+            {
+                $set: {
+                title: texts.title,
+                description: texts.description,
+                image: Image,
+                },
+            }
         );
         resolve(response);
-      });
+    });
 }
-
-
 
 module.exports = {
     addBannerHelper,

@@ -14,6 +14,7 @@ const categoryController = require("../Controllers/categoryController")
 const couponController = require("../Controllers/couponController")
 const bannerController = require("../Controllers/bannerController")
 
+
 const validate = require("../Authentication/adminAuthentication");
 
 router.set('views','./Views/adminViews')
@@ -50,7 +51,7 @@ router.get('/logout',adminController.logout)
 
 router.get('/user',validate.authenticate, adminController.userManagement)
 
-router.get('/block',adminController.changeUserStatus)
+router.post('/block',adminController.changeUserStatus)
 
 //-------------------------------------------PRODUCT--------------------------------------------
 
@@ -64,7 +65,7 @@ router.get('/updateProduct',productController.updateProduct)
 
 router.post('/updateProduct',multerr.editProduct,productController.editProduct)
 
-router.get('/unlistProduct',productController.unlistProduct)
+router.post('/unlistProduct',productController.unlistProduct)
 
 //-------------------------------------------CATAGORY--------------------------------------------
 
@@ -78,7 +79,7 @@ router.get('/updateCategory',categoryController.updateCategory)
 
 router.post('/updateCategory',categoryController.editCategory)
 
-router.get('/changeStatus', categoryController.changeStatus)
+router.post('/changeStatus', categoryController.changeStatus)
 
 //-------------------------------------------ORDER--------------------------------------------
 
@@ -102,6 +103,8 @@ router.post('/addCoupon',couponController.addCoupon)
 
 router.get('/generateCouponCode',couponController.generateCouponCode)
 
+router.post('/removeCoupon',couponController.removeCoupon)
+
 //-------------------------------------------BANNER--------------------------------------------
 
 router.get('/banner',validate.authenticate,bannerController.bannerList)
@@ -114,7 +117,7 @@ router.get('/updateBannerGet',bannerController.editBanner)
 
 router.post('/updateBannerPost',multerr.editBannerupload,bannerController.updateBanner)
 
-router.get('/deleteBanner',bannerController.deleteBanner)
+router.post('/deleteBanner',bannerController.deleteBanner)
 
 //-------------------------------------------SALES REPORT--------------------------------------------
 router.get('/salesReportGet',validate.authenticate,adminController.getSalesReport)

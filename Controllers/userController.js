@@ -128,7 +128,7 @@ const createToken = (id) => {
 module.exports.loginPage = async (req, res) => {
   try {
     if (res.locals.user != null) {
-      redirect("/");
+      res.redirect("/");
     } else {
       res.render("login", { title: "LogIn" });
     }
@@ -234,38 +234,10 @@ module.exports.setNewPassword = async (req, res) => {
     const newpw = req.body.newpassword;
     const confpw = req.body.confpassword;
 
-    if (!newpw || newpw.trim().length === 0) {
-      return res.render("setNewPassword", { message: "Password is required" });
-    }
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    if (!passwordRegex.test(newpw)) {
-      return res.render("setNewPassword", {
-        message:
-          "Password Should Contain atleast 8 characters,one number and a special character",
-      });
-    }
-    if (!confpw || confpw.trim().length === 0) {
-      return res.render("setNewPassword", { message: "Password is required" });
-    }
-
-    if (!passwordRegex.test(confpw)) {
-      return res.render("setNewPassword", {
-        message:
-          "Password Should Contain atleast 8 characters,one number and a special character",
-      });
-    }
-
-    if (newpw != confpw) {
-      return res.render("setNewPassword", {
-        message: "Password does not match",
-      });
-    }
-
     if (newpw === confpw) {
       const email = res.locals.user.email;
 
-      const updated = await userData.updateOne(
+      await userData.updateOne(
         { email: email },
         { $set: { password: newpw } }
       );
@@ -289,7 +261,6 @@ module.exports.signupPage = async (req, res) => {
 module.exports.signupAction = async (req, res) => {
   try {
     const { fname, lname, email, password, number } = req.body;
-    //storing user data in session
     const data = {
       fname,
       lname,
@@ -297,57 +268,21 @@ module.exports.signupAction = async (req, res) => {
       password,
       number,
     };
-
     const existingUser = await userData.findOne({ email: email });
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    const mobileNumberRegex = /^\d{10}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!req.body.fname || req.body.fname.trim().length === 0) {
-      return res.render("signup", { message: "First Name is required" });
-    } else if (!req.body.lname || req.body.lname.trim().length === 0) {
-      return res.render("signup", { message: "Last Name is required" });
-    } else if (!req.body.password || req.body.password.trim().length === 0) {
-      return res.render("signup", { message: "Password is required" });
-    } else if (!req.body.email || req.body.email.trim().length === 0) {
-      return res.render("signup", { message: "E-Mail is required" });
-    } else if (!req.body.number || req.body.number.trim().length === 0) {
-      return res.render("signup", { message: "Phone Number is required" });
-    } else if (/\d/.test(req.body.fname) || /\d/.test(req.body.lname)) {
-      return res.render("signup", {
-        message: "Name should not contain numbers",
-      });
-    } else if (!emailRegex.test(email)) {
-      return res.render("signup", { message: "Email Not Valid" });
-    } else if (existingUser) {
+    if (existingUser) {
       return res.render("signup", { message: "Email already exists" });
-    } else if (!mobileNumberRegex.test(number)) {
-      return res.render("signup", {
-        message: "Mobile Number should have 10 digit",
-      });
-    } else if (!passwordRegex.test(req.body.password)) {
-      return res.render("signup", {
-        message:
-          "Password Should Contain atleast 8 characters,one number and a special character",
-      });
-    } else {
+    }
+     else {
       req.session.userData = data;
-      //   console.log("data : \n", req.session.userData);
-
       const OTP = otpHelper.generateOtp();
-      // await otpHelper.sendOtp(data.number,OTP)
-      // console.log(OTP)
-
       req.session.otp = OTP;
       req.session.number = req.body.number;
       console.log("session otp", req.session.otp);
       console.log("session number", req.session.number);
-
       res.render("signupOtp", { countdown: 60 });
     }
   } catch (error) {
     res.redirect("/error-500");
-
     console.log(error);
   }
 };
@@ -383,10 +318,8 @@ module.exports.verifySignupOtp = async (req, res) => {
       });
       const userSave = await user.save();
       if (userSave) {
-        //creating sending token as a cookie
         const jwttoken = createToken(user._id);
         res.cookie("jwt", jwttoken, { httpOnly: true, maxAge: maxAge * 1000 });
-
         res.redirect("/");
       } else {
         return console.log("Your OTP was Wrong");
@@ -414,7 +347,6 @@ module.exports.resendLoginOtp = async (req, res) => {
   } catch (error) {
     console.log("Error in resendLoginOtp" ,error);
     res.redirect("/error-500");
-
   }
 };
 
@@ -455,7 +387,6 @@ module.exports.profilePage = async (req, res) => {
     const user = res.locals.user;
     const token = res.locals.user;
     const category = await Category.find({ is_listed: true });
-
     res.render("profile", { user, category, token });
   } catch (error) {
     console.log("Error in profilePage" ,error);
@@ -482,66 +413,14 @@ module.exports.editProfilePage = async (req, res) => {
 //POST
 module.exports.updateProfile = async (req, res) => {
   try {
-    // console.log(req.body);
     const user = res.locals.user;
-    const userdata = await userData.findOne({ _id: user.id });
-
     const data = {
       fname: req.body.fname,
       lname: req.body.lname,
       email: req.body.email,
       number: req.body.number,
     };
-    console.log("data", data);
-
-    if (!req.body.fname || req.body.fname.trim().length === 0) {
-      return res.render("editProfile", {
-        userdata: userdata,
-        message: "First Name is required",
-      });
-    }
-    if (!req.body.lname || req.body.lname.trim().length === 0) {
-      return res.render("editProfile", {
-        userdata: userdata,
-        message: "Last Name is required",
-      });
-    }
-
-    if (!req.body.email || req.body.email.trim().length === 0) {
-      return res.render("editProfile", {
-        userdata: userdata,
-        message: "E-Mail is required",
-      });
-    }
-    if (!req.body.number || req.body.number.trim().length === 0) {
-      return res.render("editProfile", {
-        userdata: userdata,
-        message: "Phone Number is required",
-      });
-    }
-    if (/\d/.test(req.body.fname) || /\d/.test(req.body.lname)) {
-      return res.render("editProfile", {
-        userdata: userdata,
-        message: "Name should not contain numbers",
-      });
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.render("editProfile", {
-        userdata: userdata,
-        message: "Email Not Valid",
-      });
-    }
-
-    const mobileNumberRegex = /^\d{10}$/;
-    if (!mobileNumberRegex.test(mobileNumber)) {
-      return res.render("editProfile", {
-        userdata: userdata,
-        message: "Mobile Number should have 10 digit",
-      });
-    }
-
-    const newData = await userData.updateOne(
+    await userData.updateOne(
       { _id: user.id },
       {
         $set: {
@@ -552,13 +431,10 @@ module.exports.updateProfile = async (req, res) => {
         },
       }
     );
-    // console.log(newData);
-
     res.redirect("/profile");
   } catch (error) {
     console.log(error);
     res.redirect("/error-500");
-
   }
 };
 
@@ -686,7 +562,7 @@ module.exports.categoryPage = async (req, res) => {
       category.length === 0 ||
       isListed[0].is_listed[0] === false
     ) {
-      res.render("error-404");
+      res.redirect("/error-404");
     } else {
       res.render("category", { products, category, token });
     }

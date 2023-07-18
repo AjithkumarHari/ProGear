@@ -2,123 +2,122 @@
 
 <!-- partial -->
 <div class="main-panel">
-<div class="content-wrapper">
-<div class="page-header">
-<h3 class="page-title">Add Banner</h3>
-<nav aria-label="breadcrumb">
-<ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="/admin/banner">Banner Management</a></li>
-  <li class="breadcrumb-item active" aria-current="page">Add Banner</li>
-</ol>
-</nav>
-</div>
-<div class="row">
-<div class="col-lg-3"></div>
-<div class="col-lg-6 grid-margin stretch-card">
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Enter the details of the new category</h4>
-    <form class="forms-sample" action="/admin/addBanner" method="POST"  enctype="multipart/form-data" id="myform">
-      <div class="form-group">
-        <label for="exampleInputName1">Title</label>
-        <input type="text" class="form-control" id="name" name="title" onkeyup="titleValidation()">
-        <span id="title-error" class="validation-label"></span>
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">Add Banner</h3>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/admin/banner">Banner Management</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Add Banner</li>
+        </ol>
+      </nav>
+      </div> 
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-lg-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Enter the details of the new category</h4>
+              <form class="forms-sample" action="/admin/addBanner" method="POST"  enctype="multipart/form-data" id="myform">
+                <div class="form-group">
+                  <label for="exampleInputName1">Title</label>
+                  <input type="text" class="form-control" id="name" name="title" onkeyup="titleValidation()">
+                  <span id="title-error" class="validation-label"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleTextarea1">Description</label>
+                  <textarea class="form-control" id="description" rows="4" name="description" onkeyup="descriptionValidation()"></textarea>
+                  <span id="description-error" class="validation-label"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="productImage">Image:</label>
+                  <input type="file" class="form-control" name="image" id="image" required>
+                </div>
+
+                <% if (typeof message !== 'undefined') { %>
+                                  <center>
+                                  <div class="audun_warn">
+                                      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                      <%= message %>
+                                  </div>
+                                  </center>
+                              <% } %>
+                
+                <button type="submit" class="btn btn-primary mr-2" onclick="validate()">Submit</button>
+                <button class="btn btn-dark">Cancel</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <div class="form-group">
-        <label for="exampleTextarea1">Description</label>
-        <textarea class="form-control" id="description" rows="4" name="description" onkeyup="descriptionValidation()"></textarea>
-        <span id="description-error" class="validation-label"></span>
-      </div>
-
-      <div class="form-group">
-        <label for="productImage">Image:</label>
-        <input type="file" class="form-control" name="image" id="image" required>
-      </div>
-
-      <% if (typeof message !== 'undefined') { %>
-                        <center>
-                        <div class="audun_warn">
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                            <%= message %>
-                        </div>
-                        </center>
-                    <% } %>
-      
-      <button type="submit" class="btn btn-primary mr-2" onclick="validate()">Submit</button>
-      <button class="btn btn-dark">Cancel</button>
-    </form>
+    </div>
   </div>
-</div>
-</div>
-</div>
-</div>
 </div>
 
   <!-- content-wrapper ends -->
   <!-- partial:../../partials/_footer.html -->
   <%- include('../layouts/adminFooter.ejs') %>
 
-  <script>
-    let regex = /^(?!\s*$).+/;
-  
-    let description = document.getElementById("description");
-    let link = document.getElementById("link");
-  
-    let titleError = document.getElementById("title-error");
-    let descriptionError = document.getElementById("description-error");
-    let linkError = document.getElementById("link-error");
-  
-    let myform = document.getElementById("myform");
-  
-    function titleValidation() {
-      let name = document.getElementById("name").value;
-      let nameInput = document.getElementById("name");
-      if (name.length == 0) {
-        titleError.innerHTML = "Title is required";
-        titleError.style.color = "red";
-        nameInput.style.border = "solid 2px red";
-        return false;
-      }
-      if (!name.match(regex)) {
-        titleError.innerHTML = "Write valid Title";
-        titleError.style.color = "red";
-        nameInput.style.border = "solid 2px red";
-        return false;
-      }
-      titleError.innerHTML = "";
-      titleError.style.color = "green";
-      nameInput.style.border = "solid 2px green";
-      return true;
+<script>
+  const regex = /^(?!\s*$).+/;
+
+  const titleError = document.getElementById("title-error");
+  const descriptionError = document.getElementById("description-error");
+
+  const myform = document.getElementById("myform");
+
+  function titleValidation() {
+    const name = document.getElementById("name").value;
+    const nameInput = document.getElementById("name");
+    if (name.length == 0) {
+      titleError.innerHTML = "Title is required";
+      titleError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
     }
-  
-    function descriptionValidation() {
-      let name = document.getElementById("description").value;
-      let nameInput = document.getElementById("description");
-      if (name.length == 0) {
-        descriptionError.innerHTML = "Description is required";
-        descriptionError.style.color = "red";
-        nameInput.style.border = "solid 2px red";
-        return false;
-      }
-      if (!name.match(regex)) {
-        descriptionError.innerHTML = "Write valid Description";
-        descriptionError.style.color = "red";
-        nameInput.style.border = "solid 2px red";
-        return false;
-      }
-      descriptionError.innerHTML = "";
-      descriptionError.style.color = "green";
-      nameInput.style.border = "solid 2px green";
-      return true;
+    if (!name.match(regex)) {
+      titleError.innerHTML = "Write valid Title";
+      titleError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
     }
-  
-    myform.addEventListener("submit", (event) => {
-      event.preventDefault();
-      if (!titleValidation() || !descriptionValidation()) {
-        return false;
-      } else {
-        myform.submit();
-      }
-    });
-  </script>
+    titleError.innerHTML = "";
+    titleError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  function descriptionValidation() {
+    const name = document.getElementById("description").value;
+    const nameInput = document.getElementById("description");
+    if (name.length == 0) {
+      descriptionError.innerHTML = "Description is required";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      descriptionError.innerHTML = "Write valid Description";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    descriptionError.innerHTML = "";
+    descriptionError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  myform.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!titleValidation() || !descriptionValidation()) {
+      return false;
+    } else {
+      myform.submit();
+    }
+  });
+</script>

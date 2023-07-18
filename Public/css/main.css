@@ -4851,7 +4851,13 @@ label {
   color: #ccc;
   margin-bottom: 25px; }
 .tracking_box_area .tracking_box_inner .tracking_form {
-  max-width: 645px; }
+  /* align-items: center; */
+  justify-content: center;
+  max-width: 645px;
+  /* margin-left: 180px; */
+  }
+
+form#myform {}
   .tracking_box_area .tracking_box_inner .tracking_form .form-group input {
     height: 40px;
     border: 1px solid #eee;
@@ -6147,3 +6153,25 @@ article .posts .tile .inner:hover h4 {
   background-color: #e98a38;
 }
 /*----------------------------------ORANGE BUTTON------------------------------ */
+
+.swal2-modal .swal2-title{
+
+  font-size: 25px;
+  line-height: 1;
+  font-weight: 500;
+  color: #f3f7fb;
+  font-weight: initial;
+  margin-bottom: 0;
+  }
+  .swal2-container.swal2-center>.swal2-popup{
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  BACKGROUND-COLOR: #313644;
+  justify-self: center;
+  border-radius: 10px;
+  border: 1.5px solid #303030cc;
+  }
+  .swal2-html-container {
+    color: #ff8932;;
+  }    

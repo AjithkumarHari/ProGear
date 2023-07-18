@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 
 module.exports.productConfig = async (req, res, next) => {
     try {
-        console.log('productConfig');
-        const id = req.params.id;
+        const id = req.body.proId;
         const isListed = await productData.aggregate([
         {
             $match: {

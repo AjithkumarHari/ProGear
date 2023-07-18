@@ -59,7 +59,7 @@ module.exports.addCoupon =  (req, res) => {
 //POST
 module.exports.removeCoupon = async(req,res)=>{
     try {
-        const id = req.body.couponId
+        const id = req.body.id
         await Coupon.deleteOne({_id:id})
         res.json({status:true})
     } catch (error) {

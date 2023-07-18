@@ -66,7 +66,7 @@ module.exports.addToCart = async (req, res) => {
   try {
     if (res.locals.user != null) {
       cartHelper
-        .addCart(req.params.id, res.locals.user.id, req.params.price)
+        .addCart(req.body.proId, res.locals.user.id, req.body.price)
         .then((response) => {
           res.send(response);
         });

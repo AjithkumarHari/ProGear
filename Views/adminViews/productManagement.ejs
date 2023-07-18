@@ -1,5 +1,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
@@ -7,6 +11,24 @@
     td{
       background-color: #181b23;
     }
+
+.swal2-modal .swal2-title{
+
+  font-size: 25px;
+    line-height: 1;
+    font-weight: 500;
+    color: #f3f7fb;
+    font-weight: initial;
+    margin-bottom: 0;
+ }
+ .swal2-container.swal2-center>.swal2-popup{
+  grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    BACKGROUND-COLOR: rgb(26 27 34);
+    justify-self: center;
+ }
+
   </style>
   <%- include('../layouts/adminHeader.ejs') %>
         <!-- partial -->
@@ -59,7 +81,7 @@
                 <td><%= product.category.name %></td>
                 <td>&#8377; <%= product.price %></td>
                 <td><a href="/admin/updateProduct?userid=<%= product._id %>"><i class="mdi mdi-border-color"></i></a></td>
-                <td><a href="/admin/unlistProduct?id=<%= product._id %>"><center><i class="mdi mdi-delete"></i></center></a></td>
+                <td><center><button class="btn " onclick="changeStatus('<%= product._id %>')"><i class="mdi mdi-delete"></i></button></center></td>
                 <% if (product.is_product_listed) { %>
                   <td><label class="badge badge-success">Listed</label></td>
                 <% } else { %>
@@ -90,3 +112,37 @@
     });
   });
     </script>
+
+
+<script>
+  function changeStatus(id)
+  {
+    Swal.fire({
+      title: 'Are you sure to change Product Status?',
+      text: "",
+      // icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Change',
+      timer: 6000
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url:'/admin/unlistProduct',
+          method:'post',
+          data: {
+            id: id,
+          },
+          success:(response)=>
+          {
+            if(response)
+            {
+              location.reload()
+            }
+          }
+        })
+      }
+    })
+  }
+</script>

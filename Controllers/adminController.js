@@ -80,7 +80,7 @@ module.exports.changeUserStatus = async (req, res) => {
 
     try {
 
-      const id = req.query.userid;
+      const id = req.body.userId;
   
       const userdata = await userData.findOne({ _id: id });
 
@@ -106,9 +106,17 @@ module.exports.changeUserStatus = async (req, res) => {
 //888888888888888888888888888888888888888888888888--ADMIN LOGOUT---8888888888888888888888888888888888888888888888888888888888888888888888
 
 module.exports.logout = (req,res) =>{
-  res.cookie('jwtAdmin', '' ,{maxAge : 1})
-  console.log("Admin token destroyed");
+  try{
+    res.cookie('jwtAdmin', '' ,{maxAge : 1})
+
   res.redirect('/admin')
+
+  }catch(error){
+    console.log(error.message);
+      res.send({ success: false, error: error.message });
+
+  }
+  
 }
 
 

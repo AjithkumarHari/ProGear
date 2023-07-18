@@ -13,18 +13,21 @@
       </nav>
     </div>
     <div class="row">
-      <div class="col-lg-8 grid-margin stretch-card">
+      <div class="col-3"></div>
+      <div class="col-lg-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Edit the details of the existing category</h4>
-            <form class="forms-sample" action="/admin/updateCategory" method="POST">
+            <form class="forms-sample" action="/admin/updateCategory" method="POST" id="myform">
               <div class="form-group">
                 <label for="exampleInputName1">Name</label>
-                <input type="text" class="form-control" id="exampleInputName1" name="name" value="<%= category.name %>" required>
+                <input type="text" class="form-control" id="name" name="name" value="<%= category.name %>" onkeyup="nameValidation()">
+                <span id="name-error" class="validation-label"></span>
               </div>
               <div class="form-group">
                 <label for="exampleTextarea1">Description</label>
-                <textarea class="form-control" id="exampleTextarea1" rows="4" name="des" required><%= category.description %></textarea>
+                <textarea class="form-control" id="description" rows="4" name="des" onkeyup="descriptionValidation()"><%= category.description %></textarea>
+                <span id="description-error" class="validation-label"></span>
               </div>
 
               <input type="hidden" name="id" value="<%= category._id %>">
@@ -40,4 +43,65 @@
 
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
-                    <%- include('../layouts/adminFooter.ejs') %>
+<%- include('../layouts/adminFooter.ejs') %>
+
+
+<script>
+  let regex = /^(?!\s*$).+/;
+
+  let nameError = document.getElementById("name-error");
+  let descriptionError = document.getElementById("description-error");
+
+  let myform = document.getElementById("myform");
+
+  function nameValidation() {
+    let name = document.getElementById("name").value;
+    let nameInput = document.getElementById("name");
+    if (name.length == 0) {
+      nameError.innerHTML = "Name is required";
+      nameError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      nameError.innerHTML = "Write valid Name";
+      nameError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    nameError.innerHTML = "";
+    nameError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  function descriptionValidation() {
+    let name = document.getElementById("description").value;
+    let nameInput = document.getElementById("description");
+    if (name.length == 0) {
+      descriptionError.innerHTML = "Description is required";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      descriptionError.innerHTML = "Write valid Description";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    descriptionError.innerHTML = "";
+    descriptionError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  myform.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!titleValidation() || !descriptionValidation()) {
+      return false;
+    } else {
+      myform.submit();
+    }
+  });
+</script>

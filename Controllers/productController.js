@@ -38,31 +38,8 @@ try{
 
     const { name, description, category, price , brand} = req.body;
     const categories = await categoryData.find({})
-
-    // if(price<0){
-    //     res.render('addProduct',{ category: categories },{message:"price must be above 0"})
-    // }
-
-    // else if (!name || name.trim().length === 0) {
-    //     return res.render("addProduct",{ category: categories , message: "Product Name is required" });
-    // }
-
-    // else if (!description || description.trim().length === 0) {
-    //     return res.render("addProduct", { category: categories , message: "Description is required" });
-    // }
-     
-    // else if (!price || price.trim().length === 0) {
-    //     return res.render("addProduct", { category: categories , message: "Price is required" });
-    // }
-
-    // else if (!brand || brand.trim().length === 0) {
-    //     return res.render("addProduct",{ category: categories , message: "Brand is required" });
-    // }
-    
-    // else{
         const filesArray = Object.values(req.files).flat();
         const image = filesArray.map((file) => file.filename);
-      
         const newProduct = new productData({
           name,
           description,
@@ -71,14 +48,12 @@ try{
           category,
           price,
         });
-      
         newProduct
           .save()
           .then(() => {
             res.redirect('/admin/product');
           })
         
-    // }
 }
 
    
@@ -106,27 +81,24 @@ module.exports.updateProduct = async (req ,res) => {
 
 //POST 
 module.exports.editProduct = async (req, res) => {
-
-    try {
-        
-            adminHelper.updateProductHelper(req.body, req?.file?.filename).then(( response) => {
-
-                if (response) {
-                    res.redirect("/admin/product");
-                } else {
-                    res.status(505);
-                }
-            });}
-
-
-      catch (error) {
+    try { 
+        console.log('body',req.body);
+        console.log('file',req.file);
+        adminHelper.updateProductHelper(req.body, req?.file?.filename).then(( response) => {
+            if (response) {
+                res.redirect("/admin/product");
+            } else {
+                res.status(505);
+            }
+        });}
+    catch (error) {
         console.log(error.message);
-      }
+    }
 }
 
 module.exports.unlistProduct = async(req,res)=>{
     try {
-        const id = req.query.id;
+        const id = req.body.id;
         const categorylisted = await productData.findOne({ _id: id }).populate('category');
         const userData = categorylisted.is_product_listed
         if (categorylisted.category.is_listed === true) {
