@@ -15,7 +15,7 @@ const adminHelper = require('../Helper/adminHelper')
 const maxAge = 3* 24* 60 * 60
 
 const createToken = (id) => {
-    return jwt.sign({id}, 'secret_key_admin', { expiresIn : maxAge })
+    return jwt.sign({id}, process.env.JWT_ADMIN_SECRET_KEY, { expiresIn : maxAge })
 }
 
 

@@ -119,7 +119,7 @@ module.exports.productPage = async (req, res) => {
 const maxAge = 3 * 24 * 60 * 60;
 
 const createToken = (id) => {
-  return jwt.sign({ id }, "secret_key", { expiresIn: maxAge });
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: maxAge });
 };
 
 //****************************************************************  LOG_IN  *******************************************************//

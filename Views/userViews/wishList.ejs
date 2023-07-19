@@ -32,6 +32,28 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
+    <style>
+      /* Style for the tooltip */
+      .custom-tooltip {
+        max-width: 300px;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+    
+      /* Style for the tooltip text */
+      .custom-tooltip p {
+        margin: 0;
+        font-size: 18px; /* Adjust the font size as needed */
+        line-height: 1.2; /* Adjust the line height as needed */
+        max-height: calc(1.2 * 5); /* Show up to 5 lines */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4; /* Number of lines to show */
+        -webkit-box-orient: vertical;
+      }
+    </style>
 </head>
 <body>
     <!-- Start Header Area -->
@@ -59,7 +81,17 @@
                               <td class="image product-thumbnail"><img src="../product-images/<%=item.wishListed.image[0]%>" alt="#" width="100px" height="115px"></td>
                               <td class="product-des product-name">
                                 <h5 class="product-name"><a href="/product?productId=<%= item.wishListed._id %>"><%=item.wishListed.name%></a></h5>
-                                <p class="font-xs"><%=item.wishListed.description%></p>
+                                <!-- Your HTML code -->
+                                <span
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                class="custom-tooltip"
+                                title="<%= item.wishListed.description %>"
+                              >
+                                <p class="font-xs"><%= item.wishListed.description %></p>
+                              </span>
+                              
+
                               </td>
                               <td class="price" data-title="Price"><span>₹<%=item.wishListed.price%></span></td>
                               <td class="text-right" data-title="Cart">

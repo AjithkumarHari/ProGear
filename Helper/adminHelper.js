@@ -144,9 +144,6 @@ const returnOrderHelper = (orderId,userId, status) => {
     }
   };
 
-
-
-
   const cancelOrderHelper = (orderId,userId, status) => {
     try {
 
@@ -211,12 +208,7 @@ const returnOrderHelper = (orderId,userId, status) => {
 
 const getSalesReport = () => {
   try {
-
-    console.log('getSalesReport  helper');
-
     return new Promise((resolve, reject)  => {
-       
-      // const result = 
       Order.aggregate([
         {
           $unwind: "$orders",
@@ -227,8 +219,6 @@ const getSalesReport = () => {
           },
         },
       ])
-      // console.log('result',result);
-
       .then((response) => {
         resolve(response);
       });
@@ -239,7 +229,6 @@ const getSalesReport = () => {
 }
 
 const postReport = (date) => {
-  console.log(date, "date+++++");
   try {
     const start = new Date(date.startdate);
     const end = new Date(date.enddate);
@@ -264,15 +253,13 @@ const postReport = (date) => {
       ])
         .exec()
         .then((response) => {
-          // console.log(response, "response---");
           resolve(response);
         });
     });
   } catch (error) {
     console.log(error.message);
-    }
-  }
-
+  }
+}
 
 const getOnlineCount =  () => {
   return new Promise(async (resolve, reject) => {
@@ -290,16 +277,12 @@ const getOnlineCount =  () => {
           _id: null,
         totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
         count: { $sum: 1 }
-
         }
-
       }
-
     ]);
     resolve(response);
   });
 }
-
 
 const updateProductHelper=async(texts, Image) => {
   return new Promise(async (resolve, reject) => {
@@ -321,8 +304,8 @@ const updateProductHelper=async(texts, Image) => {
     });
 }
 
- module.exports =  {
-    // getOrderData,
+module.exports =  {
+
     changeOrderStatus,
     returnOrderHelper,
     cancelOrderHelper,

@@ -13,7 +13,7 @@ const generatorCouponCode =  () => {
           charset: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
           prefix: "ProGear-",
         });
-        console.log(couponCode);
+        // console.log(couponCode);
 
         resolve({ status: true, couponCode: couponCode[0] });
       } catch (err) {}
@@ -74,7 +74,7 @@ const addCoupon = (data) => {
          Coupon.find({ couponCode: couponCode }).then(
           async(couponExist) => {
             if (couponExist.length>0) {
-              console.log(couponExist);
+              // console.log(couponExist);
               if (new Date(couponExist[0].validity) - new Date() > 0) {
                 let usersCoupon = await User.findOne({
                   _id: userId,

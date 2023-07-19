@@ -1,13 +1,4 @@
 const mongoose = require('mongoose')
-
-mongoose.connect("mongodb://0.0.0.0:27017/ProGear")
-    .then(()=>{
-        console.log('Connected');
-    })
-    .catch(()=>{
-        console.log('Not Connected');
-    })
-
     
 const details = new mongoose.Schema({
     fname:{
