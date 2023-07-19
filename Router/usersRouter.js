@@ -3,10 +3,10 @@ const router = express()
 const cookieparser = require('cookie-parser')
 const session = require('express-session')
 
-const userController = require("../Controllers/userController")
-const validate = require('../authentication/userAutentication')
+const validate = require('../Authentication/userAutentication')
 const config = require('../Config/isProductListed')
 
+const userController = require("../Controllers/userController")
 const cartController = require('../Controllers/cartController')
 const addressController =  require('../Controllers/addressController')
 const orderController = require('../Controllers/orderController')
