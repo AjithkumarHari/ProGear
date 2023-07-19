@@ -11,7 +11,6 @@ const cartController = require('../Controllers/cartController')
 const addressController =  require('../Controllers/addressController')
 const orderController = require('../Controllers/orderController')
 const wishlistController = require("../Controllers/wishlistController")
-const { route } = require('./adminRouter')
 
 router.set('views','./Views/userViews')
 

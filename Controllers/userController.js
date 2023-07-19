@@ -1,8 +1,5 @@
-const bcrypt = require("bcrypt");
 const _ = require("lodash");
-// const axios = require("axios");
 const otpGenerator = require("otp-generator");
-// const mongoose = require('mongoose')
 const jwt = require("jsonwebtoken");
 
 const userData = require("../Model/userModel");
