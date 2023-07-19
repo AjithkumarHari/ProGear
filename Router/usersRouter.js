@@ -26,7 +26,9 @@ router.use(cookieparser())
 
 router.all('*',validate.checkUser)
 
-router.get('/',validate.checkBlocked,userController.homePage)
+router.get('/'
+,validate.checkBlocked
+,userController.homePage)
 
 router.get('/login',userController.loginPage)
 router.post('/login',userController.loginVerify)

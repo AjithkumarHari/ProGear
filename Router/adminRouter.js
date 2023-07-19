@@ -20,7 +20,7 @@ const validate = require("../Authentication/adminAuthentication");
 router.set('views','./Views/adminViews')
 
 router.use(session({
-    secret: 'keyboard cat',
+    secret: 'keyboard cat', 
     resave: false,
     saveUninitialized: true,
   }))
