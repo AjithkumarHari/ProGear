@@ -19,7 +19,7 @@ app.set('view engine','ejs')
 
 app.use(express.json())
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'Public')));
 
 app.use('/',userRouter)
 app.use('/admin',adminRouter)
