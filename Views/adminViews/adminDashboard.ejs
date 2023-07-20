@@ -1,40 +1,41 @@
-    <%- include('../layouts/adminHeader.ejs') %>
+<%- include('../layouts/adminHeader.ejs') %>
 
-    <head>
-        <meta charset="utf-8">
-        <title>Evara Dashboard</title>
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta property="og:title" content="">
-        <meta property="og:type" content="">
-        <meta property="og:url" content="">
-        <meta property="og:image" content="">
-        <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="../admin-assets/imgs/theme/favicon.svg">
-        <!-- Template CSS -->
-        <link href="../admin-assets/css/main.css" rel="stylesheet" type="text/css" />
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../admin-assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="../admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
-        <style>
-          td{
-            background-color: #181b23;
-          }
-          .card-body{
-            color:aliceblue;
-          }
-    
-        </style>
+    <style>
+      td{
+        background-color: #181b23;
+      }
+      .card-body{
+        color:aliceblue;
+      }
 
-    </head>
+    </style>
+
+</head>
 
     <div class="main-panel">
         <div class="content-wrapper">
+          <% if (orders && onlinePay && productsCount && categoryCount && onlinePay && salesData && order && salesCount) { %>
             <div class="row">
                 <div class="col-xl-3 col-sm-12 grid-margin stretch-card">
                     <div class="card">
@@ -73,48 +74,47 @@
                         </div>
                         </div>
                   </div>
-              </div>
-              <div class="col-xl-3 col-sm-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                      <h5>Orders</h5>
-                      <div class="row">
-                        <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                          <div class="d-flex d-sm-block d-md-flex align-items-center">
-                            <h2 class="mb-0"><%= orders[0].count %></h2>
-                            <p class="text-success ml-2 mb-0 font-weight-medium">+</p>
-                          </div>
-                          <h6 class="text-muted font-weight-normal">Delivered Orders</h6>
-                        </div>
-                        <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                          <i class="mdi mdi-truck-delivery"></i>
-                        </div>
-                      </div>
-                      </div>
                 </div>
-            </div>
-
-            <div class="col-xl-3 col-sm-12 grid-margin stretch-card">
-              <div class="card">
-                  <div class="card-body">
-                    <h5>Online Earning</h5>
-                    <div class="row">
-                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                        <div class="d-flex d-sm-block d-md-flex align-items-center">
-                          <h2 class="mb-0">₹<%= onlinePay[0].totalPriceSum %></h2>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">+</p>
+                <div class="col-xl-3 col-sm-12 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                        <h5>Orders</h5>
+                        <div class="row">
+                          <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                            <div class="d-flex d-sm-block d-md-flex align-items-center">
+                              <h2 class="mb-0"><%= orders[0].count %></h2>
+                              <p class="text-success ml-2 mb-0 font-weight-medium">+</p>
+                            </div>
+                            <h6 class="text-muted font-weight-normal">Delivered Orders</h6>
+                          </div>
+                          <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                            <i class="mdi mdi-truck-delivery"></i>
+                          </div>
                         </div>
-                        <h6 class="text-muted font-weight-normal">Online Earning from <%= onlinePay[0].count %> payments</h6>
-                      </div>
-                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                        <i class="mdi mdi-qrcode-scan"></i>
                       </div>
                     </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-12 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                        <h5>Online Earning</h5>
+                        <div class="row">
+                          <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                            <div class="d-flex d-sm-block d-md-flex align-items-center">
+                              <h2 class="mb-0">₹<%= onlinePay[0].totalPriceSum %></h2>
+                              <p class="text-success ml-2 mb-0 font-weight-medium">+</p>
+                            </div>
+                            <h6 class="text-muted font-weight-normal">Online Earning from <%= onlinePay[0].count %> payments</h6>
+                          </div>
+                          <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                            <i class="mdi mdi-qrcode-scan"></i>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-              </div>
-          </div>
-                
-            </div> 
+                  </div>    
+                </div> 
 
 
             <div class="row">
@@ -185,6 +185,9 @@
                   </div>
                 </div>
               </div>
+              <% } else { %>
+                <h1>Welcome</h1>
+                <% }%>
             </div>
     </div>
 
