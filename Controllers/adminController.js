@@ -152,31 +152,7 @@ module.exports.orderManagement = async( req,res ) =>{
     }
   };
 
-  //--------------------------------------------ORDER DATA------------------------------------------------
-//GET
-module.exports.orderData = async (req,res) =>{ 
-
-  try {
-      const id = req.query.id
-
-      adminHelper.getOrderData(id).then((orders) => {
-        
-
-        const address = orders[0].shippingAddress
-        const products = orders[0].productDetails
- 
-        res.render('orderData',{orders, address,products})
-      });    
-  } catch (error) { 
-      console.log(error);
-      res.send({ success: false, error: error.message });
-  }
-}
-
-
 //---------------------------------------------ORDER STATUS-----------------------------------
-
-
 
 module.exports.changeStatus = async(req,res)=>{
 
@@ -196,8 +172,8 @@ module.exports.changeStatus = async(req,res)=>{
 module.exports.orderDetails = async (req,res)=>{
     try {
       const id = req.query.id
-      const user= res.locals.user.id
-      adminHelper.findOrder(id,user).then(async(orders) => {
+      console.log('idddd',id);
+      adminHelper.findOrder(id).then(async(orders) => {
 
         const address = orders[0].orders.shippingAddress
         const products = orders[0].orders.productDetails 

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const User = require('../Model/userModel');
 const Product = require('../Model/productModel') 
 
-const findOrder  = (orderId,user) => {
+const findOrder  = (orderId) => {
   try {
     return new Promise(async(resolve, reject) => {
 
