@@ -43,7 +43,7 @@ router.get('/', adminController.adminLogin)
 
 router.post('/login', adminController.verifyLogin)
 
-router.get('/landing', validate.authenticate,adminController.loadDashboard)
+router.get('/landing',validate.authenticate,adminController.loadDashboard)
 
 router.get('/logout',adminController.logout)
 
