@@ -4,7 +4,7 @@ const path = require('path');
 
 const addBanner = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, "../public/banner-images"));
+      cb(null, path.join(__dirname, "../Public/banner-images"));
     },
     filename: (req, file, cb) => {
       cb(null, Date.now() + "-" + file.originalname);
@@ -13,7 +13,7 @@ const addBanner = multer.diskStorage({
 
   const editBanner = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, "../public/banner-images"));
+      cb(null, path.join(__dirname, "../Public/banner-images"));
     },
     filename: (req, file, cb) => {
       cb(null, Date.now() + "-" + file.originalname);
@@ -23,7 +23,7 @@ const addBanner = multer.diskStorage({
 
   const editProductImage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null,  path.join(__dirname, "../public/product-images"));
+      cb(null,  path.join(__dirname, "../Public/product-images"));
     },
     filename: (req, file, cb) => {
       cb(null,  Date.now() + "-" + file.originalname);
