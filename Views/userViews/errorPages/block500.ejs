@@ -2,20 +2,20 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>ProGear</title>
-  <link rel="shortcut icon" href="img/fav.png">
-	<!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:700,900" rel="stylesheet">
+    <title>ProGear</title>
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,900" rel="stylesheet">
 
-	<!-- Font Awesome Icon -->
-	<link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" />
+    <!-- Font Awesome Icon -->
+    <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css" />
 
-	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="css/style.css" />
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
 
 <style>
   * {
@@ -166,23 +166,35 @@ body {
     font-size: 14px;
   }
 }
-
+@media screen and (max-width: 768px) {
+            /* Adjust styles for screens with a maximum width of 768px */
+            /* For example, you can modify font sizes, padding, etc. */
+            h1 {
+                font-size: 72px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            .home-btn {
+                font-size: 18px;
+                padding: 12px 24px;
+            }
+        }
 </style>
 </head>
 
 <body>
 
 	<div id="notfound">
-		<div class="notfound-bg"></div>
-		<div class="notfound">
-			<div class="notfound-404">
-				<h1>500</h1>
-			</div>
-			<h2>we are sorry, there is an Internal server error!</h2>
-			<a href="/" class="home-btn">Go Home</a>
-		</div>
-	</div>
-
+    <div class="notfound-bg"></div>
+    <div class="notfound">
+        <div class="notfound-404">
+            <h1>500</h1>
+        </div>
+        <h2>we are sorry, there is an Internal server error!</h2>
+        <a href="/" class="home-btn">Go Home</a>
+    </div>
+</div>
 </body>
 
 </html>

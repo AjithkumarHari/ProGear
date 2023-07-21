@@ -17,8 +17,8 @@
     <!-- Site Title -->
     <title>ProGear</title>
     <!--
-			CSS
-			============================================= -->
+            CSS
+            ============================================= -->
     <link rel="stylesheet" href="css/linearicons.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/themify-icons.css">
@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="css/main.css">
 
     <style>
-      body {
+        body {
             width: 100%;
             height: 100%;
             min-height: 100vh;
@@ -41,89 +41,108 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
+        .inside {
+            width: 100%;
+        }
 
+        .wallet-top {
+            margin-top: 30px;
+            text-align: center;
+            margin-right: 30px;
+            margin-left: 40px;
+            margin-bottom: 50px;
+        }
 
-    
-.inside {
-  width: 100%;
+        button {
+            border: 0;
+            transition: 0.3s;
+        }
 
+        h3 {
+            color: #00000061;
+            font-size: 13px;
+        }
 
-}
+        .card span {
+            position: absolute;
+            left: 6px;
+            bottom: 10px;
+            font-weight: 300;
+            font-size: 13px;
+            color: white;
+        }
 
+        .card h2 {
+            color: white;
+            font-weight: 300;
+        }
 
+        .card i {
+            position: absolute;
+            right: 6px;
+            bottom: 6px;
+            font-size: 22px;
+            color: white;
+        }
 
-.wallet-top {
-  margin-top: 30px;
-  text-align: center;
-  margin-right: 30px;
-  margin-left: 40px;
-  margin-bottom: 50px;
-}
+        .wallet-top h1 {
+            color: #00000061;
+            font-size: 35px;
+        }
 
-button {
-  border: 0;
-  transition: 0.3s;
-}
+        .wallet-top .card {
+            background-image: linear-gradient(326deg, #33353f 41%, #fff 149%);
+            width: 100%;
+            height: 250px;
+            box-shadow: 15px 15px 27px -13px #FFFEFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            border-color: azure;
+            position: relative;
+            border: 0;
+        }
 
-h3 {
-  color: #00000061;
-  font-size: 13px;
-}
+        .author_img {
+            width: 150px;
+            height: 150px;
+        }
 
-.card span {
-  position: absolute;
-  left: 6px;
-  bottom: 10px;
-  font-weight: 300;
-  font-size: 13px;
-  color: white;
-}
+        .profile-info {
+            text-align: left;
+            margin-top: 20px;
+        }
 
-.card h2 {
-  color: white;
-  font-weight: 300;
-}
+        @media (max-width: 991px) {
+            .col-5 {
+                margin-left: 0;
+                text-align: center;
+            }
+            .col-6 {
+                text-align: center;
+            }
+        }
 
-.card i {
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  font-size: 22px;
-  color: white;
-}
-
-.wallet-top h1 {
-  color: #00000061;
-  font-size: 35px;
-}
-
-.wallet-top .card {
-    background-image: linear-gradient(326deg, #33353f 41%, #fff 149%);
-    width: 100%;
-    height: 250px;
-    box-shadow: 15px 15px 27px -13px #FFFEFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px;
-    border-color: azure;
-    position: relative;
-    border: 0;
-}
-
-
-
-
+        @media (max-width: 768px) {
+            .wallet-top {
+                margin-left: 0;
+                margin-right: 0;
+            }
+            .col-xs-12 .col-lg-12 .col-xl-6 .tile {
+                margin-bottom: 30px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <!-- Start Header Area -->
-		<%- include('../layouts/userHeader.ejs') %>
-	<!-- End Header Area -->
+    <%- include('../layouts/userHeader.ejs') %>
+    <!-- End Header Area -->
 
-     <!--================Blog Area =================-->
+    <!--================Blog Area =================-->
     <section class="blog_area single-post-area section_gap">
         <div class="container">
             <br><br><br>
@@ -131,28 +150,21 @@ h3 {
                 <div class="col-lg-12">
                     <div class="blog_right_sidebar">
                         <aside class="single_sidebar_widget author_widget">
-                            
+
                             <article>
                                 <div class="row">
-                                    <div class="col-5" style="margin-left: 50px;">
+                                    <div class="col-lg-5 col-md-5 col-12 mx-auto">
                                         <img class="author_img rounded-circle" src="img/userprofile.png" alt="">
-                               
-                                <div class="profile-info">
-                                    <h1><%= user.fname %> <%= user.lname %></h1>
-                                    <p><%= user.email %></p>
-                                    <p>+91 <%= user.number %></p>
-                                    <!-- <p><span style="color: darkgoldenrod;">Wallet : </span>₹<%= user.wallet %></p> -->
-                                </div>
                                     </div>
 
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-6 col-12 mx-auto">
                                         <div class="inside">
                                             <div class="wallet-top">
-                                               <div class="card">
+                                                <div class="card">
                                                     <h1 style="color: #c2cdea;">MY WALLET</h1>
                                                     <h2>₹<%= user.wallet %></h2>
                                                     <span><%= user.email %></span>
-                                               </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -199,18 +211,13 @@ h3 {
                             </article>
                         </aside>
                         <aside class="single-sidebar-widget newsletter_widget">
-                            <div class="br"></div> 
+                            <div class="br"></div>
                         </aside>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-
-
-
-
     <!--================Blog Area =================-->
 
     <!-- start footer Area -->
@@ -218,19 +225,20 @@ h3 {
     <!-- End footer Area -->
 
     <script src="js/vendor/jquery-2.2.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-	 crossorigin="anonymous"></script>
-	<script src="js/vendor/bootstrap.min.js"></script>
-	<script src="js/jquery.ajaxchimp.min.js"></script>
-	<script src="js/jquery.nice-select.min.js"></script>
-	<script src="js/jquery.sticky.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
     <script src="js/nouislider.min.js"></script>
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<!--gmaps Js-->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-	<script src="js/gmaps.min.js"></script>
-	<script src="js/main.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <!--gmaps Js-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+    <script src="js/gmaps.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

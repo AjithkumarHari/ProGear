@@ -185,10 +185,11 @@ module.exports.forgotPasswordOtp = async (req, res) => {
       res.render("forgotPasswordNum", { message: "User Not Found" });
     } else {
       const OTP = otpHelper.generateOtp();
-      await otpHelper.sendOtp(user.number, OTP);
+      //uncomment the below code for sending messeage
+              // await otpHelper.sendOtp(user.number, OTP);
+      console.log("otp ",OTP);
       req.session.otp = OTP;
       req.session.email = user.email;
-      req.session.number = user.number;
       res.render("forgotPasswordOtp");
     }
   }catch (error) {
@@ -202,9 +203,7 @@ module.exports.fpOtpVerify = async (req, res) => {
   try {
     const otp = req.session.otp;
     const reqOtp = req.body.otp;
-    if (otp == reqOtp) {
-      const token = createToken(userData._id);
-      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    if (otp === reqOtp) {
       res.render("setNewPassword");
     } else {
       return console.log("Your OTP was Wrong");
@@ -229,20 +228,31 @@ module.exports.setNewPasswordGet = async (req, res) => {
 module.exports.setNewPassword = async (req, res) => {
   try {
     const newpw = req.body.newpassword;
-    const confpw = req.body.confpassword;
 
-    if (newpw === confpw) {
-      const email = res.locals.user.email;
-
+    if(req.session.email){
+      const email = req.session.email;
+      console.log('email',email);
       await userData.updateOne(
         { email: email },
         { $set: { password: newpw } }
       );
 
-      res.redirect("/");
+      res.redirect("/login");
+
+    }else{
+      const email = res.locals.user.email;
+      console.log('email',email);
+      await userData.updateOne(
+        { email: email },
+        { $set: { password: newpw } }
+      );
+
+      res.redirect("/profile");
+
     }
   } catch (error) {
-    res.redirect("/error-500");
+    console.log("Error in setNewPassword" , error);
+    res.redirect("/error-500"); 
 
   }
 };

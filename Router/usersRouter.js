@@ -35,8 +35,9 @@ router.post('/login',userController.loginVerify)
 router.get('/forgotPasswordNum',userController.forgotPasswordNum)
 router.post('/forgotPasswordNum',userController.forgotPasswordOtp)
 router.post('/fpOtp',userController.fpOtpVerify)
-router.post('/setNewPassword',userController.setNewPassword)
+
 router.get('/setNewPassword',userController.setNewPasswordGet)
+router.post('/setNewPassword',userController.setNewPassword)
 
 router.get('/signup',userController.signupPage)
 router.post('/signup',userController.signupAction)

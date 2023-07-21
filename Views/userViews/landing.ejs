@@ -115,6 +115,23 @@
     color: #ff8932;;
   }   
 
+
+    /* Adjust the banner image position for small screens */
+	@media (max-width: 767px) {
+    .banner-area {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .banner-img {
+      order: -1;
+      margin-bottom: 20px;
+    }
+
+    .carousel-inner .carousel-item {
+      min-height: auto; /* Reset the minimum height for the banner content */
+    }
+  }
 	</style>
 </head>
 
@@ -125,9 +142,10 @@
 	<!-- End Header Area -->
 
 	<!-- start banner Area -->
-	  <section class="banner-area">
+	<section class="banner-area">
 		<div class="container">
-		  <div id="bannerSlider" class="carousel slide row fullscreen align-items-center justify-content-start" data-ride="carousel">
+		  <div id="bannerSlider" class="carousel slide row fullscreen align-items-center justify-content-start"
+			data-ride="carousel">
 			<div class="carousel-inner">
 			  <% banners.forEach((banner, index) => { %>
 			  <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
@@ -139,23 +157,23 @@
 					  <p><%= banner.description %></p>
 					</div>
 				  </div>
-				  <div class="col-lg-7">
-					<div class="banner-img">
-					  <img class="img-fluid" src="../banner-images/<%= banner.image %>" alt="" style="height: auto; width: auto;">
-					</div>
-				  </div>
+				</div>
+				<div class="banner-img">
+				  <img class="img-fluid" src="../banner-images/<%= banner.image %>" alt="">
 				</div>
 			  </div>
 			  <% }) %>
 			</div>
-			<a class="carousel-control-prev" href="#bannerSlider" role="button" data-slide="prev" style="align-items:end; margin-bottom: 10px;" >
-				<img src="img/banner/prev.png">
-				<span class="sr-only">Previous</span>
-			  </a>
-			  <a class="carousel-control-next" href="#bannerSlider" role="button" data-slide="next" style="align-items:end;margin-bottom: 10px;">
-				<img src="img/banner/next.png">
-				<span class="sr-only">Next</span>
-			  </a>
+			<a class="carousel-control-prev" href="#bannerSlider" role="button" data-slide="prev"
+			  style="align-items:end; margin-bottom: 10px;">
+			  <img src="img/banner/prev.png">
+			  <span class="sr-only">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#bannerSlider" role="button" data-slide="next"
+			  style="align-items:end;margin-bottom: 10px;">
+			  <img src="img/banner/next.png">
+			  <span class="sr-only">Next</span>
+			</a>
 		  </div>
 		</div>
 	  </section>

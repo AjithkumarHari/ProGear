@@ -170,22 +170,17 @@ module.exports.changeStatus = async(req,res)=>{
 ///order details slip
 
 module.exports.orderDetails = async (req,res)=>{
-    try {
-      const id = req.query.id
-      console.log('idddd',id);
-      adminHelper.findOrder(id).then(async(orders) => {
-
-        const address = orders[0].orders.shippingAddress
-        const products = orders[0].orders.productDetails 
-
-        res.render('orderData',{orders,address ,products,productData}) 
-      });
-        
-    } catch (error) {
-      console.log(error.message);
-    }
-  
-  }
+  try {
+    const id = req.query.id
+    adminHelper.findOrder(id).then(async(orders) => {
+      const address = orders[0].orders.shippingAddress
+      const products = orders[0].orders.productDetails 
+      res.render('orderData',{orders,address ,products,productData}) 
+    });
+  } catch (error) {
+    console.log("Error from orderDetails",error.message);
+  }
+}
 
 
 module.exports.cancelOrder = async(req,res)=>{
