@@ -30,10 +30,13 @@
 						<% } else { %>
 							<li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
 						<% } %>
+						<li class="nav-item"><a class="nav-link" href="/wishlist"><span class="lnr lnr-heart"></span></a></li>
+						<li class="nav-item"><a class="nav-link" href="/cart"><span class="ti-bag"></span></a></li>
+						
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><a href="/cart" class="cart"><span class="ti-bag"></span></a></li>
-						<li class="nav-item"><a href="/wishlist" class="cart"><span class="lnr lnr-heart"></span></a></li>
+						<li class="nav-item"></li>
+						
 						<li class="nav-item">
 							<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 						</li>
@@ -44,8 +47,8 @@
 	</div>
 	<div class="search_input" id="search_input_box">
 		<div class="container">
-			<form class="d-flex justify-content-between">
-				<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+			<form class="d-flex justify-content-between" action="/category">
+				<input type="text" class="form-control" id="search_input" placeholder="Search Here" name="search">
 				<button type="submit" class="btn"></button>
 				<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
 			</form>

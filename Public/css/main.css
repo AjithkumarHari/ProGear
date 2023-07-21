@@ -5517,7 +5517,8 @@ form#myform {}
   margin-top: 50px; }
   @media (max-width: 414px) {
     .comments-area {
-      padding: 50px 8px; } }
+      padding: 50px -56px;
+      } }
   .comments-area h4 {
     text-align: center;
     margin-bottom: 50px;
@@ -6022,7 +6023,7 @@ article {
   display: block;
   width: auto;
   height: auto;
-  padding: 50px 0;
+  padding: 0px 0px;
   overflow:hidden;
 }
 

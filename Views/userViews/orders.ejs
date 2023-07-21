@@ -16,9 +16,7 @@
     <meta charset="UTF-8">
     <!-- Site Title -->
     <title>ProGear</title>
-    <!--
-			CSS
-			============================================= -->
+    <!-- CSS -->
     <link rel="stylesheet" href="css/linearicons.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/themify-icons.css">
@@ -30,70 +28,75 @@
     <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/form-style.css">
-
     <style>
+        /* Custom styles for responsiveness */
+        .grid-item {
+            border: 1.7px solid #e47312;
+            border-radius: 5px;
+            background-color: white;
+            color: black;
+            padding: 30px 0px 30px 70px;
+            margin-bottom: 30px;
+        }
 
-.grid-item {
-    border: 1.7px solid #e47312;
-    border-radius: 5px;
-    background-color:white;
-    color: black;
-    padding: 30px 30px 30px 70px;
-    margin-bottom: 30px;
-    
+        .comment-list .desc h5 {
+            display: inline-block;
+            padding-bottom: 20px;
+            margin: 0;
+            margin-right: 50px;
+        }
 
-}
-   .comment-list .desc h5 {
-        display: inline-block;
-        padding-bottom: 20px;
-        margin: 0;
-        margin-right: 100px;
-        margin-left: 10px;
-      
+        /* Additional responsiveness for small screens */
+        @media (max-width: 768px) {
+            .grid-item {
+                padding: 20px;
+            }
 
-    }
+            .comment-list .desc h5 {
+                margin-right: 20px;
+            }
+        }
     </style>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
-
 </head>
 
 <body>
-
     <!-- Start Header Area -->
-	<%- include('../layouts/userHeader.ejs') %>
-	<!-- End Header Area -->
+    <%- include('../layouts/userHeader.ejs') %>
+    <!-- End Header Area -->
 
-     <!--================ Order Card Area =================-->
     <section class="blog_area single-post-area section_gap">
-        <div class="container">
+        <div class="container" style="padding-left: 0;">
             <div class="row">
-                <div class="col-lg-12 posts-list">
-                    <div class="comments-area" style="padding-bottom:30px;">
+                <!-- <div class="col-lg-12 posts-list"> -->
+                    <div class="comments-area col-lg-12 " style="padding-bottom: 30px; padding-left: 0; ">
                         <h4>Orders</h4>
                         <% order.forEach((item) => { %>
-                        <div class="comment-list grid-item">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="desc col-lg-8">
-                                        <h5><span style="color: black;">Date:</span> <%= new Date(item.orders.createdAt).toLocaleDateString('en-US') %></h5>
-                                        <h5><span style="color: black;">Price ₹ :</span><%= item.orders.totalPrice %></h5>
-                                        <h5><span style="color: black;">Status :</span> <%= item.orders.paymentStatus %></h5>
-                                        <h5><span style="color: black;">Payment method: </span><%= item.orders.paymentMethod %></h5>
-                                    </div>
-                                    <div class="col-lg-4" style="margin-top:20px;">
-                                        <a id="btn" href="/orderDetails?id=<%= item.orders._id %>">SHOW DETAILS</a>
+                            <div class="col-lg-12 col-md-12 " > <!-- Wrap each order in a responsive column div -->
+                                <div class="comment-list grid-item">
+                                    <div class="single-comment justify-content-between d-flex">
+                                        <div class="user justify-content-between d-flex">
+                                            <div class="desc">
+                                                <h5><span style="color: black;">Date:</span> <%= new Date(item.orders.createdAt).toLocaleDateString('en-US') %></h5>
+                                                <h5><span style="color: black;">Price ₹ :</span><%= item.orders.totalPrice %></h5>
+                                                <h5><span style="color: black;">Status :</span> <%= item.orders.paymentStatus %></h5>
+                                                <h5><span style="color: black;">Payment method: </span><%= item.orders.paymentMethod %></h5>
+                                            </div>
+                                            <div>
+                                                <a id="btn" href="/orderDetails?id=<%= item.orders._id %>" class="btn btn-primary text-center">SHOW DETAILS</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <% }); %>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
     </section>
+    
+
     
     <!--================ Order Card Area=================-->
 

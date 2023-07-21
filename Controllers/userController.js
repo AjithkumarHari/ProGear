@@ -530,11 +530,32 @@ module.exports.checkoutPage = async (req, res) => {
 
 //GET
 
+const ITEMS_PER_PAGE = 6; // Number of products to display per page
+
 module.exports.categoryPage = async (req, res) => {
   try {
     const categoryId = req.query.id;
     const token = res.locals.user;
     const category = await Category.find({ is_listed: true });
+    const sortQuery = req.query.sort || "default";
+    const page = parseInt(req.query.page) || 1; // Current page number from the request query
+
+    let sortOption = {};
+    if (sortQuery === 'price_asc' || sortQuery === 'default') {
+      sortOption = { price: 1 }; 
+    } else if (sortQuery === 'price_desc') {
+      sortOption = { price: -1 }; 
+    }
+
+    // Calculate the skip value to get the appropriate page of products
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+
+    // Get the total count of products matching the category and is_listed criteria
+    const totalCount = await productData.countDocuments({
+      category: new mongoose.Types.ObjectId(categoryId),
+      is_product_listed: true,
+    });
+
     const products = await productData.aggregate([
       {
         $match: {
@@ -542,7 +563,11 @@ module.exports.categoryPage = async (req, res) => {
           is_product_listed: true,
         },
       },
+      { $sort: sortOption },
+      { $skip: skip }, // Skip the appropriate number of products
+      { $limit: ITEMS_PER_PAGE }, // Limit the number of products per page
     ]);
+
     const isListed = await productData.aggregate([
       {
         $match: {
@@ -564,6 +589,7 @@ module.exports.categoryPage = async (req, res) => {
         },
       },
     ]);
+
     if (
       products.length === 0 ||
       category.length === 0 ||
@@ -571,7 +597,15 @@ module.exports.categoryPage = async (req, res) => {
     ) {
       res.redirect("/error-404");
     } else {
-      res.render("category", { products, category, token });
+
+      res.render("category", {
+        products,
+        category,
+        token,
+        categoryId,
+        currentPage: page, // Pass the current page number to the view
+        totalPages: Math.ceil(totalCount / ITEMS_PER_PAGE), // Calculate the total number of pages
+      });
     }
   } catch (err) {
     console.log("Error from categoryPage", err);
