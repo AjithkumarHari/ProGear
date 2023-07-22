@@ -532,7 +532,7 @@ module.exports.checkoutPage = async (req, res) => {
 
 //GET
 
-const ITEMS_PER_PAGE = 6; // Number of products to display per page
+const ITEMS_PER_PAGE = 3; // Number of products to display per page
 
 module.exports.categoryPage = async (req, res) => {
   try {
