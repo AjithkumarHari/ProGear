@@ -27,149 +27,177 @@
 	<link rel="stylesheet" href="css/nice-select.css">
 	<link rel="stylesheet" href="css/nouislider.min.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/main.css"> 
+	<link rel="stylesheet" href="css/main.css">
 
-	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
+	<!-- <style>
+		/* Add the following CSS to your existing styles or create a new CSS file */
+
+		/* Mobile responsive styles for the table */
+		.table-responsive {
+			overflow-x: scroll;
+		}
+
+		/* Adjust the font size for smaller screens */
+		table {
+			font-size: 14px;
+		}
+
+		/* Responsive adjustments for table cells */
+		@media (max-width: 767px) {
+			table td, table th {
+				padding: 8px 4px;
+			}
+		}
+
+		/* Center the buttons on smaller screens */
+		.responsive-btn {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		/* Adjust the button style for smaller screens */
+		#btn {
+			padding: 12px 16px;
+			font-size: 14px;
+		}
+
+	</style> -->
 </head>
 
 <body>
 
 	<!-- Start Header Area -->
-		<%- include('../layouts/userHeader.ejs') %>
+	<%- include('../layouts/userHeader.ejs') %>
 	<!-- End Header Area -->
 
 	<!--================Order Details Area =================-->
 	<section class="order_details section_gap">
-	<div class="container">
-		<br><br><br>	
-		<div class="row order_d_inner">
-			<div class="col-lg-5" style="border: 1px solid #fff;  margin-left:60px;">
-				<br>
-				<div class="details_item">
-					<h4>Order Info</h4>
-					<ul class="list">
-						<li><a href="#"><span>Order number</span> : <%=  orders[0].orders._id %></a></li>
-						<li><a href="#"><span>Date</span> : <%= new Date(orders[0].orders.createdAt).toLocaleDateString('en-US')   %></a></li>
-						<li><a href="#"><span>Total</span> :  ₹<%=orders[0].orders.totalPrice %></a></li>
-						<li><a href="#"><span>Payment method</span> : <%=orders[0].orders.paymentMethod %></a></li>
-					</ul>
+		<div class="container">
+			<br><br><br>
+			<div class="row order_d_inner">
+				<div class="col-lg-5 ml-3 mb-3" style="border: 1px solid #fff; margin-left: 0px;">
+					<br>
+					<div class="details_item">
+						<h4>Order Info</h4>
+						<ul class="list">
+							<li><a href="#"><span>Order number</span> : <%= orders[0].orders._id %></a></li>
+							<li><a href="#"><span>Date</span> : <%= new Date(orders[0].orders.createdAt).toLocaleDateString('en-US')   %></a></li>
+							<li><a href="#"><span>Total</span> : ₹<%=orders[0].orders.totalPrice %></a></li>
+							<li><a href="#"><span>Payment method</span> : <%=orders[0].orders.paymentMethod %></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-5 ml-3 mb-3" style="border: 1px solid #fff; margin-left: 0px;">
+					<br>
+					<div class="details_item">
+						<h4>Billing Address</h4>
+						<ul class="list">
+							<li><a href="#"><span>House address</span> : <%= address.item.houseAddress %></a></li>
+							<li><a href="#"><span>Street</span> : <%= address.item.street %></a></li>
+							<li><a href="#"><span>City</span> : <%= address.item.city %></a></li>
+							<li><a href="#"><span>Postcode </span> : <%= address.item.pin %></a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
-			<div class="col-lg-5" style="border: 1px solid #fff; margin-left:60px;">
-				<br>
-				<div class="details_item">
-					<h4>Billing Address</h4>
-					<ul class="list">
-						<li><a href="#"><span>House address</span> : <%= address.item.houseAddress %></a></li>
-						<li><a href="#"><span>Street</span> : <%= address.item.street %></a></li>
-						<li><a href="#"><span>City</span> : <%= address.item.city %></a></li>
-						<li><a href="#"><span>Postcode </span> : <%= address.item.pin %></a></li>
-					</ul>
+			<div class="row order_details_table">
+				<h2>Order Details</h2>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Product</th>
+								<th scope="col">Name</th>
+								<th scope="col">Quantity</th>
+								<th scope="col">Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% for (let i = 0; i < products.length; i++) { %>
+								<tr>
+									<td>
+										<img src="/product-images/<%= orders[i].productData[0] %>" alt="" style="height: 100px; width: 100px;">
+									</td>
+									<td>
+										<p><%= products[i].productName %></p>
+									</td>
+									<td>
+										<h5>x <%= products[i].quantity %></h5>
+									</td>
+			
+									<td>
+										<p>₹<%= products[i].productPrice %></p>
+									</td>
+								</tr>
+							<% }; %>
+			
+							<tr>
+								<td>
+									<h4>Subtotal</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td></td>
+								<td>
+									<p> ₹<%=orders[0].orders.totalPrice %></p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h4>Shipping</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td></td>
+								<td>
+									<p>₹0.00</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h4>Total</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td></td>
+								<td>
+									<p> ₹<%=orders[0].orders.totalPrice %></p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<!-- Empty cell -->
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-			</div>	
-		</div>
-		<div class="order_details_table">
-			<h2>Order Details</h2>
-			<div class="table-responsive">
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">Product</th>
-							<th scope="col">Name</th>
-							<th scope="col">Quantity</th>
-							<th scope="col">Total</th>
-						</tr>
-					</thead>
-					<tbody>
-						<% for (let i = 0; i < products.length; i++) { %>
-						<tr>
-							<td>
-								<img src="/product-images/<%= orders[i].productData[0] %>" alt="" style="height: 100px; width: 100px;">
-							</td>
-							<td>
-								<p><%= products[i].productName %></p>
-							</td>
-							<td>
-								<h5>x <%= products[i].quantity %></h5>
-							</td>
-				
-							<td>
-								<p>₹<%= products[i].productPrice %></p>
-							</td>
-						</tr>
-						<% }; %>
-
-						<tr>
-							<td>
-								<h4>Subtotal</h4>
-							</td>
-							<td>
-								<h5></h5>
-							</td>
-							<td></td>
-							<td>
-								<p> ₹<%=orders[0].orders.totalPrice %></p>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h4>Shipping</h4>
-							</td>
-							<td>
-								<h5></h5>
-							</td>
-							<td></td>
-							<td>
-								<p>₹0.00</p>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h4>Total</h4>
-							</td>
-							<td>
-								<h5></h5>
-							</td>
-							<td></td>
-							<td>
-								<p> ₹<%=orders[0].orders.totalPrice %></p>
-							</td>
-						</tr>
-						<tr>
-							<td>
-						
-
-								
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				
-			</div>
-			<% if(orders[0].orders.orderStatus === 'Placed') { %>
-				<div style="margin-left: 410px;">
+				<% if(orders[0].orders.orderStatus === 'Placed') { %>
+				<div class="responsive-btn">
 					<a id="btn" onclick="cancelOrder('<%= orders[0].orders._id %>', 'Cancel Requested')"> CANCEL ORDER</a>
-				</div>	
-			<% } else if (orders[0].orders.orderStatus === 'Delivered') { %>
-				<div style="margin-left: 410px;">
+				</div>
+				<% } else if (orders[0].orders.orderStatus === 'Delivered') { %>
+				<div class="responsive-btn">
 					<a id="btn" onclick="cancelOrder('<%= orders[0].orders._id %>', 'Return Requested')"> RETURN</a>
-				</div>	
-			<% } %>
+				</div>
+				<% } %>
+			</div>
+			
 		</div>
-	</div>
-</section>
+	</section>
 
 	<!--================End Order Details Area =================-->
 
 	<!-- start footer Area -->
-		<%- include('../layouts/userFooter.ejs') %>
+	<%- include('../layouts/userFooter.ejs') %>
 	<!-- End footer Area -->
-
-
-
 
 	<script src="js/vendor/jquery-2.2.4.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
@@ -182,66 +210,46 @@
 	<script src="js/jquery.magnific-popup.min.js"></script>
 	<script src="js/owl.carousel.min.js"></script>
 	<!--gmaps Js-->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 	<script src="js/gmaps.min.js"></script>
 	<script src="js/main.js"></script>
 
 
 	<script>
-		// function cancelOrder(orderId,status)
-		// 	{
-		// 		console.log(orderId);
-		// 		$.ajax({
-		// 		url:'/cancelOrder',
-		// 		method:'put',
-		// 		data: {
-		// 			orderId: orderId,
-		// 			status:status
+		function cancelOrder(orderId, status) {
+			Swal.fire({
+				title: 'Are you sure to cancel',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, Cancel it!',
+				timer: 5000,
+				customClass: {
+					container: 'swal-wide', // Custom CSS class for the container
+				},
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: '/cancelOrder',
+						method: 'put',
+						data: {
+							orderId: orderId,
+							status: status
+						},
+						success: (response) => {
+							if (response) {
+								location.reload()
+							}
 
-		// 		},
-		// 		success:(response)=>
-		// 		{
-		// 			if(response)
-		// 			{
-		// 			location.reload()
-		// 			}
-		// 		}
-		// 		})
-		// 	  }
-			function cancelOrder(orderId, status) {
-            Swal.fire({
-          title: 'Are you sure to cancel',
-          text: "You won't be able to revert this!",
-          icon: 'warning',
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, Cancel it!',
-          timer: 5000,
-          customClass: {
-          container: 'swal-wide', // Custom CSS class for the container
-            },
-        }).then((result) => {
-          if (result.isConfirmed) {
-            $.ajax({
-                url: '/cancelOrder',
-                method: 'put',
-                data: {
-                    orderId: orderId,
-                    status: status
-                },
-                success: (response) => {
-                    if (response) {
-                        location.reload()
-                    }
-                   
-                }
-            });
-          }
-          
-        })
-    }
+						}
+					});
+				}
+
+			})
+		}
 	</script>
-	
+
 </body>
 
 </html>

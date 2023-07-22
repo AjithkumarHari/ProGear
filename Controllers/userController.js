@@ -34,7 +34,8 @@ module.exports.homePage = async (req, res) => {
     const product = await productData.find({
       category: { $in: catId },
       is_product_listed: true,
-    });
+    }).limit(12);
+    
     res.render("landing", {
       product: product,
       token: token,
@@ -95,7 +96,8 @@ module.exports.productPage = async (req, res) => {
     if (
       product.length === 0 ||
       category.length === 0 ||
-      isListed[0].is_listed[0] === false
+      isListed[0].is_listed[0] === false ||
+      product===[]
     ) {
       res.redirect("/error-404");
     } else {
@@ -107,7 +109,7 @@ module.exports.productPage = async (req, res) => {
     }
   } catch (error) {
     console.log('Error from productPage',error);
-    res.redirect("/error-500");
+    res.redirect("/error-404");
   }
 };
 
@@ -612,6 +614,99 @@ module.exports.categoryPage = async (req, res) => {
     res.redirect("/error-500");
   }
 };
+
+// const ITEMS_PER_PAGE = 6; // Number of products to display per page
+// // const productData = require('../models/product'); // Import the correct model for Product
+
+// module.exports.categoryPage = async (req, res) => {
+//   try {
+//     const categoryId = req.query.id;
+//     const token = res.locals.user;
+//     const category = await Category.find({ is_listed: true });
+//     const sortQuery = req.query.sort || "default";
+//     const page = parseInt(req.query.page) || 1; // Current page number from the request query
+
+//     // Declare sortOption
+//     let sortOption = {};
+
+//     if (sortQuery === 'price_asc' || sortQuery === 'default') {
+//       sortOption = { price: 1 }; 
+//     } else if (sortQuery === 'price_desc') {
+//       sortOption = { price: -1 }; 
+//     }
+
+//     const searchQuery = req.query.search || ''; // Get the name search input from the user
+
+//     // Build the search filter
+//     const searchFilter = {
+//       category: new mongoose.Types.ObjectId(categoryId),
+//       is_product_listed: true,
+//     };
+
+//     // Add the name search filter if a search query is provided
+//     if (searchQuery) {
+//       searchFilter.name = { $regex: new RegExp(searchQuery, 'i') };
+//     }
+
+//     // Calculate the skip value to get the appropriate page of products
+//     const skip = (page - 1) * ITEMS_PER_PAGE;
+
+//     // Get the total count of products matching the search filter
+//     const totalCount = await productData.countDocuments(searchFilter);
+
+//     // Fetch products based on the search filter
+//     const products = await productData.aggregate([
+//       {
+//         $match: searchFilter, // Apply the search filter
+//       },
+//       { $sort: sortOption },
+//       { $skip: skip }, // Skip the appropriate number of products
+//       { $limit: ITEMS_PER_PAGE }, // Limit the number of products per page
+//     ]);
+
+//     const isListed = await productData.aggregate([
+//       {
+//         $match: {
+//           _id: new mongoose.Types.ObjectId(products[0]._id),
+//         },
+//       },
+//       {
+//         $lookup: {
+//           from: "categories",
+//           localField: "category",
+//           foreignField: "_id",
+//           as: "category",
+//         },
+//       },
+//       {
+//         $project: {
+//           category: 1,
+//           is_listed: "$category.is_listed",
+//         },
+//       },
+//     ]);
+
+//     if (isListed.length === 0 || isListed[0].is_listed[0] === false) {
+//       res.redirect("/error-404");
+//     } else {
+//       res.render("category", {
+//         products,
+//         category,
+//         token,
+//         categoryId,
+//         currentPage: page, // Pass the current page number to the view
+//         totalPages: Math.ceil(totalCount / ITEMS_PER_PAGE), // Calculate the total number of pages
+//         searchQuery, // Pass the name search query to the view
+//       });
+//     }
+//   } catch (err) {
+//     console.log("Error from categoryPage", err);
+//     res.redirect("/error-500");
+//   }
+// };
+
+
+
 
 //***************************************************************  ERROR PAGES  *******************************************************//
 
