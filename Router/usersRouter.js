@@ -54,6 +54,9 @@ router.get('/product',validate.checkBlocked,userController.productPage)
 //Get category page
 router.get('/category',validate.authenticate,validate.checkBlocked, userController.categoryPage)
 
+router.get('/productList',validate.authenticate,validate.checkBlocked, userController.productList)
+
+
 // ----------------------------------------------------------------CART------------------------------------------------------------------------------
 
 //Get Cart Page 

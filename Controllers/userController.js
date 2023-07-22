@@ -615,6 +615,97 @@ module.exports.categoryPage = async (req, res) => {
   }
 };
 
+
+//GET
+
+const ITEM_in_PAGE = 6; // Number of products to display per page
+
+module.exports.productList = async (req, res) => {
+  try {
+    const categoryId = req.query.id;
+    const token = res.locals.user;
+    const category = await Category.find({ is_listed: true });
+    const sortQuery = req.query.sort || "default";
+    const page = parseInt(req.query.page) || 1; // Current page number from the request query
+
+    let sortOption = {};
+    if (sortQuery === 'price_asc' || sortQuery === 'default') {
+      sortOption = { price: 1 }; 
+    } else if (sortQuery === 'price_desc') {
+      sortOption = { price: -1 }; 
+    }
+
+    // Calculate the skip value to get the appropriate page of products
+    const skip = (page - 1) * ITEM_in_PAGE; // Use ITEM_PER_PAGE here
+
+    // Get the total count of products matching the category and is_listed criteria
+    const totalCount = await productData.countDocuments({ 
+
+      is_product_listed: true,
+    });
+
+    const products = await productData.aggregate([
+      {
+        $match: {
+          is_product_listed: true,
+        },
+      },
+      { $sort: sortOption },
+      { $skip: skip }, // Skip the appropriate number of products
+      { $limit: ITEM_in_PAGE }, // Limit the number of products per page, use ITEM_PER_PAGE here
+    ]);
+
+    const isListed = await productData.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(products[0]._id),
+        },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {
+        $project: {
+          category: 1,
+          is_listed: "$category.is_listed",
+        },
+      },
+    ]);
+
+    if (
+      products.length === 0 ||
+      category.length === 0 ||
+      isListed[0].is_listed[0] === false
+    ) {
+      res.redirect("/error-404");
+    } else {
+      res.render("productList", {
+        products,
+        category,
+        token,
+        categoryId,
+        currentPage: page, // Pass the current page number to the view
+        totalPages: Math.ceil(totalCount / ITEM_in_PAGE), // Calculate the total number of pages, use ITEM_PER_PAGE here
+      });
+    }
+  } catch (err) {
+    console.log("Error from productList", err);
+    res.redirect("/error-500");
+  }
+};
+
+
+
+
+
+
+
+
 // const ITEMS_PER_PAGE = 6; // Number of products to display per page
 // // const productData = require('../models/product'); // Import the correct model for Product
 
