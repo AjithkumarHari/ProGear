@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Order = require('../Model/orderModel')
+const tempOrder = require('../Model/tempOrderModel')
 const Cart = require('../Model/cartModel')
 const Address = require('../Model/adderssModel')
 const User = require('../Model/userModel')
@@ -69,7 +70,9 @@ checktoutHelper =async (data, user)=>{
             // console.log("addressData",addressData);
             let status,orderStatus
             if(data.payment_method == 'COD'){
+              await Cart.deleteOne({ user_id:user._id }).then(() => {
                     (status = "Success"), (orderStatus = "Placed");
+                  });
             }
             else if (data.payment_method === "wallet") {
                 const userData = await User.findById({ _id:user._id });
@@ -81,7 +84,9 @@ checktoutHelper =async (data, user)=>{
                   userData.wallet -= data.total;
       
                   await userData.save();
+                  await Cart.deleteOne({ user_id:user._id }).then(() => {
                   (status = "Success"), (orderStatus = "Placed");
+                });
                 }
               }
             else if(data.payment_method == 'RazorPay'){
@@ -119,23 +124,16 @@ checktoutHelper =async (data, user)=>{
                     resolve(response);
                 });
             }
-            console.log('total',data.total);
-            await Cart.deleteOne({ user_id:user._id }).then(() => {
+            // console.log('total',data.total);
+           
                 resolve();
-            });
+
 
         });  
-            
     } catch (error) { 
         console.log(error.message)
-
     }
-
 }
-
-
-
-
 
 
 const getOrder = async (userId) => {
@@ -261,6 +259,8 @@ const getOrderDetails  = (orderId, userId) => {
 
   }
 
+  
+
 
 
   const generateRazorpay = async(orderId,total)=>{
@@ -321,7 +321,7 @@ const verifyRazorpayPaymentHelper = async(details) =>{
       hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
 
       hmac = hmac.digest('hex')
-      console.log(hmac);
+      // console.log(hmac);
       if(hmac == details['payment[razorpay_signature]']){
         resolve()
       }

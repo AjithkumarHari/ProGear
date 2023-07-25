@@ -65,8 +65,7 @@ module.exports.cartPage = async (req, res) => {
 module.exports.addToCart = async (req, res) => {
   try {
     if (res.locals.user != null) {
-      cartHelper
-        .addCart(req.body.proId, res.locals.user.id, req.body.price)
+      cartHelper.addCart(req.body.proId, res.locals.user.id, req.body.price)
         .then((response) => {
           res.send(response);
         });
@@ -78,6 +77,19 @@ module.exports.addToCart = async (req, res) => {
       res.redirect("/error-500");
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //POST
 module.exports.removeFromCart = async (req, res) => {

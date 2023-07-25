@@ -2,6 +2,7 @@ const orderHelper = require('../Helper/orderHelper')
 const couponHelper = require('../Helper/couponHelper')
 const Order = require('../Model/orderModel');
 const Category = require('../Model/categoryModel');
+const Cart = require('../Model/cartModel')
 const mongoose = require('mongoose')
 
 //POST
@@ -9,9 +10,10 @@ module.exports.checkout = async (req,res) =>{
     try {
         const userId = res.locals.user
         const data = req.body
+        await orderHelper.checktoutHelper(data,userId);
         await couponHelper.addCouponToUser(req.body.couponcode, userId);
         try{ 
-            await orderHelper.checktoutHelper(data,userId);
+           
             if (data.payment_method === "COD") {
                 res.json({ orderStatus: true });
             }
@@ -105,7 +107,10 @@ module.exports.verifyRazorpayPayment = async (req, res) =>{
                   }
                 }
               );
+            await Cart.deleteOne({ user_id:res.locals.user.id }).then(() => {
+                
             res.json({status:'Success'})
+        })
         }).catch(()=>{
             res.json({status:'Failed'})
         })
