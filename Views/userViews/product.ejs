@@ -57,51 +57,7 @@
 		}
 	</style>
 	
-	<script>
-		// Function to handle the zoom effect
-		function handleZoom(event) {
-			const imageContainer = event.currentTarget;
-			const image = imageContainer.querySelector('.zoom-image');
-			const zoomCircle = imageContainer.querySelector('.zoom-circle');
-	
-			// Get the position of the mouse pointer relative to the image container
-			const rect = imageContainer.getBoundingClientRect();
-			const offsetX = event.clientX - rect.left;
-			const offsetY = event.clientY - rect.top;
-	
-			// Calculate the position of the zoom circle and set its size
-			const circleSize = 100; // Adjust this value to change the size of the zoom circle
-			const circleX = offsetX - circleSize / 2;
-			const circleY = offsetY - circleSize / 2;
-	
-			// Apply the zoom effect by changing the scale of the image and zoom circle
-			image.style.transformOrigin = `${offsetX}px ${offsetY}px`;
-			image.style.transform = 'scale(2.2)';
-	
-			zoomCircle.style.width = circleSize + 'px';
-			zoomCircle.style.height = circleSize + 'px';
-			zoomCircle.style.left = circleX + 'px';
-			zoomCircle.style.top = circleY + 'px';
-			zoomCircle.style.transform = 'scale(2)'; // Adjust this value to change the zoom circle's zoom level
-		}
-	
-		// Function to reset the zoom effect
-		function resetZoom(event) {
-			const imageContainer = event.currentTarget;
-			const image = imageContainer.querySelector('.zoom-image');
-			const zoomCircle = imageContainer.querySelector('.zoom-circle');
-	
-			image.style.transform = 'scale(1)';
-			zoomCircle.style.transform = 'scale(1)';
-		}
-	
-		// Attach event listeners to the image container
-		const imageContainers = document.querySelectorAll('.zoom-image-container');
-		imageContainers.forEach(container => {
-			container.addEventListener('mousemove', handleZoom);
-			container.addEventListener('mouseleave', resetZoom);
-		});
-	</script>
+
 	
 	
 </head>
@@ -119,6 +75,7 @@
 			<div class="row s_product_inner">
 				<div class="col-lg-6">
 					<div class="s_Product_carousel">
+
 						<div class="single-prd-item">
 							<div class="zoom-image-container">
 								<img class="img-fluid zoom-image" src="/product-images/<%= product[0].image[0] %>" alt="">
@@ -129,14 +86,14 @@
 							<div class="zoom-image-container">
 								<img class="img-fluid zoom-image" src="/product-images/<%= product[0].image[1] %>" alt="">
 							</div>
-							
 						</div>
+
 						<div class="single-prd-item">
 							<div class="zoom-image-container">
 								<img class="img-fluid zoom-image" src="/product-images/<%= product[0].image[2] %>" alt="">
 							</div>
-							
 						</div>
+
 					</div>
 				</div>
 				<div class="col-lg-5 offset-lg-1">
@@ -326,6 +283,52 @@
 			})
 		}
 	</script>
+
+<script>
+	// Function to handle the zoom effect
+	function handleZoom(event) {
+		const imageContainer = event.currentTarget;
+		const image = imageContainer.querySelector('.zoom-image');
+		const zoomCircle = imageContainer.querySelector('.zoom-circle');
+
+		// Get the position of the mouse pointer relative to the image container
+		const rect = imageContainer.getBoundingClientRect();
+		const offsetX = event.clientX - rect.left;
+		const offsetY = event.clientY - rect.top;
+
+		// Calculate the position of the zoom circle and set its size
+		const circleSize = 100; // Adjust this value to change the size of the zoom circle
+		const circleX = offsetX - circleSize / 2;
+		const circleY = offsetY - circleSize / 2;
+
+		// Apply the zoom effect by changing the scale of the image and zoom circle
+		image.style.transformOrigin = `${offsetX}px ${offsetY}px`;
+		image.style.transform = 'scale(2.2)';
+
+		zoomCircle.style.width = circleSize + 'px';
+		zoomCircle.style.height = circleSize + 'px';
+		zoomCircle.style.left = circleX + 'px';
+		zoomCircle.style.top = circleY + 'px';
+		zoomCircle.style.transform = 'scale(2)'; // Adjust this value to change the zoom circle's zoom level
+	}
+
+	// Function to reset the zoom effect
+	function resetZoom(event) {
+		const imageContainer = event.currentTarget;
+		const image = imageContainer.querySelector('.zoom-image');
+		const zoomCircle = imageContainer.querySelector('.zoom-circle');
+
+		image.style.transform = 'scale(1)';
+		zoomCircle.style.transform = 'scale(1)';
+	}
+
+	// Attach event listeners to the image container
+	const imageContainers = document.querySelectorAll('.zoom-image-container');
+	imageContainers.forEach(container => {
+		container.addEventListener('mousemove', handleZoom);
+		container.addEventListener('mouseleave', resetZoom);
+	});
+</script>
 
 </body>
 
