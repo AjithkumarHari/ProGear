@@ -55,6 +55,7 @@
 			transform: scale(1);
 			transition: transform 0.3s ease;
 		}
+		
 	</style>
 	
 
@@ -101,8 +102,8 @@
 						<h3><%= product[0].name %></h3>
 						<h2><i class="fa fa-inr" aria-hidden="true"></i><%= product[0].price %></h2>
 						<ul class="list">
-							<li><a class="active" href="#"><span>Category</span> : <%= product[0].category[0].name %></a></li>
-							<li><a href="#"><span>Availibility</span> : In Stock</a></li>
+							<li><a class="active" href="# " style="font-weight: 400;font-size: 15px;"><span>Category</span> : <%= product[0].category[0].name %></a></li>
+							<li><a href="#" style="color: #6f7592; font-weight: bold; font-size: 20px;"><span >Availibility</span> : <%= product[0].stock%></a></li>
 						</ul>
 						<p>Designed with avid gamers in mind, this cutting-edge device offers a host of features and capabilities to take your gaming experience to new heights. Unleash your gaming prowess, conquer new challenges, and experience the thrill of gaming at its finest. Elevate your gaming experience with the ultimate gaming gadget that takes you beyond imagination.</p>
 						<div class="card_area d-flex align-items-center">
@@ -136,7 +137,7 @@
 				<div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
 					<p><%= product[0].description %></p>
 				</div>
-				{{!-- <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+				<!-- {{!-- <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 					<div class="table-responsive">
 						<table class="table">
 							<tbody>
@@ -207,7 +208,7 @@
 							</tbody>
 						</table>
 					</div>
-				</div> --}}
+				</div> --}} -->
 			</div>
 		</div>
 	</section>

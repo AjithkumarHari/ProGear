@@ -78,19 +78,6 @@ module.exports.addToCart = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 //POST
 module.exports.removeFromCart = async (req, res) => {
   try {
