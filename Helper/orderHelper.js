@@ -134,30 +134,6 @@ checktoutHelper =async (data, user)=>{
 }
 
 
-const changePaymentStatus =  (userId, orderId,razorpayId) => {
-  try {
-    return new Promise(async (resolve, reject) => {
-      await Order.updateOne(
-        { "orders._id": new ObjectId(orderId) },
-        {
-          $set: {
-            "orders.$.orderStatus": "Placed",
-            "orders.$.paymentStatus": "Success",
-            "orders.$.razorpayId": razorpayId
-          },
-        }
-      ),
-        await updateStock(userId)
-        Cart.deleteMany({ user: userId }).then(() => {
-          resolve();
-        });
-    });
-  } catch (error) { 
-    console.log(error.message);
-  }
-}
-
-
 const updateStock = async(userId)=>{
   try{
     const products = await Cart.findOne({user_id:userId})
@@ -196,11 +172,9 @@ const checkStock = async(userId)=>{
     console.log('Error from checkStock',error);
   }
 }
-  
 
 const getOrder = async (userId) => {
     try {
-  
         const order = await Order.aggregate([
           {
             $match:{ user: new mongoose.Types.ObjectId(userId)}
@@ -208,19 +182,13 @@ const getOrder = async (userId) => {
           { $unwind: "$orders" },
           { $sort: { "orders.createdAt": -1 } },
         ])
-
         return order
-        
     }catch (error) {
         console.log(error);
         throw error;
     }
-
 };
 
-
-
- 
 const getOrderDetails  = (orderId, userId) => {
     try {
       // console.log("userId",userId);

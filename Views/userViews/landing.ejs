@@ -128,12 +128,12 @@
 
 	<!-- start banner Area -->
 	  <section class="banner-area">
-		<div class="container">
-		  <div id="bannerSlider" class="carousel slide row fullscreen align-items-center justify-content-start" data-ride="carousel">
+		<div class="container ">
+		  <div id="bannerSlider" class="carousel slide row fullscreen align-items-center justify-content-start " data-ride="carousel">
 			<div class="carousel-inner">
 			  <% banners.forEach((banner, index) => { %>
 			  <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-				<div class="row align-items-center d-flex">
+				<div class="row align-items-center d-flex  ml-3">
 				  <div class="col-lg-5 col-md-6">
 					<div class="banner-content">
 					  <h1><%= banner.title %></h1>
