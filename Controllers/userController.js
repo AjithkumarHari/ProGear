@@ -311,7 +311,6 @@ module.exports.verifySignupOtp = async (req, res) => {
   try {
     const userOtp = req.body.otp;
     const newUser = req.session.userData;
-
     sessionOtp = req.session.otp;
     if (!sessionOtp || !newUser) {
       res.send("Invalid Session");
@@ -367,10 +366,8 @@ module.exports.resendSignupOtp = async (req, res) => {
       specialChars: false,
     });
     console.log(OTP);
-  
     req.session.otp = OTP;
     res.render("signupOtp");
-
   }catch(error){
     console.log("Error in resendSignupOtp" ,error);
     res.redirect("/error-500");
@@ -410,7 +407,6 @@ module.exports.editProfilePage = async (req, res) => {
   try {
     const user = res.locals.user;
     const userdata = await userData.findOne({ _id: user.id });
-    console.log(userdata);
     res.render("editProfile", { userdata: userdata });
   } catch (error) {
     console.log("Error in editProfilePage" ,error);
@@ -442,7 +438,7 @@ module.exports.updateProfile = async (req, res) => {
     );
     res.redirect("/profile");
   } catch (error) {
-    console.log(error);
+    console.log("Error in updateProfile" ,error);
     res.redirect("/error-500");
   }
 };

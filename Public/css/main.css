@@ -18,7 +18,7 @@
   padding: 100px 0; }
   @media (max-width: 991px) {
     .section_gap {
-      padding: 50px 23px;
+      padding: 50px 25px;
       } }
 
 .section_gap_top_75 {
@@ -4582,8 +4582,9 @@ label {
       width: 50px;
       text-align: right;
       display: inline-block;
-      margin-left: 10px;
-      color: #222222; }
+      margin-left: 0px;
+      color: #222222;
+      }
   .order_box .list li:nth-child(4) a .middle {
     margin-left: 35px; }
   .order_box .list_2 li a {
@@ -6125,7 +6126,7 @@ article .posts .tile .inner:hover h4 {
   }
 
   article .profile-info {
-    padding: 0 30px;
+    padding: 0 0px;
   }
   article .profile-info p{
     color: #fff;

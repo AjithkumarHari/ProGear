@@ -151,11 +151,17 @@
                     <div class="blog_right_sidebar">
                         <aside class="single_sidebar_widget author_widget">
 
-                            <article>
-                                <div class="row">
+                            <article >
+                                <div class="row ml-2">
                                     <div class="col-lg-5 col-md-5 col-12 mx-auto">
                                         <img class="author_img rounded-circle" src="img/userprofile.png" alt="">
+                                        <div class="profile-info">
+                                            <h1><%= user.fname %> <%= user.lname %></h1>
+                                            <p><%= user.email %></p>
+                                            <p>+91 <%= user.number %></p>
+                                        </div>
                                     </div>
+                                    
 
                                     <div class="col-lg-6 col-md-6 col-12 mx-auto">
                                         <div class="inside">
