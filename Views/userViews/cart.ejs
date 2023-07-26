@@ -79,9 +79,9 @@
                                     <div class="product_count">
                                         <input type="text" name="qty" id="quantityInput_<%= item.carted._id %>" maxlength="12" value="<%= item.quantity %>" title="Quantity:"
                                             class="input-text qty">
-                                        <button onclick="changeQuantity('<%= item.carted._id %>','<%= item.user %>','<%= item.quantity %>',1)"
+                                        <button onclick="changeQuantity('<%= item.carted._id %>','<%= item.user %>','<%= item.quantity %>',1,'<%= item.total %>')"
                                             class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                                        <button onclick="changeQuantity('<%= item.carted._id %>','<%= item.user %>','<%= item.quantity %>',-1)"
+                                        <button onclick="changeQuantity('<%= item.carted._id %>','<%= item.user %>','<%= item.quantity %>',-1,'<%= item.total %>')"
                                             class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
                                     </div>
                                 </td>
@@ -169,9 +169,9 @@
 
   
 <script>
-    function changeQuantity(proId, userId, quantity,count) {
+    function changeQuantity(proId, userId, quantity,count,subtotal ){
 
-        console.log(proId, userId, quantity,count);
+        console.log(proId, userId, quantity,count,subtotal);
 
         const qty = document.getElementById(`quantityInput_${proId}`).value
         console.log('qty',qty);
@@ -195,7 +195,8 @@
                             productId: proId,
                             userId: userId,
                             count: count,
-                            quantity: quantity
+                            quantity: quantity,
+                            subtotal:subtotal
                         },
                         success: (response) => {
                             console.log(response.status,'ll');
@@ -216,12 +217,22 @@
                     userId: userId,
                     quantity: quantity,
                     count: count,
+                    subtotal:subtotal
                 },
                 
                 success: (response) => {
                     if(response.deleteProduct){
                         location.reload(); // Reload the page
-                    }else{
+                    }else if(response.outOfStock){
+                        Swal.fire({
+                            title: 'Out of Stock',
+                            icon: 'error',
+                            timer: 3000,
+                            showConfirmButton: false ,
+                            iconColor: '#ff0000'
+                        })
+                    }
+                    else{
                             console.log(response,'ajax response')
                         const quantityInput = document.getElementById(`quantityInput_${proId}`);
                         quantityInput.value = response.quantity;

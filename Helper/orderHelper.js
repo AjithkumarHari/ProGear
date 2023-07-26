@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const Order = require('../Model/orderModel')
-const tempOrder = require('../Model/tempOrderModel')
 const Cart = require('../Model/cartModel')
 const Address = require('../Model/adderssModel')
 const User = require('../Model/userModel')
+const Product = require('../Model/productModel')
 
 const Razorpay = require('razorpay')
 
@@ -24,7 +24,7 @@ checktoutHelper =async (data, user)=>{
               {
                 $unwind: "$product",
               },
-              {
+              { 
                 $project: {
                   item: "$product.product_id",
                   quantity: "$product.quantity",
@@ -70,9 +70,7 @@ checktoutHelper =async (data, user)=>{
             // console.log("addressData",addressData);
             let status,orderStatus
             if(data.payment_method == 'COD'){
-              await Cart.deleteOne({ user_id:user._id }).then(() => {
                     (status = "Success"), (orderStatus = "Placed");
-                  });
             }
             else if (data.payment_method === "wallet") {
                 const userData = await User.findById({ _id:user._id });
@@ -83,8 +81,8 @@ checktoutHelper =async (data, user)=>{
                 } else {
                   userData.wallet -= data.total;
       
-                  await userData.save();
-                  await Cart.deleteOne({ user_id:user._id }).then(() => {
+                  await userData.save()
+                  .then(() => {
                   (status = "Success"), (orderStatus = "Placed");
                 });
                 }
@@ -135,6 +133,70 @@ checktoutHelper =async (data, user)=>{
     }
 }
 
+
+const changePaymentStatus =  (userId, orderId,razorpayId) => {
+  try {
+    return new Promise(async (resolve, reject) => {
+      await Order.updateOne(
+        { "orders._id": new ObjectId(orderId) },
+        {
+          $set: {
+            "orders.$.orderStatus": "Placed",
+            "orders.$.paymentStatus": "Success",
+            "orders.$.razorpayId": razorpayId
+          },
+        }
+      ),
+        await updateStock(userId)
+        Cart.deleteMany({ user: userId }).then(() => {
+          resolve();
+        });
+    });
+  } catch (error) { 
+    console.log(error.message);
+  }
+}
+
+
+const updateStock = async(userId)=>{
+  try{
+    const products = await Cart.findOne({user_id:userId})
+    const cartProducts = products.product
+    for(const cartProduct of cartProducts ){
+      const productId = cartProduct.product_id;
+      const quantity = cartProduct.quantity;
+      const product = await Product.findOne({_id:productId})
+      if(product.stock < cartProduct.quantity ){
+        return false
+      }
+      await Product.updateOne({_id:productId},
+        {$inc:{stock:-quantity}}
+        )
+    }
+    return true
+  }catch(error){
+    console.log('Error from updateStock',error);
+  }
+}
+  
+  
+const checkStock = async(userId)=>{
+  try{
+    const products = await Cart.findOne({user_id:userId})
+  const cartProducts = products.product
+  for(const cartProduct of cartProducts ){
+    const productId = cartProduct.product_id;
+    const product = await Product.findOne({_id:productId})
+    if(product.stock < cartProduct.quantity ){
+      return false
+    }
+  }
+  return true
+  }catch(error){
+    console.log('Error from checkStock',error);
+  }
+}
+  
 
 const getOrder = async (userId) => {
     try {
@@ -343,6 +405,8 @@ module.exports={
     generateRazorpay,
     findLastTotal,
     verifyRazorpayPaymentHelper,
+    updateStock,
+    checkStock
     // returnOrderHelper
     
 }

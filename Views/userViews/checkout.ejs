@@ -152,6 +152,9 @@
             padding: 12px 20px;
             width: 90%;
         }
+        .swal2-html-container {
+    color: #ffffff;;
+  }   
     </style>
 </head>
 
@@ -546,7 +549,19 @@
                     }
                 });
 
-            } else if (response.order.status==="created") {
+            } else if (response.status== "OrderFailed") {
+                    Swal.fire({
+                    title: 'Order Failed!',
+                    text: 'Your Product is Out of Stock .Please Check after some time',
+                    icon: 'error',
+                    timer: 5000,
+                    showConfirmButton: false ,
+				    iconColor: '#ff0000'
+                    }).then(() => {
+                    location.href = '/'
+                    })
+                }
+            else if (response.order.status==="created") {
                 console.log("razorpayPayment1");
                 console.log("order response",response.order);
                         

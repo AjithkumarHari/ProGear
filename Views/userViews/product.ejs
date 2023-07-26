@@ -207,10 +207,11 @@
 				data:{
 					proId:proId,
 					price:price,
+
 				},
 		
 				success: (response) => {
-				if (response.status) {
+				if (response.status==true) {
 					console.log('res',response.status);
 					Swal.fire({
 						title: 'Added To Cart',
@@ -229,7 +230,15 @@
 							Swal.close();
 						}
 					});
-				}
+				}else if(response.status=='outOfStock'){
+				Swal.fire({
+				  title: 'Out of Stock',
+				  icon: 'error',
+				  timer: 3000,
+				  showConfirmButton: false ,
+				  iconColor: '#ff0000'
+				})
+			  }
 				},
 				error: () => {
 					location.href = '/login';

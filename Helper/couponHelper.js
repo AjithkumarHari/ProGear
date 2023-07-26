@@ -54,20 +54,17 @@ const addCoupon = (data) => {
               },
             } 
           )
-
           .then((couponAdded) => {
             resolve(couponAdded);
 
           });
-        console.log(updated);
-
+        // console.log(updated);
       });
-
-
     } catch (error) {
       console.log(error.message);
     }
   }
+  
   const verifyCoupon =  (userId, couponCode) => {
     try {
       return new Promise((resolve, reject) => {

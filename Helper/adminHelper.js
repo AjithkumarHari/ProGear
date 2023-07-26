@@ -152,7 +152,7 @@ const returnOrderHelper = (orderId,userId, status) => {
           const order = orders.orders.find((order) => order._id == orderId);
           if(order.paymentMethod=='COD'){
   
-          if (status == 'Cancelled' || status == 'Cancel Declined') {
+          if (status == 'Cancel Declined') {
 
             Order.updateOne(
               { "orders._id": new mongoose.Types.ObjectId(orderId) },
@@ -165,6 +165,21 @@ const returnOrderHelper = (orderId,userId, status) => {
             ).then((response) => {
               resolve(response);
             });
+          }else if(status == 'Cancelled'){
+            Order.updateOne(
+              { "orders._id": new mongoose.Types.ObjectId(orderId) },
+              {
+                $set: {
+                  "orders.$.orderStatus": status,
+                  "orders.$.paymentStatus": "No Refund"
+                }
+              }
+            ).then(async(response) => {
+              await addToStock(orderId,userId)
+              resolve(response);
+            });
+            
+  
           }
         }else if(order.paymentMethod=='wallet' || order.paymentMethod == 'RazorPay'){
 
@@ -181,6 +196,7 @@ const returnOrderHelper = (orderId,userId, status) => {
               const user = await User.findOne({ _id: userId});
               user.wallet += parseInt(order.totalPrice);
               await user.save();
+              await addToStock(orderId,userId)
               resolve(response);
             });
 
@@ -205,6 +221,24 @@ const returnOrderHelper = (orderId,userId, status) => {
     }
   };
 
+
+const addToStock = async(orderId,userId)=>{
+  
+  Order.findOne({ "orders._id": new mongoose.Types.ObjectId(orderId) }).then(async(orders) => {
+    const order = orders.orders.find((order) => order._id == orderId);
+    const cartProducts = order.productDetails
+    for(const cartProduct of cartProducts ){
+      const productId = cartProduct.productId;
+      const quantity = cartProduct.quantity;
+      const product = await Product.findOne({_id:productId})
+      await Product.updateOne(
+        {_id:productId},
+        {$inc:{stock:quantity}}
+      )
+      console.log("product",product);
+    }
+  })
+}
 
 const getSalesReport = () => {
   try {

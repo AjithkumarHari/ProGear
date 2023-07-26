@@ -10,26 +10,39 @@ module.exports.checkout = async (req,res) =>{
     try {
         const userId = res.locals.user
         const data = req.body
-        await orderHelper.checktoutHelper(data,userId);
-        await couponHelper.addCouponToUser(req.body.couponcode, userId);
+        await couponHelper.addCouponToUser(req.body.couponcode,userId);
         try{ 
-           
-            if (data.payment_method === "COD") {
-                res.json({ orderStatus: true });
-            }
-            else if (data.payment_method === "wallet") {
-                res.json({ orderStatus: true, message: "order placed successfully" });
-            }
-            else{
-                if(data.payment_method === "RazorPay"){
-                    const result = await orderHelper.getOrderIdHelper(userId.id)
-                    const total= await orderHelper.findLastTotal(userId._id)
-                    const order=await orderHelper.generateRazorpay(result.toString(),total)
-                    res.json({ order:order});
+            const checkStock = await orderHelper.checkStock(userId.id)
+            if(checkStock){
+                console.log('if checkStock ');
+                if (data.payment_method === "COD") {
+                    const updatedStock = await orderHelper.updateStock(userId.id)
+                    console.log('updatedStock',updatedStock);
+                    await orderHelper.checktoutHelper(data,userId);
+                    res.json({ orderStatus: true })
+                    await Cart.deleteOne({ user_id:userId._id });
                 }
+                else if (data.payment_method === "wallet") {
+                    const updatedStock = await orderHelper.updateStock(userId.id)
+                    console.log('updatedStock',updatedStock);
+                    await orderHelper.checktoutHelper(data,userId);
+                    res.json({ orderStatus: true, message: "order placed successfully" });
+                    await Cart.deleteOne({ user_id:userId._id })
+                }
+                else{
+                    if(data.payment_method === "RazorPay"){
+                        const result = await orderHelper.getOrderIdHelper(userId.id)
+                        const total= await orderHelper.findLastTotal(userId._id)
+                        const order=await orderHelper.generateRazorpay(result.toString(),total)
+                        res.json({ order:order});
+                    }
+                }
+            }else{
+                await Cart.deleteOne({ user_id: userId.id  })
+                res.json({ status: 'OrderFailed' });
             }
         }catch (error) {
-            console.log("got here ----");
+            console.log("Error from inner try of checkout");
             console.log({ error: error.message }, "22");
             res.json({ status: false, error: error.message });
         }
@@ -38,6 +51,7 @@ module.exports.checkout = async (req,res) =>{
         res.redirect("/error-500");
     }
 }
+
 
 //GET
 module.exports.orderList = async (req,res) =>{
