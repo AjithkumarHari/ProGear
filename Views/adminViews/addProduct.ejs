@@ -47,6 +47,12 @@
               </div>
 
               <div class="form-group">
+                <label for="exampleInputEmail3">Quantity</label>
+                <input type="number" class="form-control" id="stock" placeholder="Quantity" name="stock" onkeyup="stockValidation()" >
+                <span id="stock-error" class="validation-label"></span>
+              </div>
+
+              <div class="form-group">
                 <label for="productImage">Product Main Image:</label>
                 <input type="file" class="form-control" name="image1" id="image" required >
               </div>
@@ -87,10 +93,12 @@
 <script>
   const regex = /^(?!\s*$).+/;
   const priceRegex = /^\d+(\.\d{1,2})?$/;
+  const stockRegex = /^[1-9]\d*$/;
 
   const nameError = document.getElementById("name-error");
   const brandError = document.getElementById("brand-error");
   const priceError = document.getElementById("price-error");
+  const stockError = document.getElementById("stock-error");
   const descriptionError = document.getElementById("description-error");
 
   const myform = document.getElementById("myform");
@@ -155,6 +163,32 @@
     
     priceError.innerHTML = "";
     priceError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+  function stockValidation() {
+    const name = document.getElementById("stock").value;
+    const nameInput = document.getElementById("stock");
+    if (name.length == 0) {
+      stockError.innerHTML = "Must not be Empty";
+      stockError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }if (name.length>4) {
+      stockError.innerHTML = "Must be less than 10,000";
+      stockError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(stockRegex)) {
+      stockError.innerHTML = "Must be a Valid Number";
+      stockError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    
+    stockError.innerHTML = "";
+    stockError.style.color = "green";
     nameInput.style.border = "solid 2px green";
     return true;
   }

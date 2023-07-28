@@ -36,7 +36,7 @@ module.exports.addProduct = async (req ,res) => {
 module.exports.newProduct = async (req, res) => {
 try{
 
-    const { name, description, category, price , brand} = req.body;
+    const { name, description, category, price ,stock , brand} = req.body;
     const categories = await categoryData.find({})
         const filesArray = Object.values(req.files).flat();
         const image = filesArray.map((file) => file.filename);
@@ -47,16 +47,14 @@ try{
           brand,
           category,
           price,
+          stock
         });
         newProduct
           .save()
           .then(() => {
             res.redirect('/admin/product');
           })
-        
 }
-
-   
       catch(err) {
         console.error("Error adding product:", err);
         res.status(500).send("Error adding product to the database");

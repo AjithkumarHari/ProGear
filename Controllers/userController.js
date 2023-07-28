@@ -10,6 +10,7 @@ const Category = require("../Model/categoryModel");
 const Banner = require("../Model/bannerModel");
 
 const otpHelper = require("../Helper/otpHelper");
+const userHelpers = require("../Helper/userHelper")
 const mongoose = require("mongoose");
 
 //***************************************************************  HOME PAGE  *******************************************************//
@@ -186,12 +187,9 @@ module.exports.forgotPasswordOtp = async (req, res) => {
     if (!user) {
       res.render("forgotPasswordNum", { message: "User Not Found" });
     } else {
-      const OTP = otpHelper.generateOtp();
-      //uncomment the below code for sending messeage
-              // await otpHelper.sendOtp(user.number, OTP);
-      console.log("otp ",OTP);
-      req.session.otp = OTP;
+      await otpHelper.sendOtp(req.body.number)
       req.session.email = user.email;
+      req.session.number = req.body.number;
       res.render("forgotPasswordOtp");
     }
   }catch (error) {
@@ -203,9 +201,9 @@ module.exports.forgotPasswordOtp = async (req, res) => {
 //POST FORGOT PASSWORD [OTP]
 module.exports.fpOtpVerify = async (req, res) => {
   try {
-    const otp = req.session.otp;
     const reqOtp = req.body.otp;
-    if (otp === reqOtp) {
+    const otp = await otpHelper.verifyCode(req.session.number,reqOtp)
+    if (otp) {
       res.render("setNewPassword");
     } else {
       return console.log("Your OTP was Wrong");
@@ -215,7 +213,6 @@ module.exports.fpOtpVerify = async (req, res) => {
     res.redirect("/error-500");
   }
 };
-
 
 module.exports.setNewPasswordGet = async (req, res) => {
   try {
@@ -230,7 +227,6 @@ module.exports.setNewPasswordGet = async (req, res) => {
 module.exports.setNewPassword = async (req, res) => {
   try {
     const newpw = req.body.newpassword;
-
     if(req.session.email){
       const email = req.session.email;
       console.log('email',email);
@@ -238,9 +234,7 @@ module.exports.setNewPassword = async (req, res) => {
         { email: email },
         { $set: { password: newpw } }
       );
-
       res.redirect("/login");
-
     }else{
       const email = res.locals.user.email;
       console.log('email',email);
@@ -248,14 +242,11 @@ module.exports.setNewPassword = async (req, res) => {
         { email: email },
         { $set: { password: newpw } }
       );
-
       res.redirect("/profile");
-
     }
   } catch (error) {
     console.log("Error in setNewPassword" , error);
     res.redirect("/error-500"); 
-
   }
 };
 
@@ -283,11 +274,8 @@ module.exports.signupAction = async (req, res) => {
     }
      else {
       req.session.userData = data;
-      const OTP = otpHelper.generateOtp();
-      req.session.otp = OTP;
       req.session.number = req.body.number;
-      console.log("session otp", req.session.otp);
-      console.log("session number", req.session.number);
+      await otpHelper.sendOtp(number);
       res.render("signupOtp", { countdown: 60 });
     }
   } catch (error) {
@@ -311,10 +299,11 @@ module.exports.verifySignupOtp = async (req, res) => {
   try {
     const userOtp = req.body.otp;
     const newUser = req.session.userData;
-    sessionOtp = req.session.otp;
-    if (!sessionOtp || !newUser) {
+    if (!newUser) {
       res.send("Invalid Session");
-    } else if (sessionOtp !== userOtp) {
+    } 
+    const otp = await otpHelper.verifyCode(req.session.number,userOtp)
+     if (!otp) {
       res.send("Invalid OTP");
     } else {
       const user = new userData({
@@ -721,3 +710,62 @@ module.exports.error_403 = async (req, res) => {
     console.log("Error from error_403", error);
   }
 };
+
+//***************************************************************  WALLET PAGES  *******************************************************//
+
+module.exports.wallet = async (req, res) => {
+  try {
+    const user = res.locals.user;
+    const token = res.locals.user;
+    const category = await Category.find({ is_listed: true });
+    res.render("wallet", { user, category, token });
+  } catch (error) {
+    console.log("Error in wallet" , error);
+    res.redirect("/error-500");
+
+  }
+};
+
+//POST
+module.exports.walletRecharge= async(req,res)=>{
+  try {
+      const userId=res.locals.user._id
+      const total=req.body.total
+      console.log(total,'totalvvvvvvvvvvvvv');
+    
+      const razorpayResponse = await userHelpers.generateRazorpayForWallet(userId,total);
+      const user = await userData.findById({ _id: userId }).lean()
+      console.log(razorpayResponse,'razorpayResponse');
+      console.log(process.env.RAZORPAY_KEY_ID,'razorpayKeyId');
+
+      res.json({
+          razorpayResponse:razorpayResponse,
+          userDetails: user,
+          razorpayKeyId: process.env.RAZORPAY_KEY_ID,
+      });
+
+  } catch (error) {
+      console.log(error.message);
+      res.redirect('/error-500')
+  }
+}
+
+//POST
+module.exports.verifyWalletRecharge = async(req,res)=>{
+  try {
+      userHelpers.verifyOnlinePayment(req.body).then(()=>{
+          const razorpayAmount=parseInt(req.body['serverOrderDetails[razorpayResponse][amount]'])
+          const amount=parseInt(razorpayAmount/100)
+          userHelpers. rechargeUpdateWallet(req.body['serverOrderDetails[razorpayResponse][receipt]'],amount).then(()=>{
+              res.json({ status: true });
+          })
+      })
+      .catch((err) => {
+          console.log(err);
+          res.json({ status: false });
+      });
+  } catch (error) {
+      console.log(error.message);
+      res.redirect('/user-error')
+  }
+}

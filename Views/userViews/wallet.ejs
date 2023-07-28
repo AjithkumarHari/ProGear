@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>ProGear</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/form-style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    <!-- Include the SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
+
+    <style>
+        .total .label {
+        color: #828393;
+        }
+
+        .content {
+        background: #181a1e;
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        display: grid;
+        }
+
+        .total {
+        align-self: start;
+        justify-self: center;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+
+        .total > div:not(:first-child):not(:last-child) {
+        margin: 0.5rem;
+        }
+
+        .total .label,
+        .card .label {
+        text-transform: uppercase;
+        font-weight: 100;
+        font-size: 0.8rem;
+        }
+
+        .total .value {
+        font-size: 1.8rem;
+        }
+
+        .total .balance {
+        background: #1f3a4a;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        color: #02ca8c;
+        }
+
+        .list {
+        background: #282a32;
+        display: grid;
+        grid-gap: 5px;
+        padding: 5px 0;
+        overflow-y:visible;
+        }
+
+        .list div[class^="item"] {
+        display: flex;
+        justify-content: space-between;
+        background: #181a1e;
+        padding: 10px 0;
+        }
+
+        .list div[class^="section"] {
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        }
+
+        .list .icon {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        }
+
+        .list .icon.up {
+        color: #00ff00c9;
+        transform: rotateZ(30deg);
+        }
+
+        .list .icon.down {
+        color: #ff0000d5;
+        transform: rotateZ(-150deg);
+        }
+
+        .list .description {
+            border: none;
+        color: #7d7d7d;
+        padding: 0;
+        }
+
+        .list .signal {
+        font-weight: bold;
+        }
+
+        .list .signal.positive {
+        color: #00ff00c9;
+        }
+
+        .list .signal.negative {
+        color: #ff0000d5;
+        }
+        .modal-content{
+            background-color: #282a32;
+        }
+        .form-group{
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Start Header Area -->
+    <%- include('../layouts/userHeader.ejs') %>
+    <!-- End Header Area -->
+
+    <section class="blog_area single-post-area section_gap">
+        <div class="container" style="padding-left: 0;">
+            <div class="row" style="justify-content: center;">
+                <div class="comments-area col-lg-9  " style="padding-bottom: 30px; padding-left: 0; padding-right: 0;">
+                    <div class="container" >
+                        <div class="content">
+                            <div class="total">
+                                <div class="label">Total balance</div>
+                                <div class="value"> ₹<%=user.wallet%></div>
+                                <a href="" id="walletRechargeBtn">
+                                    <div class="balance">Recharge Wallet</div>
+                                </a>
+                            </div>
+                            <div class="list">
+                                <% user.walletTransaction.forEach((transaction, index) => { %>
+                                    <div class="item<%= index + 1 %>">
+                                    <div class="section1">
+                                        <div class="icon <%= transaction.type === 'Debit' ? 'down' : 'up' %>">
+                                        <i class="fa <%= transaction.type === 'Debit' ? 'fa-arrow-right' : 'fa-arrow-left' %>"></i>
+                                        </div>
+                                        <div class="text">
+                                        <div class="title"><%= transaction.type === 'Debit' ? 'Debit' : 'Credit' %> Transaction</div>
+                                        <div class="description"><%= new Date(transaction.date).toLocaleString() %></div>
+                                        </div>
+                                    </div>
+                                    <div class="section2">
+                                        <div class="signal <%= transaction.type === 'Debit' ? 'negative' : 'positive' %>">
+                                        <%= transaction.type === 'Debit' ? '-' : '+' %>
+                                        </div>
+                                        <div class="value"> ₹<%= transaction.amount %></div>
+                                    </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!--================ wallet recharge modal=================-->
+
+
+    <div class="modal fade" id="rechargeModal" tabindex="-1" role="dialog" aria-labelledby="rechargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rechargeModalLabel">Recharge Wallet</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="rechargeModalForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="rechargeAmount" name="rechargeAmount" placeholder="Enter the recharge amount"
+                    required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning" style="color: #fff;"
+                    id="rechargeModalSubmit">Recharge</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <!--================ wallet recharge modal=================-->
+
+    <!-- start footer Area -->
+    <%- include('../layouts/userFooter.ejs') %>
+    <!-- End footer. Area -->
+
+    <script src="js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	 crossorigin="anonymous"></script>
+	<script src="js/vendor/bootstrap.min.js"></script>
+	<script src="js/jquery.ajaxchimp.min.js"></script>
+	<script src="js/jquery.nice-select.min.js"></script>
+	<script src="js/jquery.sticky.js"></script>
+    <script src="js/nouislider.min.js"></script>
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<!--gmaps Js-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<script src="js/gmaps.min.js"></script>
+	<script src="js/main.js"></script>
+
+
+        <!-- Script for using Razorpay Payment gateway functions -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Include the SweetAlert library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Attach event listener to the wallet recharge button
+            $('#walletRechargeBtn').click((e) => {
+                e.preventDefault(); // Prevent default form submission behavior
+                $('#rechargeModal').modal('show'); // Show the recharge modal
+            });
+        
+            // Handle modal submission
+            $('#rechargeModalForm').submit((e) => {
+                e.preventDefault(); // Prevent default form submission behavior
+        
+                // Get the recharge amount entered by the user
+                const rechargeAmount = $('#rechargeAmount').val();
+        
+                // Make an AJAX request to the server
+                $.ajax({
+                url: '/rechargeWallet',
+                method: 'post',
+                data: { total: rechargeAmount },
+                success: (response) => {
+                    console.log(response, "hi response")
+                    if (response) {
+                    razorpayPayment(response);
+                    $('#rechargeModal').modal('hide'); // Hide the recharge modal after initiating payment
+                    } else {
+                    alert('Error generating wallet recharge order.');
+                    }
+                },
+                error: (error) => {
+                    console.error('Error generating wallet recharge order:', error);
+                    alert('Error generating wallet recharge order.');
+                }
+                });
+            });
+        
+            function razorpayPayment(order) {
+                let razorpayKeyId = order.razorpayKeyId;
+                let razorpayResponse = order.razorpayResponse;
+                let userDetails = order.userDetails;
+                console.log(order, "hi order")
+                var options = {
+                "key": razorpayKeyId, // Enter the Key ID generated from the Dashboard
+                "amount": razorpayResponse.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "ProGear",
+                "description": "Test Transaction",
+        
+                "order_id": razorpayResponse.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "handler": function (response) {
+                    verifypayment(response, order);
+                },
+                "prefill": {
+                    "name": userDetails.name,
+                    "email": userDetails.email,
+                    "contact": userDetails.mobile
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+        
+                };
+        
+                console.log(options, 'options')
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            }
+        
+        
+            function verifypayment(razorpayServerPaymentResponse, serverOrderDetails) {
+                $.ajax({
+                url: '/verifyWallet',
+                data: {
+                    razorpayServerPaymentResponse,
+                    serverOrderDetails
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                    // Display SweetAlert success notification
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Wallet Recharged Successfully',
+                        text: 'Your wallet has been successfully recharged.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: "#ffbf00",
+                        customClass: {
+                        confirmButton: 'btn btn-warning', container: "swal-container",
+                        title: "swal-title",
+                        content: "swal-text",
+                        confirmButton: "swal-button"
+                        }
+                    }).then(() => {
+                        // Redirect to wallet-details page
+                        location.href = 'wallet';
+                    });
+                    } else {
+                    // Display SweetAlert error notification
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Payment Failed',
+                        text: 'Failed to recharge wallet. Please try again.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: "#ffbf00",
+                    customClass: {
+                        confirmButton: 'btn btn-warning', container: "swal-container",
+                        title: "swal-title",
+                        content: "swal-text",
+                        confirmButton: "swal-button"
+                        }
+                    }).then(()=>{
+                        // Redirect to wallet-details page
+                        location.href = 'wallet';
+                    })
+                    }
+                },
+                error: (error) => {
+                    console.error('Error verifying wallet recharge payment:', error);
+                    alert('Error verifying wallet recharge payment.');
+                }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

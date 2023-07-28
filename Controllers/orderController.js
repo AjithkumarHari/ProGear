@@ -14,17 +14,14 @@ module.exports.checkout = async (req,res) =>{
         try{ 
             const checkStock = await orderHelper.checkStock(userId.id)
             if(checkStock){
-                console.log('if checkStock ');
                 if (data.payment_method === "COD") {
                     const updatedStock = await orderHelper.updateStock(userId.id)
-                    console.log('updatedStock',updatedStock);
                     await orderHelper.checktoutHelper(data,userId);
                     res.json({ orderStatus: true })
                     await Cart.deleteOne({ user_id:userId._id });
                 }
                 else if (data.payment_method === "wallet") {
                     const updatedStock = await orderHelper.updateStock(userId.id)
-                    console.log('updatedStock',updatedStock);
                     await orderHelper.checktoutHelper(data,userId);
                     res.json({ orderStatus: true, message: "order placed successfully" });
                     await Cart.deleteOne({ user_id:userId._id })

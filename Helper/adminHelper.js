@@ -99,11 +99,20 @@ const returnOrderHelper = (orderId,userId, status) => {
                 const user = await User.findOne({ _id: userId});
                 user.wallet += parseInt(order.totalPrice);
                 await user.save();
+                const walletTransaction = {
+                  date:new Date(),
+                  type:"Credit",
+                  amount:order.totalPrice,
+                }
+                const walletupdated = await User.updateOne(
+                  { _id: user },
+                  {
+                    $push: { walletTransaction: walletTransaction },
+                  }
+                )
                 resolve(response);
               });
-    
             }
-
           }
           else if(order.paymentMethod == 'wallet' || order.paymentMethod == 'RazorPay'){
             if(status == 'Return Accepted'){
@@ -119,6 +128,17 @@ const returnOrderHelper = (orderId,userId, status) => {
                 const user = await User.findOne({ _id: userId});
                 user.wallet += parseInt(order.totalPrice);
                 await user.save();
+                const walletTransaction = {
+                  date:new Date(),
+                  type:"Credit",
+                  amount:order.totalPrice,
+                }
+                const walletupdated = await User.updateOne(
+                  { _id: user },
+                  {
+                    $push: { walletTransaction: walletTransaction },
+                  }
+                 )
                 resolve(response);
               });
     
@@ -197,6 +217,17 @@ const returnOrderHelper = (orderId,userId, status) => {
               user.wallet += parseInt(order.totalPrice);
               await user.save();
               await addToStock(orderId,userId)
+              const walletTransaction = {
+                date:new Date(),
+                type:"Credit",
+                amount:order.totalPrice,
+              }
+              const walletupdated = await User.updateOne(
+                { _id: user },
+                {
+                  $push: { walletTransaction: walletTransaction },
+                }
+               )
               resolve(response);
             });
 
@@ -235,7 +266,6 @@ const addToStock = async(orderId,userId)=>{
         {_id:productId},
         {$inc:{stock:quantity}}
       )
-      console.log("product",product);
     }
   })
 }
@@ -330,7 +360,8 @@ const updateProductHelper=async(texts, Image) => {
             description : texts.des,
             brand : texts.brand, 
             image : Image , 
-            price : texts.price
+            price : texts.price,
+            stock : texts.stock
           },
         }
       );

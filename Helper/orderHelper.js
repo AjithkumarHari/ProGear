@@ -82,6 +82,18 @@ checktoutHelper =async (data, user)=>{
                   userData.wallet -= data.total;
       
                   await userData.save()
+                  const walletTransaction = {
+                    date:new Date(),
+                    type:"Debit",
+                    amount:data.total,
+
+                  }
+                  const walletupdated = await User.updateOne(
+                    { _id: user },
+                    {
+                      $push: { walletTransaction: walletTransaction },
+                    }
+                  )
                   .then(() => {
                   (status = "Success"), (orderStatus = "Placed");
                 });
@@ -191,10 +203,7 @@ const getOrder = async (userId) => {
 
 const getOrderDetails  = (orderId, userId) => {
     try {
-      // console.log("userId",userId);
       return new Promise(async(resolve, reject) => {
-
-          // const result = 
           await Order.aggregate([
             {
               $unwind: "$orders"

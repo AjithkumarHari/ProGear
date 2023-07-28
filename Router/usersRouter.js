@@ -111,6 +111,13 @@ router.get('/wishlist',validate.authenticate,validate.checkBlocked,wishlistContr
 router.post('/addToWishlist',config.productConfig,wishlistController.addWishList)
 
 router.delete('/removefromwishlist',wishlistController.removeProductWishlist)
+// ----------------------------------------------------------------ORDER------------------------------------------------------------------------------
+
+router.get('/wallet',userController.wallet)
+
+router.post('/rechargeWallet',userController.walletRecharge)
+
+router.post('/verifyWallet',userController.verifyWalletRecharge)
 // ----------------------------------------------------------------ERROR------------------------------------------------------------------------------
 
 router.get('/error-500',userController.error_500)
