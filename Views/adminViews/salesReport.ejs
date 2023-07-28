@@ -79,8 +79,6 @@
                                     <tr>
                                         <th scope="col">OrderId</th>
                                         <th scope="col">User Name</th>
-                                        <!-- <th scope="col">Item Name</th>
-                                        <th scope="col">Quantity</th> -->
                                         <th scope="col">Price</th>
                                         <th scope="col">Payment Mode</th>
                                         <th scope="col">Delivered Date</th>
@@ -91,8 +89,6 @@
                                     <tr>
                                       <td><%= order._id %></td>
                                       <td><%= order.shippingAddress.item.name %> <%= order.shippingAddress.item.lname %></td>
-                                      <!-- <td><%= order.productDetails[0].productName %></td>
-                                      <td><%= order.productDetails[0].quantity %></td> -->
                                       <td>₹<%= order.totalPrice %></td>
                                       <td><%= order.paymentMethod %></td>
                                       <td><%= getDate(order.createdAt) %></td>
