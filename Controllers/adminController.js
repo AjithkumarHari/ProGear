@@ -342,6 +342,54 @@ module.exports.loadDashboard = async(req,res)=>{
       {$limit:10}
     ]) 
 
+    const categorySales = await orderData.aggregate([
+      { $unwind: "$orders" },
+      { $unwind: "$orders.productDetails" },
+      {
+        $match: {
+          "orders.orderStatus": "Delivered",
+        },
+      },
+      {
+        $project: {
+          CategoryId: "$orders.productDetails.category",
+          totalPrice: {
+            $multiply: [
+              { $toDouble: "$orders.productDetails.productPrice" },
+              { $toDouble: "$orders.productDetails.quantity" },
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$CategoryId",
+          PriceSum: { $sum: "$totalPrice" },
+        },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "_id",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      {
+        $unwind: "$categoryDetails",
+      },
+      {
+        $project: {
+          categoryName: "$categoryDetails.name",
+          PriceSum: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    const walletPay = await adminHelper.getWalletCount()
+    const codPay = await adminHelper.getCodCount()
+
       res.render('adminDashboard'
       ,{
         orders,
@@ -350,7 +398,10 @@ module.exports.loadDashboard = async(req,res)=>{
         onlinePay,
         salesData,
         order:latestorders,
-        salesCount
+        salesCount,
+        categorySales,
+        walletPay,
+        codPay
       }
       )
   } catch (error) {

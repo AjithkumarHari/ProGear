@@ -15835,7 +15835,8 @@ code {
   justify-content: stretch; }
   .stretch-card > .card {
     width: 100%;
-    min-width: 100%; }
+    min-width: 100%;
+    }
 
 @media (min-width: 576px) {
   .border-right-sm {
@@ -18965,13 +18966,13 @@ body.avgrund-active {
   width: 100%;
   height: 100%;
   min-height: 300px;
-  max-height: 100%; }
+  max-height: 300px; }
 
 .flot-chart {
   width: 100%;
   position: relative;
   max-width: none;
-  height: 400px; }
+  height: 300px; }
   .flot-chart canvas {
     position: absolute;
     top: 0;

@@ -187,13 +187,18 @@ const checkStock = async(userId)=>{
 
 const getOrder = async (userId) => {
     try {
-        const order = await Order.aggregate([
-          {
-            $match:{ user: new mongoose.Types.ObjectId(userId)}
-          },
-          { $unwind: "$orders" },
-          { $sort: { "orders.createdAt": -1 } },
-        ])
+      const order = await Order.aggregate([
+        {
+          $match: {
+            user: new mongoose.Types.ObjectId(userId),
+          }
+        },
+        { $unwind: "$orders" },
+        { $sort: { "orders.createdAt": -1 } },
+        {
+          $match: { "orders.paymentStatus": { $ne: "Failed" } }
+        }
+      ]);
         return order
     }catch (error) {
         console.log(error);

@@ -369,6 +369,63 @@ const updateProductHelper=async(texts, Image) => {
     });
 }
 
+
+
+const getWalletCount =  () => {
+  return new Promise(async (resolve, reject) => {
+    const response = await Order.aggregate([
+      {
+        $unwind: "$orders",
+      },
+      {
+        $match: {
+          "orders.paymentMethod": "wallet",
+          "orders.orderStatus": "Delivered" 
+
+        },
+      },
+      {
+        $group:{
+          _id: null,
+        totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+        count: { $sum: 1 }
+
+        }
+
+      }
+
+    ]);
+    resolve(response);
+  });
+}
+
+const getCodCount =  () => {
+  return new Promise(async (resolve, reject) => {
+    const response = await Order.aggregate([
+      {
+        $unwind: "$orders",
+      },
+      {
+        $match: {
+          "orders.paymentMethod": "COD",
+          "orders.orderStatus": "Delivered" 
+
+        },
+      },
+      {
+        $group:{
+          _id: null,
+        totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+        count: { $sum: 1 }
+
+        }
+
+      }
+
+    ]);
+    resolve(response);
+  });
+}
 module.exports =  {
 
     changeOrderStatus,
@@ -378,6 +435,8 @@ module.exports =  {
     getSalesReport,
     postReport,
     getOnlineCount,
-    updateProductHelper
+    updateProductHelper,
+    getWalletCount,
+    getCodCount
 
 }

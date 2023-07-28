@@ -122,19 +122,44 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Sale Statistics</h4>
-                            <canvas id="salesChart" style="height:250px"></canvas>
+                            <canvas id="salesChart"></canvas>
                         </div>
+                        
                     </div>
+                   
+
                 </div>
                 <div class="col-lg-6 grid-margin stretch-card">
-                    <div class="card">
-                      <div class="card-body">
-                        <h4 class="card-title">Orders Based on date</h4>
-                        <canvas id="salesCount" style="height:230px"></canvas>
-                      </div>
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Orders Based on date</h4>
+                      <canvas id="salesCount"></canvas>
                     </div>
                   </div>
+                </div>
+                  
             </div>
+            <div class="row " >
+              <div class="col-lg-6 grid-margin " style="height: 300px;">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Category wise Sales</h4>
+                    <canvas id="categorySale"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Payment wise Sales</h4>
+                    <canvas id="doughnutChart" style="height:250px"></canvas>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+           
 
 
             <div class="row ">
@@ -288,6 +313,109 @@
   });
       
   </script>
+
+  
+<script>
+
+const categorySales = JSON.parse('<%- JSON.stringify(categorySales) %>');
+
+
+  // Extract data for the pie chart
+  var pieData = categorySales.map(item => item.PriceSum);
+  var pieLabels = categorySales.map(item => item.categoryName);
+
+  var doughnutPieData = {
+    datasets: [{
+      data: pieData,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)'
+      ],
+    }],
+
+    // Set the labels for the pie chart
+    labels: pieLabels
+  };
+
+  var doughnutPieOptions = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+
+  if ($("#categorySale").length) {
+    var pieChartCanvas = $("#categorySale").get(0).getContext("2d");
+    var categorySale = new Chart(pieChartCanvas, {
+      type: 'pie',
+      data: doughnutPieData,
+      options: doughnutPieOptions
+    });
+  }
+</script>
+
+
+
+
+<script>
+  var onlinePay = [{ _id: null, totalPriceSum: 120349, count: 8 }];
+  var walletPay = [{ _id: null, totalPriceSum: 14998, count: 1 }];
+  var codPay = [{ _id: null, totalPriceSum: 271955, count: 17 }];
+
+  // Extract data for the doughnut chart
+  var doughnutData = [
+    onlinePay[0].totalPriceSum,
+    walletPay[0].totalPriceSum,
+    codPay[0].totalPriceSum
+  ];
+
+  var doughnutLabels = ['Online Payment', 'Wallet Payment', 'Cash on Delivery'];
+
+  var doughnutPieData = {
+    datasets: [{
+      data: doughnutData,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+      ],
+    }],
+    labels: doughnutLabels
+  };
+
+  var doughnutPieOptions = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+
+  if ($("#doughnutChart").length) {
+    var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
+    var doughnutChart = new Chart(doughnutChartCanvas, {
+      type: 'doughnut',
+      data: doughnutPieData,
+      options: doughnutPieOptions
+    });
+  }
+</script>
 
   <script>
     $(document).ready(function() {

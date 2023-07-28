@@ -116,11 +116,11 @@ router.delete('/removefromwishlist',wishlistController.removeProductWishlist)
 router.get('/wallet',userController.wallet)
 
 router.post('/rechargeWallet',userController.walletRecharge)
-
+  
 router.post('/verifyWallet',userController.verifyWalletRecharge)
 // ----------------------------------------------------------------ERROR------------------------------------------------------------------------------
 
-router.get('/error-500',userController.error_500)
+router.get('/error-500',userController.error_500) 
 
 router.get('/error-404',userController.error_404)
 
