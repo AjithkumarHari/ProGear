@@ -280,7 +280,7 @@ const getSalesReport = () => {
         {
           $match: {
             "orders.orderStatus": "Delivered",
-          },
+          }, 
         },
       ])
       .then((response) => {
@@ -301,7 +301,7 @@ const postReport = (date) => {
         {
           $unwind: "$orders",
         },
-        {
+        { 
           $match: {
             $and: [
               { "orders.orderStatus": "Delivered" },

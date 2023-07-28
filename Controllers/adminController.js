@@ -227,8 +227,6 @@ module.exports.getSalesReport=async (req, res) => {
     details.push(orders.orders);
   });
 
-// console.log('details',details);
-
   res.render("salesReport", {
     details,
     getDate,

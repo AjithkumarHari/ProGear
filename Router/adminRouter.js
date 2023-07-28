@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
   },
-});
+}); 
 
 const upload = multer({ storage: storage });
 const multipleUpload = upload.fields([{ name: 'image1', maxCount: 1 }, { name:"image2" ,maxCount:2 }])
@@ -57,7 +57,7 @@ router.post('/block',adminController.changeUserStatus)
 
 router.get('/product',validate.authenticate,productController.productManagement)
 
-router.get('/addProduct',productController.addProduct)
+router.get('/addProduct',productController.addProduct) 
 
 router.post('/addProduct',multipleUpload,productController.newProduct)
 
