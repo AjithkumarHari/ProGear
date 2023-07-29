@@ -80,8 +80,8 @@ module.exports.updateProduct = async (req ,res) => {
 //POST 
 module.exports.editProduct = async (req, res) => {
     try { 
-        console.log('body',req.body);
-        console.log('file',req.file);
+        // console.log('body',req.body);
+        // console.log('file',req.file);
         adminHelper.updateProductHelper(req.body, req?.file?.filename).then(( response) => {
             if (response) {
                 res.redirect("/admin/product");

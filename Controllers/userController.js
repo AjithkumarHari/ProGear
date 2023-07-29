@@ -731,19 +731,13 @@ module.exports.walletRecharge= async(req,res)=>{
   try {
       const userId=res.locals.user._id
       const total=req.body.total
-      console.log(total,'totalvvvvvvvvvvvvv');
-    
       const razorpayResponse = await userHelpers.generateRazorpayForWallet(userId,total);
       const user = await userData.findById({ _id: userId }).lean()
-      console.log(razorpayResponse,'razorpayResponse');
-      console.log(process.env.RAZORPAY_KEY_ID,'razorpayKeyId');
-
       res.json({
           razorpayResponse:razorpayResponse,
           userDetails: user,
           razorpayKeyId: process.env.RAZORPAY_KEY_ID,
       });
-
   } catch (error) {
       console.log(error.message);
       res.redirect('/error-500')
@@ -766,6 +760,6 @@ module.exports.verifyWalletRecharge = async(req,res)=>{
       });
   } catch (error) {
       console.log(error.message);
-      res.redirect('/user-error')
+      res.redirect('/error-500')
   }
 }

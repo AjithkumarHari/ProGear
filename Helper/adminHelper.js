@@ -351,7 +351,7 @@ const getOnlineCount =  () => {
 const updateProductHelper=async(texts, Image) => {
   return new Promise(async (resolve, reject) => {
        const id = texts.id
-       console.log('updateProductHelper',id);
+      //  console.log('updateProductHelper',id);
       let response = await Product.updateOne(
         { _id: new mongoose.Types.ObjectId(id) },
         {

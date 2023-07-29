@@ -1,3 +1,4 @@
+const { log } = require('console');
 const User = require('../Model/userModel');
 const mongoose = require("mongoose");
 
@@ -56,23 +57,23 @@ module.exports.verifyOnlinePayment= (paymentData) => {
             reject(error)
         }
     })
-}
+}  
 
 module.exports.rechargeUpdateWallet=(userId, referalAmount)=>{
-    return new Promise(async(resolve,reject)=>{
+    return new Promise(async(resolve,reject)=>{ 
         try {
             const user  = await User.findOne({_id:new mongoose.Types.ObjectId(userId)}).lean().exec()
             const  wallet = user.wallet
-            if(wallet){
+            if(wallet>=0){
                 const currentAmount = wallet
                 const updatedAmount = currentAmount + referalAmount;
                 const walletUpdate = await User.updateOne({_id:new mongoose.Types.ObjectId(userId)},{ $set: { wallet: updatedAmount } })
                 resolve()
-            }else{
+            }else{  
                 reject(new Error('Wallet not found'));
             }
         } catch (error) {
             reject(error);
-        }
-    })
+        } 
+    }) 
 }
