@@ -56,12 +56,12 @@
             <thead>
               <tr>
                 <th>Image</th>
-                <th>Name</th>
+                <th >Name</th>
                 <th>Brand</th>
                 <th>Category</th>
                 <th>Price</th>
-                <th>Edit</th>
-                <th>List/Unlist</th>
+                <th>Stock</th>
+                <th>Action</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -74,12 +74,19 @@
                   </i>
                   <strong></strong>
                 </td>
-                <td><%= product.name %></td>
+                <td ><%= product.name %></td>
                 <td><%= product.brand %></td>
                 <td><%= product.category.name %></td>
                 <td>&#8377; <%= product.price %></td>
-                <td><a href="/admin/updateProduct?userid=<%= product._id %>"><i class="mdi mdi-border-color"></i></a></td>
-                <td><center><button class="btn " onclick="changeStatus('<%= product._id %>')"><i class="mdi mdi-delete"></i></button></center></td>
+                <td><%= product.stock %></td>
+                <td><button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/admin/updateProduct?userid=<%= product._id %>" >Edit</a>
+                    <a class="dropdown-item" href="#" onclick="changeStatus('<%= product._id %>')">list/unlist</a>
+                  </div>
+                </td>
+                <!-- <td><a href="/admin/updateProduct?userid=<%= product._id %>"><i class="mdi mdi-border-color"></i></a></td>
+                <td><center><button class="btn " onclick="changeStatus('<%= product._id %>')"><i class="mdi mdi-delete"></i></button></center></td> -->
                 <% if (product.is_product_listed) { %>
                   <td><label class="badge badge-success">Listed</label></td>
                 <% } else { %>
@@ -136,7 +143,7 @@
           {
             if(response)
             {
-              location.reload()
+              location.reload() 
             }
           }
         })

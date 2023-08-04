@@ -216,7 +216,7 @@
 
   myform.addEventListener("submit", (event) => {
     event.preventDefault();
-    if (!nameValidation() || !brandValidation() || !priceValidation() || !descriptionValidation()) {
+    if (!nameValidation() || !brandValidation() || !priceValidation() || !stockValidation() || !descriptionValidation() ) {
       return false;
     } else {
       myform.submit();

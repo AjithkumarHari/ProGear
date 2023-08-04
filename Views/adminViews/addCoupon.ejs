@@ -72,7 +72,8 @@
 
       <div class="form-group">
         <label for="exampleInputName1">Validity</label>
-        <input type="date" class="form-control" name="validity" required>
+        <input type="date" class="form-control" name="validity" id="validity" onchange="validityValidation()">
+        <span id="validity-error" class="validation-label"></span>
       </div>
       
       <div class="form-group">
@@ -120,12 +121,14 @@
   let regex = /^(?!\s*$).+/;
   const discountRegex = /^\d+(\.\d{1,2})?$/;
   const amountRegex = /^\d+$/;
+  const today = new Date().toISOString().split('T')[0];
 
   const titleError = document.getElementById("couponName-error");
   const minPurchaseError = document.getElementById("minPurchase-error");
   const maxDiscountError = document.getElementById("maxDiscount-error");
   const discountPercentageError = document.getElementById("discountPercentage-error");
   const descriptionError = document.getElementById("description-error");
+  const validityError = document.getElementById("validity-error");
   
   const myform = document.getElementById("myform");
 
@@ -232,6 +235,27 @@
    
   }
 
+  function validityValidation() {
+    const validityValue  = document.getElementById("validity").value;
+    const nameInput = document.getElementById("validity");
+    if (validityValue.length == 0) {
+      validityError.innerHTML = "Must not be Empty";
+      validityError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (validityValue < today) {
+      validityError.innerHTML = "Validity date cannot be in the past";
+      validityError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    } 
+    validityError.innerHTML = "";
+    validityError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
   function descriptionValidation() {
     const name = document.getElementById("description").value;
     const nameInput = document.getElementById("description");
@@ -256,7 +280,7 @@
 
   myform.addEventListener("submit", (event) => {
     event.preventDefault();
-    if ( !minPurchaseValidation() || !maxDiscountValidation() || !discountPercentageValidation() || !descriptionValidation()) {
+    if ( !minPurchaseValidation() || !maxDiscountValidation() || !discountPercentageValidation() || !descriptionValidation() || !validityValidation()) {
       return false;
     } else {
       myform.submit();

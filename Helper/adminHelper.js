@@ -102,6 +102,7 @@ const returnOrderHelper = (orderId,userId, status) => {
                 const walletTransaction = {
                   date:new Date(),
                   type:"Credit",
+                  message:"Refund Credited on Return Order.",
                   amount:order.totalPrice,
                 }
                 const walletupdated = await User.updateOne(
@@ -131,6 +132,7 @@ const returnOrderHelper = (orderId,userId, status) => {
                 const walletTransaction = {
                   date:new Date(),
                   type:"Credit",
+                  message:"Refund Credited on Return Order.",
                   amount:order.totalPrice,
                 }
                 const walletupdated = await User.updateOne(
@@ -220,6 +222,7 @@ const returnOrderHelper = (orderId,userId, status) => {
               const walletTransaction = {
                 date:new Date(),
                 type:"Credit",
+                message:"Refund Credited on Cancelled Order.",
                 amount:order.totalPrice,
               }
               const walletupdated = await User.updateOne(
@@ -351,7 +354,6 @@ const getOnlineCount =  () => {
 const updateProductHelper=async(texts, Image) => {
   return new Promise(async (resolve, reject) => {
        const id = texts.id
-      //  console.log('updateProductHelper',id);
       let response = await Product.updateOne(
         { _id: new mongoose.Types.ObjectId(id) },
         {
@@ -359,6 +361,7 @@ const updateProductHelper=async(texts, Image) => {
             name : texts.name ,
             description : texts.des,
             brand : texts.brand, 
+            category : texts.category,
             image : Image , 
             price : texts.price,
             stock : texts.stock

@@ -1,4 +1,3 @@
-const { log } = require('console');
 const User = require('../Model/userModel');
 const mongoose = require("mongoose");
 
@@ -36,7 +35,7 @@ module.exports.generateRazorpayForWallet=(userId,total)=>{
 module.exports.verifyOnlinePayment= (paymentData) => {
     // console.log(paymentData);
     return new Promise((resolve, reject) => {
-        try {
+        try { 
             const crypto = require('crypto'); // Requiring crypto Module here for generating server signature for payments verification
             let razorpaySecretKey = process.env.RAZORPAY_KEY_SECRET;
             let hmac = crypto.createHmac('sha256', razorpaySecretKey); // Hashing Razorpay secret key using SHA-256 Algorithm
@@ -54,7 +53,7 @@ module.exports.verifyOnlinePayment= (paymentData) => {
                 reject()
             }
         } catch (error) {
-            reject(error)
+            reject(error)   
         }
     })
 }  
@@ -68,6 +67,19 @@ module.exports.rechargeUpdateWallet=(userId, referalAmount)=>{
                 const currentAmount = wallet
                 const updatedAmount = currentAmount + referalAmount;
                 const walletUpdate = await User.updateOne({_id:new mongoose.Types.ObjectId(userId)},{ $set: { wallet: updatedAmount } })
+                const walletTransaction = {
+                    date:new Date(),
+                    type:"Credit",
+                    message:"Wallet Recharged",
+                    amount:referalAmount,
+
+                  }
+                  const walletupdated = await User.updateOne(
+                    { _id: user },
+                    {
+                      $push: { walletTransaction: walletTransaction },
+                    }
+                  )
                 resolve()
             }else{  
                 reject(new Error('Wallet not found'));

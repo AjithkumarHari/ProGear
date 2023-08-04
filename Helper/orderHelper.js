@@ -85,6 +85,7 @@ checktoutHelper =async (data, user)=>{
                   const walletTransaction = {
                     date:new Date(),
                     type:"Debit",
+                    message:"Payment for Placing Order",
                     amount:data.total,
 
                   }
@@ -93,12 +94,12 @@ checktoutHelper =async (data, user)=>{
                     {
                       $push: { walletTransaction: walletTransaction },
                     }
-                  )
+                  )
                   .then(() => {
                   (status = "Success"), (orderStatus = "Placed");
                 });
                 }
-              }
+              }
             else if(data.payment_method == 'RazorPay'){
                     (status = "Failed"), (orderStatus = "Pending");
             }
@@ -359,6 +360,7 @@ const findLastTotal=async(user)=>{
 const verifyRazorpayPaymentHelper = async(details) =>{
   try{
     return new Promise ((resolve,reject)=>{
+      console.log('details',details);
       const crypto = require('crypto')
       let hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET);
 

@@ -58,7 +58,7 @@ try{
       catch(err) {
         console.error("Error adding product:", err);
         res.status(500).send("Error adding product to the database");
-          }
+      }
 };
 
 //***************************************************************  UPDATE-PRODUCT PAGE  *******************************************************//
@@ -67,7 +67,7 @@ try{
 module.exports.updateProduct = async (req ,res) => {
     try {
         const id = req.query.userid
-        const product = await productData.findOne({_id : id })
+        const product = await productData.findOne({_id : id }).populate('category')
         const category = await categoryData.find({ })
         res.render('updateProduct',{ product: product , category : category})
         }
@@ -80,8 +80,6 @@ module.exports.updateProduct = async (req ,res) => {
 //POST 
 module.exports.editProduct = async (req, res) => {
     try { 
-        // console.log('body',req.body);
-        // console.log('file',req.file);
         adminHelper.updateProductHelper(req.body, req?.file?.filename).then(( response) => {
             if (response) {
                 res.redirect("/admin/product");
@@ -92,7 +90,7 @@ module.exports.editProduct = async (req, res) => {
     catch (error) {
         console.log(error.message);
     }
-}
+} 
 
 module.exports.unlistProduct = async(req,res)=>{
     try {

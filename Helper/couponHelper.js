@@ -42,28 +42,23 @@ const addCoupon = (data) => {
     }
 }
 
-  const addCouponToUser =  (couponCode, userId) => {
+  const addCouponToUser = async (couponCode, userId) => {
     try {
-      return new Promise(async(resolve, reject) => {
-        const updated = await User
-          .updateOne(
-            { _id: new ObjectId(userId) },
-            {
-              $push: { 
-                coupons: couponCode,
-              },
-            } 
-          )
-          .then((couponAdded) => {
-            resolve(couponAdded);
-
-          });
-        // console.log(updated);
-      });
+  
+      if(couponCode.length){
+  
+        const add = await User.updateOne(
+          { _id: new Object(userId) },
+    
+          { $push: { coupons: couponCode } }
+        );
+    console.log(add);
+        return add;
+      }
     } catch (error) {
       console.log(error.message);
-    }
-  }
+    }
+  };
   
   const verifyCoupon =  (userId, couponCode) => {
     try {

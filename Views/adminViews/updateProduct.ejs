@@ -44,9 +44,12 @@
                 <div class="form-group">
                   <label for="exampleSelectGender">Category</label>     
                   <select class="form-control" id="exampleSelectGender" name="category">
-                    <% category.forEach(function(cat) { %>
-                      <option value="<%= cat._id %>" <%= product.category === cat._id ? 'selected' : '' %>><%= cat.name %></option>
-                    <% }); %>
+                    <option value="<%= product.category._id%>" <%= product.category === product.category._id ? 'selected' : '' %>><%= product.category.name %></option>
+                    <% category.forEach(function(category) { %>
+                      <% if (category.name !== product.category.name) { %>
+                        <option value="<%= category._id%>" <%= product.category === category._id ? 'selected' : '' %>><%= category.name %></option>
+                      <% } %>
+                      <% }); %>
                   </select>
                 </div>
                 <div class="form-group">
@@ -130,14 +133,14 @@
       nameError.style.color = "red";
       nameInput.style.border = "solid 2px red";
       return false;
-    }
+    } 
     nameError.innerHTML = "";
     nameError.style.color = "green";
     nameInput.style.border = "solid 2px green";
     return true;
   }
 
-  function brandValidation() {
+  function brandValidation() { 
     const name = document.getElementById("brand").value;
     const nameInput = document.getElementById("brand");
     if (name.length == 0) {

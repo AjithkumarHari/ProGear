@@ -555,6 +555,7 @@ module.exports.categoryPage = async (req, res) => {
       { $limit: ITEMS_PER_PAGE }, // Limit the number of products per page
     ]);
 
+
     const isListed = await productData.aggregate([
       {
         $match: {
@@ -713,6 +714,7 @@ module.exports.error_403 = async (req, res) => {
 
 //***************************************************************  WALLET PAGES  *******************************************************//
 
+//GET
 module.exports.wallet = async (req, res) => {
   try {
     const user = res.locals.user;

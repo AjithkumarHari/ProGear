@@ -166,6 +166,9 @@
                                         </div>
                                         <div class="text">
                                         <div class="title"><%= transaction.type === 'Debit' ? 'Debit' : 'Credit' %> Transaction</div>
+                                        <div  style="font-weight: 500; font-size: larger; color: #acacac;"><%= transaction.message %> </div>
+
+
                                         <div class="description"><%= new Date(transaction.date).toLocaleString() %></div>
                                         </div>
                                     </div>
