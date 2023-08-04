@@ -38,8 +38,8 @@
 	<!--================Login Box Area =================-->
 	<section class="login_box_area section_gap">
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
+			<div class="row ml-0">
+				<div class="col-lg-6" style="overflow: hidden;">
 					<div class="login_box_img">
 						<img class="img-fluid" src="img/login cover.jpg" alt="">
 						<div class="hover">
@@ -49,11 +49,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
-					<div class="login_form_inner">
+				<div class="col-lg-6 ">
+					<div class="login_form_inner ml-3">
 						<h3>Log in to enter</h3>
 						<form class="row login_form" action="/login" method="POST" id="contactForm" novalidate="novalidate">
-							<div class="col-md-12 form-group">
+							<div class="col-md-12 form-group ">
 								<input type="email" class="form-control" id="email" name="email" placeholder="E-mail" onfocus="this.placeholder = ''" onblur="this.placeholder = 'E-mail'">
 							</div>
 							<div class="col-md-12 form-group">
@@ -70,7 +70,7 @@
 							<% } %>
 							</div>
 
-							<div class="col-md-12 form-group">
+							<div class="col-md-12 form-group mr-3">
 								<button type="submit" value="submit" class="primary-btn">Log In</button>
 								<a href="/forgotPasswordNum">Forgot Password?</a>
 							</div>

@@ -33,32 +33,32 @@
     <!--================Login Box Area =================-->
     <section class="login_box_area section_gap">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6" style="padding: 0%;">
-                    <div class="login_form_inner">
+            <div class="row ml-0">
+                <div class="col-md-6" >
+                    <div class="login_form_inner ">
                         <h3>Signup on the website</h3>
-                        <form class="row login_form" action="/signup" method="POST" id="myform">
-                            <div class="col-md-12 form-group">
+                        <form class="row login_form" action="/signup" method="POST" id="myform" >
+                            <div class="col-md-12 form-group  ml-3">
                                 <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"  onkeyup="fnameValidation()">
                                 <span id="fname-error" class="validation-label"></span>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-12 form-group ml-3">
                                 <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" onkeyup="lnameValidation()">
                                 <span id="lname-error" class="validation-label"></span>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-12 form-group ml-3">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" onfocus="this.placeholder = ''" onblur="this.placeholder = 'E-mail'" onkeyup="emailValidation()">
                                 <span id="email-error" class="validation-label"></span>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-12 form-group ml-3">
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" onkeyup="newPasswordValidation()">
                                 <span id="newPassword-error" class="validation-label"></span>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-12 form-group ml-3">
                                 <input type="number" class="form-control" id="number" name="number" placeholder="Phone Number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'" onkeyup="numberValidation()">
                                 <span id="number-error" class="validation-label"></span>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-12 form-group ">
                                 <% if (typeof message !== 'undefined') { %>
                                 <center>
                                 <div class="audun_warn">
@@ -68,13 +68,13 @@
                                 </center>
                                 <% } %>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-12 form-group ml-2">
                                 <button type="submit" value="submit" class="primary-btn">Sign Up</button>
                             </div>
                           </form>
                         </div>
                     </div>
-                    <div class="col-md-6" style="padding: 0%;">
+                    <div class="col-md-6" style="overflow: hidden;">
                         <div class="login_box_img">
                         <img class="img-fluid" src="img/login cover.jpg" alt="">
                         <div class="hover">
