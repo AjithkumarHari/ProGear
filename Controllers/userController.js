@@ -33,7 +33,7 @@ module.exports.homePage = async (req, res) => {
       },
     ]);
     const product = await productData.find({
-      category: { $in: catId },
+      category: { $in: catId }, 
       is_product_listed: true,
     }).limit(12);
     
@@ -42,7 +42,7 @@ module.exports.homePage = async (req, res) => {
       token: token,
       category: category,
       banners: banner,
-    });
+    }); 
   } catch (error) {
     console.log('Error from homePage',error);
     res.redirect("/error-500");

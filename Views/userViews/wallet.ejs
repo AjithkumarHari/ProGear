@@ -165,10 +165,8 @@
                                         <i class="fa <%= transaction.type === 'Debit' ? 'fa-arrow-right' : 'fa-arrow-left' %>"></i>
                                         </div>
                                         <div class="text">
-                                        <div class="title"><%= transaction.type === 'Debit' ? 'Debit' : 'Credit' %> Transaction</div>
-                                        <div  style="font-weight: 500; font-size:medium; color: #acacac;"><%= transaction.message %> </div>
-
-
+                                        <div><%= transaction.type === 'Debit' ? 'Debit' : 'Credit' %> Transaction</div>
+                                        <div class="title" style="font-weight: 500; font-size:medium; color: #acacac;"><%= transaction.message %> </div>
                                         <div class="description"><%= new Date(transaction.date).toLocaleString() %></div>
                                         </div>
                                     </div>

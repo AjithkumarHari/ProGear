@@ -16,7 +16,6 @@ module.exports.generateRazorpayForWallet=(userId,total)=>{
                 currency: "INR",
                 receipt: "" + userId
               };
-              console.log('it resacged here ',options);
               instance.orders.create(options, function (err, order) {
                 if (err) {
                   console.log(err);
@@ -46,7 +45,6 @@ module.exports.verifyOnlinePayment= (paymentData) => {
             let razorpayServerGeneratedSignatureFromClient = paymentData['razorpayServerPaymentResponse[razorpay_signature]']
             if (serverGeneratedSignature === razorpayServerGeneratedSignatureFromClient) {
                 // Checking that is the signature generated in our server using the secret key we obtained by hashing secretkey,orderId & paymentId is same as the signature sent by the server 
-                console.log("Payment Signature Verified");
                 resolve()
             } else {
                 console.log("Payment Signature Verification Failed");

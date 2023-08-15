@@ -28,6 +28,7 @@ module.exports.checkout = async (req,res) =>{
                 }
                 else{
                     if(data.payment_method === "RazorPay"){
+                        await orderHelper.checktoutHelper(data,userId);
                         const result = await orderHelper.getOrderIdHelper(userId.id)
                         const total= await orderHelper.findLastTotal(userId._id)
                         const order=await orderHelper.generateRazorpay(result.toString(),total)
@@ -106,7 +107,7 @@ module.exports.verifyRazorpayPayment = async (req, res) =>{
     try{
         orderHelper.verifyRazorpayPaymentHelper(req.body).then( async ()=>{
             const orderId = req.body['order[receipt]']
-            await Order.updateOne(
+             await Order.updateOne(
                 {
                   "orders._id": new mongoose.Types.ObjectId(orderId)
                 },
@@ -118,6 +119,7 @@ module.exports.verifyRazorpayPayment = async (req, res) =>{
                   }
                 }
               );
+              
             await Cart.deleteOne({ user_id:res.locals.user.id }).then(() => {
                 
             res.json({status:'Success'})
