@@ -32,6 +32,7 @@ module.exports.newCategory = async (req ,res) => {
         }
         else{
             const category = new categoryData({name, description});
+            console.log(category);
             await category.save();
             res.redirect('/admin/category')
         }
