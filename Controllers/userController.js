@@ -97,8 +97,9 @@ module.exports.productPage = async (req, res) => {
     if (
       product.length === 0 ||
       category.length === 0 ||
-      isListed[0].is_listed[0] === false ||
-      product===[]
+      isListed[0].is_listed[0] === false 
+      
+
     ) {
       res.redirect("/error-404");
     } else {

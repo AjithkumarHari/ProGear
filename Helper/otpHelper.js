@@ -19,7 +19,7 @@ const verifyCode = async (mobileNumber, code) => {
   try {
     console.log('mobileNumber',mobileNumber);
     const verification = await client.verify.v2.services(verifyServiceSid).verificationChecks.create({
-      to: `+91${mobileNumber}`,
+      to: `${mobileNumber}`,
       code: code,
     });
     if (verification.status === 'approved') {
